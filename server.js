@@ -18,7 +18,7 @@ app.use(express.static("public")); // Serve static files
 app.set("view engine", "ejs");
 
 // Routes
-app.use("/users", require("./routes/userRoutes"));
+// app.use("/users", require("./routes/userRoutes"));
 
 // Home Page Route
 app.get("/", (req, res) => {
