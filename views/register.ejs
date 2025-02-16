@@ -1,0 +1,51 @@
+<%- include('./layout/header') %>
+<link href="/css/login.css" rel="stylesheet" />
+
+<div class="align-items-center justify-content-center d-flex margin-top-fi">
+  <div class="card border-0 w-fit p-4 min-width">
+    <div class="card-body">
+      <h1 class="semi-bold mb-4">Register</h1>
+
+      <form action="/admin/register" method="POST">
+        <div class="form-group mb-3">
+          <label for="exampleInputEmail1">Email address</label>
+          <input
+            type="email"
+            required
+            class="form-control"
+            id="exampleInputEmail1"
+            name="email"
+            placeholder="Enter email"
+          />
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="useranme">Username</label>
+          <input
+            type="text"
+            required
+            name="username"
+            class="form-control"
+            id="useranme"
+            placeholder="Enter useranme"
+          />
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="exampleInputPassword1">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            required
+            id="exampleInputPassword1"
+            placeholder="Password"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('./layout/footer') %>

@@ -1,14 +1,14 @@
-// const User = require("../models/User");
 
-// // Get all users
-// exports.getUsers = async (req, res) => {
-//   try {
-//     const users = await User.find();
-//     res.json(users);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
+// Get all users
+export const getUsers = async (req, res) => {
+    try {
+      res.render("index", { title: "Home Page" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  
 
 
 // Get all users (Render View)
@@ -63,3 +63,6 @@
 //     res.status(500).json({ error: error.message });
 //   }
 // };
+
+
+  
