@@ -2,7 +2,8 @@
 // Get all users
 export const getUsers = async (req, res) => {
     try {
-      res.render("index", { title: "Home Page" });
+      return res.redirect("/admin/login");
+
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
