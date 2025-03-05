@@ -6,8 +6,10 @@ const verifySession = (req, res, next) => {
   try {
     req.adminId = req.session.adminId;
     req.adminRole = req.session.role;
-    req.usermane = req.session.usermane;
+    req.username = req.session.username;
     req.email = req.session.email;
+    req.user = req.session.user
+
 
     next();
   } catch (error) {

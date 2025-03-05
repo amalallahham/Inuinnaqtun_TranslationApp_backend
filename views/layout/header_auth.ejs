@@ -15,6 +15,8 @@
       rel="stylesheet"
     />
     <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/fonts.css" rel="stylesheet" />
+
     <script
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
       crossorigin="anonymous"
@@ -87,12 +89,16 @@
           <div class="sb-sidenav-menu">
             <div class="nav">
               <div class="sb-sidenav-menu-heading">Core</div>
-              <a class="nav-link" href="index.html">
+              <% if (user?.role === 'Admin') { %>
+
+              <a class="nav-link" href="/admin/users">
                 <div class="sb-nav-link-icon">
-                  <i class="fas fa-tachometer-alt"></i>
+                  <i class="fa-solid fa-users-gear"></i>
                 </div>
-                Dashboard
+                Users
               </a>
+
+              <% } %>
               <div class="sb-sidenav-menu-heading">Interface</div>
               <a
                 class="nav-link collapsed"
@@ -229,7 +235,4 @@
           <% } %>
         </nav>
       </div>
-      <div id="layoutSidenav_content"></div>
-    </div>
-  </body>
-</html>
+      <div id="layoutSidenav_content">

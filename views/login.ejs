@@ -6,6 +6,12 @@
     <div class="card-body">
       <h1 class="semi-bold mb-4">Login</h1>
 
+      <% if (error) { %>
+        <div class="alert alert-danger" role="alert">
+          <%= error %>
+        </div>
+      <% } %>
+
       <form action="/admin/login" method="POST">
         <div class="form-group mb-3">
           <label for="exampleInputEmail1">Email address</label>
@@ -35,4 +41,5 @@
     </div>
   </div>
 </div>
+
 <%- include('./layout/footer') %>

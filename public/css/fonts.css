@@ -10,10 +10,10 @@
 }
 
 .bold {
-  font-family: bold;
+  font-family: bold !important;
 }
 
 
 .semi-bold {
-  font-family:  semi-bold;
+  font-family:  semi-bold !important;
 }
