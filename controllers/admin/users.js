@@ -123,6 +123,18 @@ export const edit_user = async (req, res) => {
 };
 
 
+export const getUserByEmail = async (email) => {
+  try {
+    const user = await User.findOne({ email }); 
+
+    return user;
+  } catch (error) {
+    console.error("Error fetching user by email:", error);
+    return null;
+  }
+};
+
+
 
 export const delete_user = async (req, res) => {
   try {

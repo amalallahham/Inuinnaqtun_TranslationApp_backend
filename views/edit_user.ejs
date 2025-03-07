@@ -15,19 +15,16 @@
     <div class="card-body">
       <form action="/admin/users/edit/<%= user._id %>" method="POST">
         
-        <!-- Username -->
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
           <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" required>
         </div>
 
-        <!-- Email -->
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
           <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" required>
         </div>
 
-        <!-- Role Selection -->
         <div class="mb-3">
           <label for="role" class="form-label">Role</label>
           <select class="form-control" id="role" name="role" <%= user.role === 'Admin' ? 'disabled="disabled"' : '' %>>
@@ -36,7 +33,6 @@
           </select>
         </div>
 
-        <!-- Password -->
         <div class="mb-3">
           <label for="password" class="form-label">New Password (Leave blank to keep current)</label>
           <input type="password" class="form-control" id="password" name="password">

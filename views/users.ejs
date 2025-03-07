@@ -133,7 +133,6 @@ function showDeleteModal(userId, email) {
 
 // Function to handle user deletion
 document.getElementById("confirmDeleteButton").addEventListener("click", async function () {
-  console.log()
   if (!deleteUserId) return;
 
   try {
@@ -160,7 +159,6 @@ document.getElementById("confirmDeleteButton").addEventListener("click", async f
         }, 20);
       }
     } catch (error) {
-      console.log('sjdskd')
       deleteError.textContent = "Server error. Please try again.";
       deleteError.classList.remove("d-none");
     }
