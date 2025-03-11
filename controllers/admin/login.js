@@ -29,6 +29,7 @@ export const login = async (req, res) => {
 
 
     const isMatch = await bcrypt.compare(password, admin.password);
+
     if (!isMatch) {
       return res.render("login", {
         error: "Password is incorrect",

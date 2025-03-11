@@ -5,10 +5,9 @@ import jwt from "jsonwebtoken";
 export const get_users = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = 5; // Users per page
+    const limit = 5; 
     const skip = (page - 1) * limit;
 
-    // Fetch users with pagination
     const users = await User.find({}).skip(skip).limit(limit);
 
     const totalUsers = await User.countDocuments();
@@ -48,7 +47,7 @@ export const invite_user = async (req, res) => {
       return res.status(400).json({ message: "User already exists." });
     }
 
-    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+    const token = jwt.sign({email: req.session.email }, process.env.JWT_SECRET, {
       expiresIn: "24h",
     });
 
