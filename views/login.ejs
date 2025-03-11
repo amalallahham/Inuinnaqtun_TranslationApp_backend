@@ -1,0 +1,49 @@
+<%- include('./layout/header') %>
+<link href="/css/login.css" rel="stylesheet" />
+
+<div class="align-items-center justify-content-center d-flex margin-top-fi">
+  <div class="card border-0 w-fit p-4 min-width">
+    <div class="card-body">
+      <h1 class="semi-bold mb-4">Login</h1>
+
+      <% if (error) { %>
+        <div class="alert alert-danger" role="alert">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <form action="/admin/login" method="POST">
+        <div class="form-group mb-3">
+          <label for="exampleInputEmail1">Email address</label>
+          <input
+            required
+            type="email"
+            class="form-control"
+            name="email"
+            id="exampleInputEmail1"
+            placeholder="Enter email"
+          />
+        </div>
+        <div class="form-group mb-3">
+          <label for="exampleInputPassword1">Password</label>
+          <input
+            required
+            type="password"
+            class="form-control"
+            name="password"
+            id="exampleInputPassword1"
+            placeholder="Password"
+          />
+        </div>
+
+        <div class="mb-3">
+          <a href="/admin/forgot-password" class="text-primary">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('./layout/footer') %>
