@@ -55,12 +55,144 @@ async function seedDatabase() {
           },
         ],
       },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
+      {
+        word: "tamaffi",
+        translation: "all of you",
+        similarWords: [{ prefix: "tamaphi" }],
+        versions: [
+          {
+            version: 1,
+            changes: { oldWord: null, oldTranslation: null, newWord: "tamaffi", newTranslation: "all of you" },
+            performedBy: users[0]._id,
+          },
+        ],
+      },
     ]);
     console.log("Dialect Words seeded...");
 
     const audioFiles = await AudioFile.insertMany([
       { filePath: "/file.mp3", wordId: words[0]._id },
-      { filePath: "/file.mp3", wordId: words[1]._id },
+      { filePath: "/file.mp3", wordId: words[0]._id },
     ]);
     console.log("Audio Files seeded...");
 

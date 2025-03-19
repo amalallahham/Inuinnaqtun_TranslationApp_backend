@@ -16,6 +16,8 @@
     />
     <link href="/css/styles.css" rel="stylesheet" />
     <link href="/css/fonts.css" rel="stylesheet" />
+    <link href="/css/common.css" rel="stylesheet" />
+
 
     <script
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
@@ -88,7 +90,7 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
           <div class="sb-sidenav-menu">
             <div class="nav">
-              <div class="sb-sidenav-menu-heading">Core</div>
+              <!-- <div class="sb-sidenav-menu-heading">Core</div> -->
               <% if (user?.role === 'Admin') { %>
 
               <a class="nav-link" href="/admin/users">
@@ -99,8 +101,8 @@
               </a>
 
               <% } %>
-              <div class="sb-sidenav-menu-heading">Interface</div>
-              <a
+              <!-- <div class="sb-sidenav-menu-heading">Interface</div> -->
+              <!-- <a
                 class="nav-link collapsed"
                 href="#"
                 data-bs-toggle="collapse"
@@ -115,8 +117,8 @@
                 <div class="sb-sidenav-collapse-arrow">
                   <i class="fas fa-angle-down"></i>
                 </div>
-              </a>
-              <div
+              </a> -->
+              <!-- <div
                 class="collapse"
                 id="collapseLayouts"
                 aria-labelledby="headingOne"
@@ -130,8 +132,8 @@
                     >Light Sidenav</a
                   >
                 </nav>
-              </div>
-              <a
+              </div> -->
+              <!-- <a
                 class="nav-link collapsed"
                 href="#"
                 data-bs-toggle="collapse"
@@ -146,8 +148,8 @@
                 <div class="sb-sidenav-collapse-arrow">
                   <i class="fas fa-angle-down"></i>
                 </div>
-              </a>
-              <div
+              </a> -->
+              <!-- <div
                 class="collapse"
                 id="collapsePages"
                 aria-labelledby="headingTwo"
@@ -210,18 +212,18 @@
                     </nav>
                   </div>
                 </nav>
-              </div>
-              <div class="sb-sidenav-menu-heading">Addons</div>
-              <a class="nav-link" href="charts.html">
+              </div> -->
+              <!-- <div class="sb-sidenav-menu-heading">Addons</div> -->
+              <a class="nav-link" href="/admin/translations">
                 <div class="sb-nav-link-icon">
-                  <i class="fas fa-chart-area"></i>
+                  <i class="fa-solid fa-language"></i>
                 </div>
-                Charts
+                Translations
               </a>
-              <a class="nav-link" href="tables.html">
+              <!-- <a class="nav-link" href="tables.html">
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Tables
-              </a>
+              </a> -->
             </div>
           </div>
 
