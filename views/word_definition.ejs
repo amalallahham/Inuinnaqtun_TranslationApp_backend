@@ -1,0 +1,319 @@
+<%- include('./layout/header_auth') %>
+
+<div class="container my-4 px-4">
+  <h2 class="mb-3 semi-bold">Edit Word Translation</h2>
+
+  <% if (typeof error !== "undefined" && error) { %>
+  <div class="alert alert-danger"><%= error %></div>
+  <% } %> <% if (data.length === 0) { %>
+  <p class="text-center text-muted py-3">No data found</p>
+  <% } else { %>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label">Word</label>
+        <input
+          type="text"
+          class="form-control word-input"
+          value="<%= data.word %>"
+          data-id="<%= data._id %>"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Definition</label>
+        <input
+          type="text"
+          class="form-control definition-input"
+          value="<%= data.translation || '' %>"
+          data-id="<%= data._id %>"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"> Linked Words </label>
+
+        <ul class="list-group linked-words-list" data-id="<%= data._id %>">
+          <% if (data.similarWords && data.similarWords.length > 0) { %> <%
+          data.similarWords.forEach((linkedWord) => { %>
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <span><%= linkedWord.prefix %></span>
+            <button
+              class="btn btn-sm btn-secondary remove-linked-word"
+              data-id="<%= data._id %>"
+              data-word="<%= linkedWord.prefix %>"
+            >
+              <i
+                class="fa-solid fa-link-slash remove-linked-word"
+                data-id="<%= data._id %>"
+                data-word="<%= linkedWord.prefix %>"
+              ></i>
+            </button>
+          </li>
+          <% }) %> <% } else { %>
+          <li class="list-group-item text-muted">No linked words</li>
+          <% } %>
+        </ul>
+
+        <!-- Input to Add New Linked Word -->
+        <div class="input-group mt-2">
+          <input
+            type="text"
+            class="form-control new-linked-word-input"
+            placeholder="Add linked word"
+          />
+          <button
+            class="btn btn-primary add-linked-word z-index-1"
+            data-id="<%= data._id %>"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Audio Clips -->
+      <div class="mb-3">
+        <label class="form-label">Audio Clips</label>
+        <div>
+          <% if (data.audioFiles && data.audioFiles.length > 0) { %>
+
+          <audio controls class="d-block mb-2">
+            <source
+              src="<%= data.audioFiles[data.audioFiles.length - 1].filePath %>"
+              type="audio/wav"
+            />
+            Your browser does not support the audio tag.
+          </audio>
+
+          <% } else { %>
+          <p class="text-secondary font-size-12 m-0">No Audio Found</p>
+          <% } %>
+        </div>
+
+        <!-- Upload New Audio -->
+        <label class="form-label mt-2">Upload Audio File</label>
+        <input
+          type="file"
+          class="form-control mt-2 audio-upload"
+          data-id="<%= data._id %>"
+          accept="audio/*"
+        />
+
+        <!-- Record Audio -->
+        <label class="form-label mt-3">Record Audio</label>
+        <div class="d-flex align-items-center">
+          <button
+            class="btn btn-primary record-audio"
+            data-id="<%= data._id %>"
+          >
+            <i class="fa-solid fa-microphone"></i> Start Recording
+          </button>
+          <button
+            class="btn btn-danger ms-2 stop-recording"
+            style="display: none"
+          >
+            <i class="fa-solid fa-stop"></i> Stop Recording
+          </button>
+        </div>
+        <audio id="recordedAudio" controls class="mt-2 d-none"></audio>
+      </div>
+
+      <!-- Save Button -->
+      <button
+        class="btn btn-outline-success save-button"
+        data-id="<%= data._id %>"
+      >
+        <i class="fa-solid fa-save"></i> Save Changes
+      </button>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<%- include('./layout/footer_auth') %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    let mediaRecorder;
+    let audioChunks = [];
+    let recordedAudioBlob = null;
+
+    document.addEventListener("click", async function (event) {
+      let target = event.target;
+
+      // Start Recording Audio
+      if (target.classList.contains("record-audio")) {
+        let stopButton = document.querySelector(".stop-recording");
+        let recordedAudio = document.getElementById("recordedAudio");
+
+        target.style.display = "none"; // Hide Start Recording button
+        stopButton.style.display = "inline-block"; // Show Stop Recording button
+
+        try {
+          let stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+          });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+
+          mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            recordedAudioBlob = new Blob(audioChunks, { type: "audio/mpeg" }); // Store the blob
+            let audioURL = URL.createObjectURL(recordedAudioBlob);
+
+            recordedAudio.src = audioURL;
+            recordedAudio.classList.remove("d-none");
+
+            // Stop microphone and release resources
+            stream.getTracks().forEach((track) => track.stop());
+          };
+
+          mediaRecorder.start();
+        } catch (error) {
+          console.error("Error starting recording:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Failed!",
+            text: "Microphone access denied",
+          });
+        }
+      }
+
+      // Stop Recording Audio
+      if (target.classList.contains("stop-recording")) {
+        let startButton = document.querySelector(".record-audio");
+        target.style.display = "none"; // Hide Stop Recording button
+        startButton.style.display = "inline-block"; // Show Start Recording button
+
+        if (mediaRecorder) {
+          mediaRecorder.stop(); // Stop recording (will trigger onstop)
+        }
+      }
+
+      // Add Linked Word Event (Client-side Only)
+      if (target.closest(".add-linked-word")) {
+        let button = target.closest(".add-linked-word"); // Get the button element
+        let input = button.previousElementSibling;
+        let newWord = input.value.trim();
+
+        if (!newWord) return;
+
+        let list = button.closest(".mb-3").querySelector(".linked-words-list");
+
+        // Check if "No linked words" exists and remove it
+        if (list.querySelector(".text-muted")) {
+          list.innerHTML = "";
+        }
+
+        let newItem = document.createElement("li");
+        newItem.classList.add(
+          "list-group-item",
+          "d-flex",
+          "justify-content-between",
+          "align-items-center"
+        );
+        newItem.innerHTML = `
+          <span>${newWord}</span>
+          <button class="btn btn-sm btn-secondary remove-linked-word">
+            <i class="fa-solid fa-link-slash"></i>
+          </button>
+        `;
+
+        list.appendChild(newItem);
+        input.value = "";
+      }
+
+      // Remove Linked Word Event (Client-side Only)
+      if (target.closest(".remove-linked-word")) {
+        let listItem = target.closest("li");
+        listItem.remove();
+
+        // Check if the list is empty, add "No linked words" message
+        let list = listItem.closest(".linked-words-list");
+        if (!list.querySelector("li")) {
+          list.innerHTML =
+            '<li class="list-group-item text-muted">No linked words</li>';
+        }
+      }
+
+      // Save Button Click Event (Uploads Audio If Recorded & Saves Word)
+      if (target.classList.contains("save-button")) {
+        let wordId = target.dataset.id;
+        let wordValue = document
+          .querySelector(`.word-input[data-id='${wordId}']`)
+          .value.trim();
+        let definitionValue = document
+          .querySelector(`.definition-input[data-id='${wordId}']`)
+          .value.trim();
+
+        // Collect linked words dynamically
+        let linkedWordsList = document.querySelectorAll(
+          `.linked-words-list[data-id='${wordId}'] li span`
+        );
+        let linkedWordsArray = [...linkedWordsList].map((li) =>
+          li.textContent.trim()
+        );
+
+        let audioFileInput = document.querySelector(
+          `.audio-upload[data-id='${wordId}']`
+        );
+        let audioFile =
+          audioFileInput.files.length > 0 ? audioFileInput.files[0] : null;
+
+        let formData = new FormData();
+        formData.append("word", wordValue);
+        formData.append("translation", definitionValue);
+        formData.append("linkedWords", JSON.stringify(linkedWordsArray));
+
+        // Attach Audio File (Uploaded or Recorded)
+        if (audioFile) {
+          formData.append("audio", audioFile);
+        } else if (recordedAudioBlob) {
+          formData.append("audio", recordedAudioBlob, "recorded-audio.mp3");
+        }
+
+        try {
+          let response = await fetch(
+            `/admin/translations/update-word/${wordId}`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          let result = await response.json();
+
+          if (result.success) {
+            Swal.fire({
+              title: "Success!",
+              text: "Word added successfully!",
+              icon: "success",
+              confirmButtonText: "OK",
+            }).then(() => {
+              location.reload();
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Failed!",
+              text: "Something went wrong. Please try again.",
+            });
+          }
+        } catch (error) {
+          console.error("Error updating word:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Failed!",
+            text: "Something went wrong. Please try again.",
+          });
+        }
+      }
+    });
+  });
+</script>
