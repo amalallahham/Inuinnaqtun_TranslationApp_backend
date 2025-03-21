@@ -1,6 +1,5 @@
 const is_admin = (req, res, next) => {
     if (!req.session || !req.session.adminId) {
-      res.status(401).json({ error: "Access denied. No active session." });
       return res.redirect("/admin/login"); 
     }
     try {

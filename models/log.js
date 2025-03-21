@@ -22,6 +22,11 @@ const logSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  type: {
+    type: String,
+    enum: ["translation", "audio"],
+    required: true,
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

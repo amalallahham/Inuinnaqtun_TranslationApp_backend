@@ -1,0 +1,12 @@
+.date {
+
+}
+
+.date-con {
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    background: var(--bs-gray);
+    padding: 0.5rem;
+    color: white;
+    width: fit-content;
+}

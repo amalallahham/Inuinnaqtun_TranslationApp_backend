@@ -5,7 +5,7 @@ import path from "path";
 import fs from "fs";
 import multer from "multer";
 import mongoose from "mongoose";
-import createLog from "./logs.js";
+import { createLog } from "./logs.js";
 
 export const get_add_translation = async (req, res) => {
   try {
@@ -42,9 +42,10 @@ export const add_translation = async (req, res) => {
     await newWord.save();
 
     await createLog({
-      action: 'upload',
+      action: "upload",
       performedBy: req.session?.user?._id,
       wordId: newWord._id,
+      type: "translation"
     });
 
     let audioFileRecord = null;
@@ -58,6 +59,13 @@ export const add_translation = async (req, res) => {
       });
 
       await audioFileRecord.save();
+      await createLog({
+        action: "upload",
+        performedBy: req.session?.user?._id,
+        wordId: newWord._id,
+        audioFileId: audioFileRecord?._id,
+        type: "audio"
+      });
     }
 
     return res.status(201).json({
@@ -202,12 +210,39 @@ export const delete_word = async (req, res) => {
         .json({ success: false, message: "Word not found" });
     }
 
-    res.json({ success: true });
+    const audioFiles = await AudioFile.find({ wordId });
+
+    for (const audio of audioFiles) {
+      const audioPath = path.join("public", audio.filePath);
+      if (fs.existsSync(audioPath)) {
+        fs.unlinkSync(audioPath);
+      }
+
+      await AudioFile.findByIdAndDelete(audio._id);
+      
+      await createLog({
+        action: "delete",
+        performedBy: req.session?.user?._id,
+        wordId,
+        audioFileId: audio._id,
+        type: "audio"
+      });
+    }
+
+    await createLog({
+      action: "delete",
+      performedBy: req.session?.user?._id,
+      wordId,
+      type: "translation"
+    });
+
+    res.json({ success: true, message: "Word and associated audio files deleted." });
   } catch (error) {
     console.error("Delete word error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
 
 export const updateWord = async (req, res) => {
   try {
@@ -256,7 +291,7 @@ export const updateWord = async (req, res) => {
     );
 
     await createLog({
-      action: 'edit',
+      action: "edit",
       performedBy: req.session?.user?._id,
       wordId: wordId,
     });

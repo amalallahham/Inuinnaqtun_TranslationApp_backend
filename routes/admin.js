@@ -9,6 +9,7 @@ import is_admin from "../middlewares/is_admin.js";
 import { delete_user, edit_user, get_edit_user, get_users, invite_user } from "../controllers/admin/users.js";
 import { add_translation, delete_word, get_add_translation, get_translations, get_word_details, updateWord } from "../controllers/admin/translations.js";
 import upload from "../middlewares/uploadMiddleware.js";
+import { get_log_details, get_logs } from "../controllers/admin/logs.js";
 const router = express.Router();
 
 router.get("/login", redirectIfAuthenticated, get_login);
@@ -41,6 +42,9 @@ router.get("/translations/:id", get_word_details);
 router.delete("/translations/:id", delete_word);
 
 router.post("/translations/update-word/:wordId", upload.single("audio"), updateWord);
+
+router.get("/logs", is_admin, get_logs);
+router.get("/logs/:id", is_admin, get_log_details);
 
 
 
