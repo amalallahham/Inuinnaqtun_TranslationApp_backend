@@ -7,7 +7,7 @@ import { redirectIfAuthenticated } from "../middlewares/is_logged.js";
 import { verifyTokenMiddleware } from "../middlewares/verifyToken.js";
 import is_admin from "../middlewares/is_admin.js";
 import { delete_user, edit_user, get_edit_user, get_users, invite_user } from "../controllers/admin/users.js";
-import { add_translation, get_add_translation, get_translations, get_word_details, updateWord } from "../controllers/admin/translations.js";
+import { add_translation, delete_word, get_add_translation, get_translations, get_word_details, updateWord } from "../controllers/admin/translations.js";
 import upload from "../middlewares/uploadMiddleware.js";
 const router = express.Router();
 
@@ -38,6 +38,8 @@ router.get("/translations/add-word", get_add_translation);
 router.post("/translations/add-word", upload.single("audio"), add_translation);
 
 router.get("/translations/:id", get_word_details);
+router.delete("/translations/:id", delete_word);
+
 router.post("/translations/update-word/:wordId", upload.single("audio"), updateWord);
 
 

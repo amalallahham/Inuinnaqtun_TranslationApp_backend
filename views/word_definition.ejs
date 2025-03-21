@@ -120,12 +120,18 @@
         <audio id="recordedAudio" controls class="mt-2 d-none"></audio>
       </div>
 
-      <!-- Save Button -->
       <button
         class="btn btn-outline-success save-button"
         data-id="<%= data._id %>"
       >
         <i class="fa-solid fa-save"></i> Save Changes
+      </button>
+
+      <button
+        class="btn btn-outline-danger delete-button ms-2"
+        data-id="<%= data._id %>"
+      >
+        <i class="fa-solid fa-trash"></i> Delete Word
       </button>
     </div>
   </div>
@@ -313,6 +319,58 @@
             text: "Something went wrong. Please try again.",
           });
         }
+      }
+
+      // Delete Button Click Event
+      if (target.classList.contains("delete-button")) {
+        let wordId = target.dataset.id;
+
+        Swal.fire({
+          title: "Are you sure?",
+          text: "This action cannot be undone!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "Cancel",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              let response = await fetch(
+                `/admin/translations/${wordId}`,
+                {
+                  method: "DELETE",
+                }
+              );
+
+              let result = await response.json();
+
+              if (result.success) {
+                Swal.fire({
+                  title: "Deleted!",
+                  text: "The word has been deleted.",
+                  icon: "success",
+                }).then(() => {
+                  window.location.href = "/admin/translations"; 
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Failed!",
+                  text:
+                    result.message || "Something went wrong. Please try again.",
+                });
+              }
+            } catch (error) {
+              console.error("Error deleting word:", error);
+              Swal.fire({
+                icon: "error",
+                title: "Failed!",
+                text: "Something went wrong. Please try again.",
+              });
+            }
+          }
+        });
       }
     });
   });

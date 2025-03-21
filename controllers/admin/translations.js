@@ -22,12 +22,10 @@ export const add_translation = async (req, res) => {
     const { word, translation, linkedWords } = req.body;
 
     if (!word || !translation) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Word and translation are required.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Word and translation are required.",
+      });
     }
 
     const similarWords = linkedWords
@@ -80,7 +78,7 @@ export const get_translations = async (req, res) => {
   try {
     const query = req.query.query?.trim() || "";
     const page = parseInt(req.query.page) || 1;
-    const limit = 5; 
+    const limit = 5;
     const filter = req.query.filter || "all";
     const sortOrder = req.query.order === "desc" ? -1 : 1;
 
@@ -147,9 +145,8 @@ export const get_translations = async (req, res) => {
 };
 
 export const get_word_details = async (req, res) => {
-
   try {
-    const wordId = req.params.id; 
+    const wordId = req.params.id;
 
     if (!wordId || !mongoose.Types.ObjectId.isValid(wordId)) {
       return res.status(400).render("word_definition", {
@@ -174,10 +171,9 @@ export const get_word_details = async (req, res) => {
 
     word.audioFiles = audioFiles.map((audio) => ({
       id: audio._id.toString(),
-      filePath: `${audio.filePath}`, 
+      filePath: `${audio.filePath}`,
       createdAt: audio.createdAt,
     }));
-
 
     return res.render("word_definition", {
       data: word,
@@ -194,8 +190,24 @@ export const get_word_details = async (req, res) => {
   }
 };
 
+export const delete_word = async (req, res) => {
+  const wordId = req.params.id;
 
+  try {
+    const deletedWord = await DialectWord.findByIdAndDelete(wordId);
 
+    if (!deletedWord) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Word not found" });
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Delete word error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
 
 export const updateWord = async (req, res) => {
   try {
@@ -203,14 +215,18 @@ export const updateWord = async (req, res) => {
     const { word, translation, linkedWords } = req.body;
 
     if (!wordId || !word || !translation) {
-      return res.status(400).json({ success: false, message: "Missing required fields" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing required fields" });
     }
 
     const linkedWordsArray = linkedWords ? JSON.parse(linkedWords) : [];
 
     const existingWord = await DialectWord.findById(wordId);
     if (!existingWord) {
-      return res.status(404).json({ success: false, message: "Word not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Word not found" });
     }
 
     const existingAudio = await AudioFile.findOne({ wordId });
@@ -255,7 +271,3 @@ export const updateWord = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
-
-
-
-
