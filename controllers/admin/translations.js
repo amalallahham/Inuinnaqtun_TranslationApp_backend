@@ -21,12 +21,10 @@ export const add_translation = async (req, res) => {
     const { word, translation, linkedWords } = req.body;
 
     if (!word || !translation) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Word and translation are required.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Word and translation are required.",
+      });
     }
 
     const similarWords = linkedWords
@@ -73,7 +71,7 @@ export const get_translations = async (req, res) => {
   try {
     const query = req.query.query?.trim() || "";
     const page = parseInt(req.query.page) || 1;
-    const limit = 5; 
+    const limit = 5;
     const filter = req.query.filter || "all";
     const sortOrder = req.query.order === "desc" ? -1 : 1;
 
@@ -140,9 +138,8 @@ export const get_translations = async (req, res) => {
 };
 
 export const get_word_details = async (req, res) => {
-
   try {
-    const wordId = req.params.id; 
+    const wordId = req.params.id;
 
     if (!wordId || !mongoose.Types.ObjectId.isValid(wordId)) {
       return res.status(400).render("word_definition", {
@@ -167,10 +164,9 @@ export const get_word_details = async (req, res) => {
 
     word.audioFiles = audioFiles.map((audio) => ({
       id: audio._id.toString(),
-      filePath: `${audio.filePath}`, 
+      filePath: `${audio.filePath}`,
       createdAt: audio.createdAt,
     }));
-
 
     return res.render("word_definition", {
       data: word,
@@ -187,71 +183,24 @@ export const get_word_details = async (req, res) => {
   }
 };
 
+export const delete_word = async (req, res) => {
+  const wordId = req.params.id;
 
-
-export const linkWordToEntry = async (req, res) => {
   try {
-    const { wordId, newWord } = req.body;
+    const deletedWord = await DialectWord.findByIdAndDelete(wordId);
 
-    if (!wordId || !newWord) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Missing required data" });
-    }
-
-    const updatedWord = await DialectWord.findByIdAndUpdate(
-      wordId,
-      { $addToSet: { similarWords: { prefix: newWord } } },
-      { new: true }
-    );
-
-    if (!updatedWord) {
+    if (!deletedWord) {
       return res
         .status(404)
         .json({ success: false, message: "Word not found" });
     }
 
-    res
-      .status(200)
-      .json({ success: true, similarWords: updatedWord.similarWords });
+    res.json({ success: true });
   } catch (error) {
-    console.error("Error linking word:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    console.error("Delete word error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
-
-export const unlinkWordFromEntry = async (req, res) => {
-  try {
-    const { wordId, wordToRemove } = req.body;
-
-    if (!wordId || !wordToRemove) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Missing required data" });
-    }
-
-    // Update the document by removing the linked word
-    const updatedWord = await DialectWord.findByIdAndUpdate(
-      wordId,
-      { $pull: { similarWords: { prefix: wordToRemove } } }, // Removes only the matching object
-      { new: true }
-    );
-
-    if (!updatedWord) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Word not found" });
-    }
-
-    res
-      .status(200)
-      .json({ success: true, similarWords: updatedWord.similarWords });
-  } catch (error) {
-    console.error("Error unlinking word:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
-  }
-};
-
 
 export const updateWord = async (req, res) => {
   try {
@@ -259,7 +208,9 @@ export const updateWord = async (req, res) => {
     const { word, translation, linkedWords } = req.body;
 
     if (!wordId || !word || !translation) {
-      return res.status(400).json({ success: false, message: "Missing required fields" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing required fields" });
     }
 
     // Parse linked words
@@ -268,7 +219,9 @@ export const updateWord = async (req, res) => {
     // Find the existing word entry
     const existingWord = await DialectWord.findById(wordId);
     if (!existingWord) {
-      return res.status(404).json({ success: false, message: "Word not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Word not found" });
     }
 
     // Find existing audio files for this word
@@ -312,7 +265,3 @@ export const updateWord = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
-
-
-
-
