@@ -8,18 +8,34 @@
         <meta name="author" content="" />
         <title><%= title %></title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <link href="/css/styles.css" rel="stylesheet" />
+        <!-- <link href="/css/styles.css" rel="stylesheet" /> -->
+        <link rel="stylesheet" href="/css/reset.css">
         <link href="/css/fonts.css" rel="stylesheet" />
 
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand  d-flex justify-content-between">
+        <!-- <nav class="sb-topnav navbar navbar-expand  d-flex justify-content-between"> -->
+            <nav class="navBar">
+                <div class="logo titleFont hoverable bold">
+                    <a href="index.html">
+                        <div class="headerLogo">
+                            <img src="public/images/logo.png" alt="Logo">
+                        </div>
+                        Echo of the North
+                    </a>
+                </div>
+                <div class="navLoginBtn hoverable hoverableShadow">
+                    <a href="/admin/login">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                </div>
+
             <!-- Navbar Brand-->
-             <div class="d-flex align-items-center">
+             <!-- <div class="d-flex align-items-center"> -->
                 <!-- <button class="btn btn-link  ps-3 btn-sm order-2 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button> -->
-                <a class="navbar-brand bold ms-3" href="index.html">Inuinnaqtun Translation</a>
-             </div>
+                <!-- <a class="navbar-brand bold ms-3" href="index.html">Inuinnaqtun Translation</a> -->
+             <!-- </div> -->
            
 
             <!-- Navbar-->
@@ -29,13 +45,10 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="/admin/login">Login</a></li>
                         <li><a class="dropdown-item" href="/admin/register">Register</a></li>
-                       
                     </ul>
                 </li>
             </ul> -->
         </nav>
    
-        <div class="h-100  ">
-
-   
-               
+        <!-- <div class="h-100  "> -->
+        <div class="wrap">
