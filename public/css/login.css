@@ -1,6 +1,7 @@
 .wrap {
   max-height: 100svh;
   /* height: 100svh; */
+  /* height: calc(100svh - 150px); */
   padding: 30px 40px;
   display: flex;
   flex-direction: column;
@@ -19,6 +20,7 @@
 
 .title {
   font-size: 60px;
+  text-align: center;
   padding: 20px 30px 0 30px;
 }
 
