@@ -4,11 +4,13 @@
 
   <h1 class="title headerFont semi-bold">Register as New User</h1>
 
-  <% if (error) { %>
-    <div class="alert alert-danger" role="alert">
-      <%= error %>
-    </div>
-  <% } %>
+  <div class="feedbackWrap">
+    <% if (error) { %>
+      <div class="alert alert-danger <%= error ? 'displayAlert' : '' %>">
+        <%= error %>
+      </div>
+    <% } %>
+  </div>
 
   <form action="/admin/register" method="POST" class="formWrap">
     <input type="email" required id="exampleInputEmail1" name="email" placeholder="Enter email" />
