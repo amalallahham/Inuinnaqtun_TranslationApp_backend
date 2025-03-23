@@ -1,6 +1,6 @@
 .sideNavContents_wrap {
     width: 100%;
-    padding: 0 50px 50px 50px;
+    padding: 0 50px 30px 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,6 +49,18 @@
     overflow-x: scroll;
 }
 
+.userTableWrap::-webkit-scrollbar {
+    height: 5px;
+}
+.userTableWrap::-webkit-scrollbar-track {
+    background: none;
+    border-radius: 10px;
+}
+.userTableWrap::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+
 .userTable {
     width: 100%;
     background-color: lightgray;
@@ -60,6 +72,7 @@
 th, td {
     padding: 15px;
     text-align: left;
+    word-wrap: break-word; /* Prevent content overflow */
 }
 
 .entryTitle th {
