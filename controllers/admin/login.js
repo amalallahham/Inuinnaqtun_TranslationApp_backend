@@ -65,7 +65,6 @@ export const get_forgot_password = async (req, res) => {
     error: "",
     title: "Forgot password",
     success: "",
-    error: "",
   });
 };
 
@@ -74,12 +73,22 @@ export const forgot_password = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-      return res.status(400).json({ message: "Email is required." });
+      // return res.status(400).json({ message: "Email is required." });
+      res.render("forgot_password", {
+        error: "Email is required",
+        title: "Forgot password",
+        success: "",
+      });
     }
 
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-      return res.status(400).json({ message: "User doesn't exist" });
+      // return res.status(400).json({ message: "User doesn't exist" });
+      res.render("forgot_password", {
+        error: "User doesn't exist",
+        title: "Forgot password",
+        success: "",
+      });
     }
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET, {
@@ -117,10 +126,8 @@ export const forgot_password = async (req, res) => {
 
     await transporter.sendMail(mailOptions);
     res.render("forgot_password", {
-      success:
-        "An email has been sent with password reset instructions. Please check your inbox.",
+      success: "An email has been sent with password reset instructions. Please check your inbox.",
       title: "Forgot password",
-
       error: "",
     });
   } catch (error) {
@@ -139,7 +146,6 @@ export const get_reset_password = async (req, res) => {
     error: "",
     title: "Reset password",
     success: "",
-    error: "",
     token,
   });
 };

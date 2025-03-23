@@ -9,15 +9,6 @@
   align-items: center;
 }
 
-.goBackBtn {
-  align-self: flex-start;
-  font-size: 16px;
-  padding: 10px 25px;
-  border-radius: 10px;
-  border: 0;
-  background-color: gray;
-}
-
 .title {
   font-size: 60px;
   text-align: center;
@@ -71,9 +62,10 @@
 .btn {
   all: unset;
   width: 100%;
-  background-color: #B0B0B0;
+  background-color: #780116;
   padding: 20px 30px;
   border-radius: 7px;
+  color: #E4DFDA;
   text-align: center;
   font-size: 20px;
   cursor: pointer;
