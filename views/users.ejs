@@ -1,206 +1,305 @@
 <%- include('./layout/header_auth') %>
+<link href="/css/userList.css" rel="stylesheet" />
 
-<div class="container my-4 px-5">
-    <div class="d-flex align-items-center justify-content-between">
-        <h2 class="mb-3 semi-bold">Users Management</h2>
+  <div class="userListWrap">
+    <div class="listTitle headerFont">
+      <h2 class="semi-bold">Data Input Users</h2>
 
-        <!-- Add User Button (Opens Modal) -->
-        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#inviteUserModal">
-          Add User
-        </button>
+      <!-- Add User Button (Opens Modal) -->
+      <button class="addUserBtn textBtn hoverable hoverableBtn">
+        Add User
+      </button>
     </div>
 
-    <div class="card">
-        <div class="card-body p-0">
-          <% if (typeof error !== "undefined" && error) { %>
-            <div class="alert alert-danger"><%= error %></div>
-          <% } %>
-
-          <table class="table table-hover my-2">
-            <thead>
-              <tr>
-                <th class="px-4">ID</th>
-                <th>Email</th>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="userTableBody">
-              <% if (users.length === 0) { %>
-                <tr>
-                  <td colspan="5" class="text-center">No users found</td>
-                </tr>
-              <% } else { %>
-                <% users.forEach((ele, index) => { %>
-                  <tr class="user-row">
-                    <td class="px-4"><%= index + 1 %></td>
-                    <td><%= ele.email %></td>
-                    <td><%= ele.username %></td>
-                    <td><%= ele.role %></td>
-                    <td>
-                      <a href="/admin/users/edit/<%= ele._id %>" class="btn btn-warning btn-sm">Edit</a>
-
-                      <% if (ele.email !== userEmail) { %>
-                          <button  class="btn btn-danger btn-sm" onclick="showDeleteModal('<%= ele._id %>', '<%= ele.email %>')" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
-                            Delete
-                          </button>
-                      <% } %>
-                    </td>
-                  </tr>
-                <% }) %>
-              <% } %>
-            </tbody>
-          </table>
-
-          <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-end m-4">
-              <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-                <a class="page-link" href="/admin/users?page=<%= currentPage - 1 %>">Previous</a>
-              </li>
-              <% for (let i = 1; i <= totalPages; i++) { %>
-                <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                  <a class="page-link" href="/admin/users?page=<%= i %>"><%= i %></a>
-                </li>
-              <% } %>
-              <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-                <a class="page-link" href="/admin/users?page=<%= currentPage + 1 %>">Next</a>
-              </li>
-            </ul>
-          </nav>
+    <div class="userTableWrap">
+      <% if (typeof error !=="undefined" && error) { %>
+        <div class="alert alert-danger">
+          <%= error %>
         </div>
-    </div>
-</div>
+      <% } %>
 
-<!-- Invite User Modal -->
-<div class="modal fade" id="inviteUserModal" tabindex="-1" aria-labelledby="inviteUserModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="inviteUserModalLabel">Invite User</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="inviteUserForm">
-          <div class="mb-3">
-            <label for="inviteEmail" class="form-label">User Email</label>
-            <input type="email" class="form-control" id="inviteEmail" required>
-          </div>
-          <div class="alert alert-danger d-none" id="inviteError"></div>
-          <div class="alert alert-success d-none" id="inviteSuccess"></div>
-          <button type="submit" class="btn btn-primary" id="inviteButton">Send Invite</button>
-        </form>
-      </div>
+      <table class="userTable">
+        <thead>
+          <tr class="entryTitle">
+            <!-- <th>ID</th> -->
+            <th>Email</th>
+            <th>Username</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          <% if (users.length===0) { %>
+            <tr>
+              <td colspan="5" class="text-center">No users found</td>
+            </tr>
+          <% } else { %>
+            <% users.forEach((ele, index)=> { %>
+              <% if (ele.role === "DataEntry") { %>
+                <tr class="entry">
+                  <!-- <td>
+                    <%= index + 1 %>
+                  </td> -->
+                  <td>
+                    <%= ele.email %>
+                  </td>
+                  <td>
+                    <%= ele.username %>
+                  </td>
+                  <td class="btnWrap">
+                    <a href="/admin/users/edit/<%= ele._id %>" class="btn btn-warning hoverable hoverableBtn"><i class="fa-solid fa-pen"></i></a>
+
+                    <% if (ele.email !== userEmail) { %>
+                      <button class="btn btn-danger hoverable hoverableBtn"
+                        onclick="showDeleteModal('<%= ele._id %>', '<%= ele.email %>')">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    <% } %>
+                  </td>
+                </tr>
+              <% } %>
+            <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+
+      <nav aria-label="Page navigation" class="paginationWrap">
+        <ul class="pagination">
+          <li class="<%= currentPage === 1 ? 'disabled' : '' %>">
+            <a class="" href="/admin/users?page=<%= currentPage - 1 %>">Previous</a>
+          </li>
+          <% for (let i=1; i <=totalPages; i++) { %>
+            <li class="pageNumber <%= i === currentPage ? 'active' : '' %>">
+              <a class="" href="/admin/users?page=<%= i %>">
+                <%= i %>
+              </a>
+            </li>
+          <% } %>
+          <li class="<%= currentPage === totalPages ? 'disabled' : '' %>">
+            <a class="" href="/admin/users?page=<%= currentPage + 1 %>">Next</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
-</div>
 
-<!-- Delete User Modal -->
-<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteUserModalLabel">Confirm Deletion</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
+  <div class="userListWrap">
+    <div class="listTitle headerFont">
+      <h2 class="semi-bold">Admin Users</h2>
+
+      <!-- Add User Button (Opens Modal) -->
+      <button class="addUserBtn textBtn hoverable hoverableBtn">
+        Add User
+      </button>
+    </div>
+
+    <div class="userTableWrap">
+      <% if (typeof error !=="undefined" && error) { %>
+        <div class="alert alert-danger">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <table class="userTable">
+        <thead>
+          <tr class="entryTitle">
+            <!-- <th>ID</th> -->
+            <th>Email</th>
+            <th>Username</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          <% if (users.length===0) { %>
+            <tr>
+              <td colspan="5" class="text-center">No users found</td>
+            </tr>
+          <% } else { %>
+            <% users.forEach((ele, index)=> { %>
+              <% if (ele.role === "Admin") { %>
+                <tr class="entry">
+                  <!-- <td>
+                    <%= index + 1 %>
+                  </td> -->
+                  <td>
+                    <%= ele.email %>
+                  </td>
+                  <td>
+                    <%= ele.username %>
+                  </td>
+                  <td class="btnWrap">
+                    <a href="/admin/users/edit/<%= ele._id %>" class="btn btn-warning hoverable hoverableBtn"><i class="fa-solid fa-pen"></i></a>
+
+                    <% if (ele.email !== userEmail) { %>
+                      <button class="btn btn-danger hoverable hoverableBtn"
+                        onclick="showDeleteModal('<%= ele._id %>', '<%= ele.email %>')">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    <% } %>
+                  </td>
+                </tr>
+              <% } %>
+            <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+
+      <nav aria-label="Page navigation" class="paginationWrap">
+        <ul class="pagination">
+          <li class="<%= currentPage === 1 ? 'disabled' : '' %>">
+            <a class="" href="/admin/users?page=<%= currentPage - 1 %>">Previous</a>
+          </li>
+          <% for (let i=1; i <=totalPages; i++) { %>
+            <li class="<%= i === currentPage ? 'active' : '' %>">
+              <a class="pageNumber" href="/admin/users?page=<%= i %>">
+                <%= i %>
+              </a>
+            </li>
+          <% } %>
+          <li class="<%= currentPage === totalPages ? 'disabled' : '' %>">
+            <a class="" href="/admin/users?page=<%= currentPage + 1 %>">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Invite User Modal -->
+  <div class="modalWrap" id="inviteUserModal">
+    <div class="modal">
+      <div class="headerFont semi-bold modalTitle" id="inviteUserModalLabel">Invite User</div>
+      <form id="inviteUserForm" class="modalForm">
+        <div class="inputWrap">
+          <label for="inviteEmail" class="form-label">Email</label>
+          <input type="email" class="form-control" id="inviteEmail" required>
+        </div>
+        <div class="alert alert-danger d-none" id="inviteError"></div>
+        <div class="alert alert-success d-none" id="inviteSuccess"></div>
+        <button type="submit" class="inviteUserBtn textBtn hoverable hoverableBtn" id="inviteButton">Send Invite</button>
+      </form>
+      <button type="button" class="btn closeModalBtn btn-danger hoverable hoverableBtn" data-bs-dismiss="modal" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Delete User Modal -->
+  <div class="modalWrap" id="deleteUserModal">
+    <div class="modal">
+      <div class="headerFont semi-bold modalTitle" id="inviteUserModalLabel">Confirm Deletion</div>
+      <div class="modalForm">
         <p>Are you sure you want to delete <strong id="deleteUserEmail"></strong>?</p>
         <div class="alert alert-danger d-none" id="deleteError"></div>
         <div class="alert alert-success d-none" id="deleteSuccess"></div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelDeleteButton">Cancel</button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+      <div class="modalBtnWrap">
+        <button type="button" class="textBtn hoverable hoverableBtn" data-bs-dismiss="modal"
+          id="cancelDeleteButton">Cancel</button>
+        <button type="button" class="textBtn btn-danger hoverable hoverableBtn" id="confirmDeleteButton">Delete</button>
       </div>
+      <button type="button" class="btn closeModalBtn btn-danger hoverable hoverableBtn" data-bs-dismiss="modal" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
   </div>
-</div>
 
+  <%- include('./layout/footer_auth') %>
 
-<%- include('./layout/footer_auth') %>
+  <script>
 
-<script>
+    let deleteUserId = null;
 
-let deleteUserId = null;
-
-// Function to show the delete modal
-function showDeleteModal(userId, email) {
-  deleteUserId = userId;
-  document.getElementById("deleteUserEmail").textContent = email;
-  const deleteModal = new bootstrap.Modal(document.getElementById("deleteUserModal"));
-  deleteModal.show();
-}
-
-// Function to handle user deletion
-document.getElementById("confirmDeleteButton").addEventListener("click", async function () {
-  if (!deleteUserId) return;
-
-  try {
-    const response = await fetch(`/admin/users/delete/${deleteUserId}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" }
+    // Invite new user modal
+    document.querySelectorAll(".addUserBtn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.getElementById("inviteUserModal").classList.toggle("modalToggled");
+      });
     });
 
-    const data = await response.json();
-    const deleteError = document.getElementById("deleteError");
-    const deleteSuccess = document.getElementById("deleteSuccess");
-
-    deleteError.classList.add("d-none");
-    deleteSuccess.classList.add("d-none");
-    
-    if (!response.ok) {
-        deleteError.textContent = data.message || "An error occurred.";
-        deleteError.classList.remove("d-none");
-      } else {
-        deleteSuccess.textContent = "delete sent successfully!";
-        deleteSuccess.classList.remove("d-none");
-        setTimeout(() => {
-          location.reload();
-        }, 20);
-      }
-    } catch (error) {
-      deleteError.textContent = "Server error. Please try again.";
-      deleteError.classList.remove("d-none");
-    }
-
-});
-
-  document.getElementById("inviteUserForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
-
-    const email = document.getElementById("inviteEmail").value;
-    const inviteError = document.getElementById("inviteError");
-    const inviteSuccess = document.getElementById("inviteSuccess");
-    const inviteButton = document.getElementById("inviteButton");
-
-
-    inviteError.classList.add("d-none");
-    inviteSuccess.classList.add("d-none");
-
-    inviteButton.disabled = true;
-
-    try {
-      const response = await fetch("/admin/users/invite", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
+    // Closing modals
+    document.querySelectorAll(".closeModalBtn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.getElementById(btn.parentElement.parentElement.id).classList.toggle("modalToggled");
       });
+    });
 
+    document.getElementById("cancelDeleteButton").addEventListener("click", () => {
+      document.getElementById(document.getElementById("cancelDeleteButton").parentElement.parentElement.parentElement.id).classList.remove("modalToggled");
+    })
 
-      const data = await response.json();
-      inviteButton.disabled = false;
-
-      if (!response.ok) {
-        inviteError.textContent = data.message || "An error occurred.";
-        inviteError.classList.remove("d-none");
-      } else {
-        inviteSuccess.textContent = "Invite sent successfully!";
-        inviteSuccess.classList.remove("d-none");
-        document.getElementById("inviteEmail").value = "";
-      }
-    } catch (error) {
-      inviteError.textContent = "Server error. Please try again.";
-      inviteError.classList.remove("d-none");
+    // Function to show the delete modal
+    function showDeleteModal(userId, email) {
+      deleteUserId = userId;
+      document.getElementById("deleteUserEmail").textContent = email;
+      document.getElementById("deleteUserModal").classList.add("modalToggled")
     }
-  });
-</script>
+
+    // Function to handle user deletion
+    document.getElementById("confirmDeleteButton").addEventListener("click", async function () {
+      if (!deleteUserId) return;
+
+      try {
+        const response = await fetch(`/admin/users/delete/${deleteUserId}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await response.json();
+        const deleteError = document.getElementById("deleteError");
+        const deleteSuccess = document.getElementById("deleteSuccess");
+
+        deleteError.classList.remove("displayAlert");
+        deleteSuccess.classList.remove("displayAlert");
+
+        if (!response.ok) {
+          deleteError.textContent = data.message || "An error occurred.";
+          deleteError.classList.add("displayAlert");
+        } else {
+          deleteSuccess.textContent = "delete sent successfully!";
+          deleteSuccess.classList.add("displayAlert");
+          setTimeout(() => {
+            location.reload();
+          }, 20);
+        }
+      } catch (error) {
+        deleteError.textContent = "Server error. Please try again.";
+        deleteError.classList.add("displayAlert");
+      }
+    });
+
+    document.getElementById("inviteUserForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const email = document.getElementById("inviteEmail").value;
+      const inviteError = document.getElementById("inviteError");
+      const inviteSuccess = document.getElementById("inviteSuccess");
+      const inviteButton = document.getElementById("inviteButton");
+
+      inviteError.classList.remove("displayAlert");
+      inviteSuccess.classList.remove("displayAlert");
+
+      inviteButton.disabled = true;
+
+      try {
+        const response = await fetch("/admin/users/invite", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+        inviteButton.disabled = false;
+
+        if (!response.ok) {
+          inviteError.textContent = data.message || "An error occurred.";
+          inviteError.classList.add("displayAlert");
+        } else {
+          inviteSuccess.textContent = "Invite sent successfully!";
+          inviteSuccess.classList.add("displayAlert");
+          document.getElementById("inviteEmail").value = "";
+        }
+      } catch (error) {
+        inviteError.textContent = "Server error. Please try again.";
+        inviteError.classList.add("displayAlert");
+      }
+    });
+  </script>
