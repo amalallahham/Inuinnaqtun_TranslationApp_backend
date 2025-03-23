@@ -1,58 +1,20 @@
 <%- include('./layout/header') %>
-<link href="/css/login.css" rel="stylesheet" />
 
-<div class="align-items-center justify-content-center d-flex margin-top-fi">
-  <div class="card border-0 w-fit p-4 min-width">
-    <div class="card-body">
-      <h1 class="semi-bold mb-4">Register</h1>
+  <link href="/css/login.css" rel="stylesheet" />
 
-      <% if (error) { %>
-        <div class="alert alert-danger" role="alert">
-          <%= error %>
-        </div>
-      <% } %>
+  <h1 class="title headerFont semi-bold">Register as New User</h1>
 
-      <form action="/admin/register" method="POST">
-        <div class="form-group mb-3">
-          <label for="exampleInputEmail1">Email address</label>
-          <input
-            type="email"
-            required
-            class="form-control"
-            id="exampleInputEmail1"
-            name="email"
-            placeholder="Enter email"
-          />
-        </div>
-
-        <div class="form-group mb-3">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            required
-            name="username"
-            class="form-control"
-            id="username"
-            placeholder="Enter username"
-          />
-        </div>
-
-        <div class="form-group mb-3">
-          <label for="exampleInputPassword1">Password</label>
-          <input
-            type="password"
-            name="password"
-            class="form-control"
-            required
-            id="exampleInputPassword1"
-            placeholder="Password"
-          />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+  <% if (error) { %>
+    <div class="alert alert-danger" role="alert">
+      <%= error %>
     </div>
-  </div>
-</div>
+  <% } %>
+
+  <form action="/admin/register" method="POST" class="formWrap">
+    <input type="email" required id="exampleInputEmail1" name="email" placeholder="Enter email" />
+    <input type="text" required name="username" id="username" placeholder="Enter username" />
+    <input type="password" name="password" required id="exampleInputPassword1" placeholder="Password" />
+    <button type="submit" class="btn submitBtn semi-bold hoverable hoverableBtn">Submit</button>
+  </form>
 
 <%- include('./layout/footer') %>

@@ -3,6 +3,49 @@
 a { text-decoration: none; color: #1a1a1a; }
 img { width: 100%; height: 100%; }
 
+/* Settings for navbar toggle */
+.sideNavContents {
+    display: flex;
+}
+
+.sideNav {
+    width: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.sideNavToggled {
+    width: 225px;
+    padding: 20px;
+}
+
+.sideNavMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sideNavMenu>a {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.sideBarItem {
+    font-size: 20px;
+    text-wrap: nowrap;
+}
+
+.sideBarIcon {
+    font-size: 25px;
+}
+
+.sideNavFooter {
+    margin-top: 30px;
+    text-wrap: nowrap;
+}
+
 /* Nav bar settings */
 .navBar {
     width: 100%;
@@ -29,7 +72,12 @@ img { width: 100%; height: 100%; }
 .logoText {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    /* gap: 15px; */
+}
+
+.logoText p {
+    margin: 0;
+    margin-left: 15px;
 }
 
 .headerLogo {
@@ -39,7 +87,8 @@ img { width: 100%; height: 100%; }
     border-radius: 10000px;
 }
 
-.navLoginBtn {
+.navLoginBtn,
+.navMenu {
     padding: 20px 0 0 20px;
     font-size: 30px;
     align-self: start;
@@ -56,7 +105,8 @@ img { width: 100%; height: 100%; }
         height: 80px;
     }
 
-    .navLoginBtn {
+    .navLoginBtn,
+    .navMenu {
         font-size: 18px;
     }
 }
@@ -113,6 +163,33 @@ img { width: 100%; height: 100%; }
 
 .hoverableShadow:hover {
     filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}
+
+/* Feedback styling */
+.alert {
+    width: 100%;
+    padding: .75rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    display: none;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.displayAlert {
+    display: block;
 }
 
 /* Input field styling */
