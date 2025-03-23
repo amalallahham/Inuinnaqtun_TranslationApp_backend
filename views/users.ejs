@@ -220,6 +220,10 @@
       btn.addEventListener("click", () => {
         document.getElementById(btn.parentElement.parentElement.id).classList.toggle("modalToggled");
       });
+    });
+
+    document.getElementById("cancelDeleteButton").addEventListener("click", () => {
+      document.getElementById(document.getElementById("cancelDeleteButton").parentElement.parentElement.parentElement.id).classList.remove("modalToggled");
     })
 
     // Function to show the delete modal

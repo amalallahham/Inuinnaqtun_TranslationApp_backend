@@ -130,7 +130,6 @@ th, td {
 .pageNumber {
     width: 30px;
     height: 30px;
-    /* padding: 5px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -149,8 +148,6 @@ th, td {
     left: 0;
     z-index: -99;
     display: none;
-    /* display: flex; */
-    /* z-index: 99; */
 }
 
 .modalToggled {
@@ -179,6 +176,12 @@ th, td {
     flex-direction: column;
     align-items: center;
     gap: 35px;
+}
+
+.modalForm p {
+    width: 100%;
+    text-wrap: pretty;
+    word-wrap: break-word; /* Prevent content overflow */
 }
 
 .inputWrap {
