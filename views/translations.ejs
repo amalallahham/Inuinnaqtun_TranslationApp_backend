@@ -1,6 +1,7 @@
 <%- include('./layout/header_auth') %>
+<link href="/css/userList.css" rel="stylesheet" />
 
-<div class="container my-4 px-4">
+<!-- <div class="container my-4 px-4">
   <div class="d-flex align-items-center justify-content-between flex-wrap">
     <h2 class="mb-3 semi-bold">Words Translation</h2>
 
@@ -9,107 +10,156 @@
         <i class="fa-solid fa-plus"></i> Add New Translation
       </a>
     </button>
-  </div>
+  </div> -->
 
-  <form action="/admin/translations" method="GET">
-    <div class="row g-2 align-items-center mb-3">
-      <div class="col-md-4">
-        <input type="text" name="query" class="form-control" placeholder="Search for a word..."
-          value="<%= query %>" />
-      </div>
-      <div class="col-md-3">
-        <select name="filter" class="form-select">
-          <option value="all" <%= filter === "all" ? "selected" : "" %>>All Words</option>
-          <option value="with_audio" <%= filter === "with_audio" ? "selected" : "" %>>With Audio</option>
-          <option value="without_audio" <%= filter === "without_audio" ? "selected" : "" %>>Without Audio</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <select name="order" class="form-select">
-          <option value="asc" <%= order === "asc" ? "selected" : "" %>>A-Z</option>
-          <option value="desc" <%= order === "desc" ? "selected" : "" %>>Z-A</option>
-        </select>
-      </div>
-      <div class="col-md-2">
-        <button class="btn btn-secondary w-100" type="submit">
-          <i class="fa-solid fa-filter"></i> Apply
-        </button>
-      </div>
+  <div class="userListWrap">
+    <div class="listTitle headerFont translationsTitle">
+      <h2 class="semi-bold">Database</h2>
+
+      <!-- Add New Translation (Opens Modal) -->
+      <button class="addUserBtn textBtn hoverable hoverableBtn">
+        <a href="/admin/translations/add-word" class="text-white text-decoration-none">
+          <i class="fa-solid fa-plus"></i> Add New Translation
+        </a>
+      </button>
     </div>
-  </form>
 
-  <div class="card shadow-sm">
-    <div class="card-body p-0">
+    <!-- Search bar -->
+    <form action="/admin/translations" method="GET" class="searchBar">
+      <input type="text" name="query" class="form-control" placeholder="Search for a word..."
+      value="<%= query %>" />
+      <button class="searchBtn hoverable hoverableShadow" type="submit">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </form>
+    <!-- Filter -->
+    <div class="filterBy hoverable hoverableShadow" id="filterByBtn"><i class="fa-solid fa-filter"></i> Filter by</div>
+
+    <div class="userTableWrap">
       <% if (error) { %>
-      <div class="alert alert-danger m-3"><%= error %></div>
+        <div class="alert alert-danger"><%= error %></div>
       <% } %>
 
-      <div class="table-responsive">
-
-        <table class="table table-hover my-2">
-          <thead class="table-light">
-            <tr>
-              <th class="px-4">Word</th>
-              <th>Audio</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% if (data.length === 0) { %>
-            <tr>
-              <td colspan="3" class="text-center text-muted py-3">No data found</td>
-            </tr>
-            <% } else { %>
+      <table class="userTable">
+        <thead class="table-light">
+          <tr class="entryTitle">
+            <th>Word</th>
+            <th>Audio</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (data.length === 0) { %>
+          <tr>
+            <td colspan="3" class="text-center">No data found</td>
+          </tr>
+          <% } else { %>
             <% data.forEach((ele) => { %>
-            <tr class="user-row">
-              <td class="px-4 p-2"><%= ele.word %></td>
+            <tr class="entry">
+              <td><%= ele.word %></td>
               <td class="play-audio-td">
                 <% if (ele.audioFiles.length > 0) { %>
-                  <div class="w-100 play-audio" title="Play me">
+                  <div class="play-audio" title="Play me">
                     <i class="fa-solid fa-volume-high hoverable-primary pointer text-primary play-audio-player"
-                       data-audio="<%= ele.audioFiles[0] %>"></i>
+                      data-audio="<%= ele.audioFiles[0] %>"></i>
                   </div>
-                
                 <% } else { %>
-                <p class="text-secondary font-size-12 m-0 p-2">No Audio Found</p>
+                  <p class="">No Audio Found</p>
                 <% } %>
               </td>
-              <td class="text-end">
-                <a href="/admin/translations/<%= ele.id %>" class="btn btn-outline-primary btn-sm">
+              <td class="btnWrap">
+                <a href="/admin/translations/<%= ele.id %>" class="btn hoverable hoverableBtn">
                   <i class="fa-solid fa-arrow-right"></i>
                 </a>
               </td>
-              
             </tr>
             <% }) %>
-            <% } %>
-          </tbody>
-        </table>
-      </div>
+          <% } %>
+        </tbody>
+      </table>
 
-      <div class="d-flex justify-content-between align-items-center p-3">
-        <p class="m-0">Page <%= currentPage %> of <%= totalPages %></p>
 
-        <div>
+      <nav aria-label="Page navigation" class="paginationWrap">
+        <ul class="pagination">
           <% if (currentPage > 1) { %>
-          <a href="/admin/translations?page=<%= currentPage - 1 %>&query=<%= query %>&filter=<%= filter %>&order=<%= order %>"
-            class="btn btn-outline-primary">Previous</a>
+          <li class="">
+            <a href="/admin/translations?page=<%= currentPage - 1 %>&query=<%= query %>&filter=<%= filter %>&order=<%= order %>"
+              class="">Previous</a>
+          </li>
           <% } %>
+          
+          <% 
+            let startPage = Math.max(1, currentPage - 2); 
+            let endPage = Math.min(totalPages, startPage + 4);
+            
+            if (endPage - startPage < 4) {
+              startPage = Math.max(1, endPage - 4);
+            }
 
-          <% if (currentPage < totalPages) { %>
-          <a href="/admin/translations?page=<%= currentPage + 1 %>&query=<%= query %>&filter=<%= filter %>&order=<%= order %>"
-            class="btn btn-outline-primary">Next</a>
+            for (let i = startPage; i <= endPage; i++) { 
+          %>
+            <li class="pageNumber <%= i === currentPage ? 'active' : '' %>">
+              <a href="/admin/translations?page=<%= i %>&query=<%= query %>&filter=<%= filter %>&order=<%= order %>">
+                <%= i %>
+              </a>
+            </li>
           <% } %>
+          
+          <% if (currentPage < totalPages) { %>
+          <li class="">
+            <a href="/admin/translations?page=<%= currentPage + 1 %>&query=<%= query %>&filter=<%= filter %>&order=<%= order %>"
+              class="">Next</a>
+          </li>
+          <% } %>
+        </ul>
+      </nav>
+  </div>
+
+  <!-- Filter Modal -->
+  <div class="modalWrap" id="filterModal">
+    <div class="modal">
+      <div class="headerFont semi-bold modalTitle" id="inviteUserModalLabel">Filter</div>
+      <form action="/admin/translations" method="GET" id="filterModalForm" class="modalForm">
+        <div class="inputWrap">
+          <!-- <input type="email" class="form-control" id="inviteEmail" required> -->
+          <label for="filter" class="form-label">Category</label>
+          <select name="filter" class="form-select">
+            <option value="all" <%= filter === "all" ? "selected" : "" %>>All Words</option>
+            <option value="with_audio" <%= filter === "with_audio" ? "selected" : "" %>>With Audio</option>
+            <option value="without_audio" <%= filter === "without_audio" ? "selected" : "" %>>Without Audio</option>
+          </select>
+          <label for="order" class="form-label">Order by</label>
+          <select name="order" class="form-select">
+            <option value="asc" <%= order === "asc" ? "selected" : "" %>>A-Z</option>
+            <option value="desc" <%= order === "desc" ? "selected" : "" %>>Z-A</option>
+          </select>
         </div>
-      </div>
+        <button class="submitFilterBtn textBtn hoverable hoverableBtn" type="submit" id="applyFilterBtn">
+          Apply
+        </button>
+      </form>
+      <button type="button" class="btn closeModalBtn btn-danger hoverable hoverableBtn" data-bs-dismiss="modal" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
   </div>
-</div>
 
 <%- include('./layout/footer_auth') %>
 
-
 <script>
+
+  // Closing modals
+  document.querySelectorAll(".closeModalBtn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.getElementById(btn.parentElement.parentElement.id).classList.toggle("modalToggled");
+    });
+  });
+
+  // Display filter modal
+  document.getElementById("filterByBtn").addEventListener("click", () => {
+    document.getElementById("filterModal").classList.toggle("modalToggled");
+  })
+
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".play-audio").forEach(container => {
       container.addEventListener("click", function () {
