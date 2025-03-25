@@ -260,14 +260,17 @@
   box-shadow: inset 0 0 10px black;
 }
 
-.audioRecordInput {
+.audioRecordInput,
+.editWordAudioRecordInput {
   display: flex;
+  flex-direction: row !important;
   gap: 20px;
   align-items: center;
 }
 
 .audioRecordInput button {
   /* width: auto; */
+  height: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -275,8 +278,21 @@
   gap: 10px;
 }
 
+.audioPlayerWrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+audio {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
 @media screen and (max-width: 415px) {
   .audioRecordInput {
-    flex-direction: column;
+    flex-direction: column !important;
   }
 }
