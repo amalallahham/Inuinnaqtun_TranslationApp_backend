@@ -9,6 +9,7 @@ import crypto from "crypto";
 import session from "express-session";
 import adminRoutes from "./routes/admin.js";
 import userRoutes from "./routes/user.js";
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
@@ -27,8 +28,9 @@ app.use(
 );
 
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
 
 app.use((req, res, next) => {
   const excludeRoutes = ["/login", "/register", "/404"];
