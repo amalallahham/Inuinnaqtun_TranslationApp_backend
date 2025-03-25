@@ -1,99 +1,88 @@
 <%- include('./layout/header_auth') %>
+  <link href="/css/login.css" rel="stylesheet" />
 
-<div class="container my-4 px-4">
- 
-  <h2 class="mb-3 semi-bold"> <a href="/admin/translations"> <i class="fa-solid fa-arrow-left me-3"></i></a>Add New Word Translation</h2>
-  
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
+    <a href="/admin/translations">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </a>
+  </button>
 
-  <% if (typeof error !== "undefined" && error) { %>
-  <div class="alert alert-danger"><%= error %></div>
-  <% } %>
+  <h1 class="title headerFont semi-bold">Add New Translation</h1>
 
-  <div class="card shadow-sm mb-4">
-    <div class="card-body">
-      <!-- Word Input -->
-      <div class="mb-3">
-        <label class="form-label">Word</label>
-        <input
-          type="text"
-          class="form-control word-input"
-          placeholder="Enter new word"
-        />
+  <div class="feedbackWrap">
+    <% if (typeof error !=="undefined" && error) { %>
+      <div class="alert alert-danger <%= error ? 'displayAlert' : '' %>">
+        <%= error %>
       </div>
+      <% } %>
+  </div>
 
-      <!-- Definition Input -->
-      <div class="mb-3">
-        <label class="form-label">Definition</label>
-        <input
-          type="text"
-          class="form-control definition-input"
-          placeholder="Enter definition"
-        />
+  <div class="formWrap editUserWrap">
+    <!-- Word Input -->
+    <div>
+      <label class="form-label">Word</label>
+      <input type="text" class="form-control word-input" placeholder="Enter new word" />
+    </div>
+
+    <!-- Definition Input -->
+    <div>
+      <label class="form-label">Definition</label>
+      <input type="text" class="form-control definition-input" placeholder="Enter definition" />
+    </div>
+
+    <!-- Linked Words -->
+    <div>
+      <label class="form-label">Linked Words</label>
+      <ul class="list-group linked-words-list">
+        <li class="list-group-item text-muted"><p>No linked words</p></li>
+      </ul>
+
+      <!-- Add Linked Word -->
+      <div class="linked-words-input">
+        <input type="text" class="form-control new-linked-word-input" placeholder="Enter linked word" />
+        <button class="linkedBtn hoverable hoverableShadow add-linked-word">
+          <i class="fa-solid fa-plus"></i>
+        </button>
       </div>
+    </div>
 
-      <!-- Linked Words -->
-      <div class="mb-3">
-        <label class="form-label">Linked Words</label>
-        <ul class="list-group linked-words-list">
-          <li class="list-group-item text-muted">No linked words</li>
-        </ul>
-
-        <!-- Add Linked Word -->
-        <div class="input-group mt-2">
-          <input
-            type="text"
-            class="form-control new-linked-word-input"
-            placeholder="Enter linked word"
-          />
-          <button class="btn btn-primary add-linked-word">
-            <i class="fa-solid fa-plus"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Audio File Upload -->
-      <div class="mb-3">
-        <label class="form-label">Upload Audio File</label>
+    <!-- Audio File Upload -->
+    <div class="audioUpload">
+      <label class="form-label">Upload Audio File</label>
+      <div class="fileUploadInput">
         <input type="file" class="form-control audio-upload" accept="audio/*" />
       </div>
-
-      <!-- OR Record Audio -->
-      <div class="mb-3">
-        <label class="form-label">Or Record Audio</label>
-        <div>
-          <button class="btn btn-danger start-recording">
-            <i class="fa-solid fa-microphone"></i> Start Recording
-          </button>
-          <button class="btn btn-secondary stop-recording" disabled>
-            <i class="fa-solid fa-circle-stop"></i> Stop Recording
-          </button>
-        </div>
-        <audio
-          class="audio-preview mt-3"
-          controls
-          style="display: none"
-        ></audio>
-      </div>
-
-      <!-- Save Button -->
-      <button class="btn btn-outline-success save-button">
-        <i class="fa-solid fa-save"></i> Save Word
-      </button>
     </div>
+
+    <!-- OR Record Audio -->
+    <div>
+      <label class="form-label">Or Record Audio</label>
+      <div class="audioRecordInput">
+        <button class="btn btn-danger start-recording hoverable hoverableBtn">
+          <i class="fa-solid fa-microphone"></i> <p>Start Recording</p>
+        </button>
+        <button class="btn btn-secondary stop-recording hoverable hoverableBtn" disabled>
+          <i class="fa-solid fa-circle-stop"></i> <p>Stop Recording</p>
+        </button>
+      </div>
+      <audio class="audio-preview mt-3" controls style="display: none"></audio>
+    </div>
+
+    <!-- Save Button -->
+    <button class="btn btn-outline-success save-button  hoverable hoverableBtn">
+      <i class="fa-solid fa-save"></i> Save Word
+    </button>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
-  let mediaRecorder;
-  let audioChunks = [];
-  let stream; // Store the stream to close it later
+  <script>
+    let mediaRecorder;
+    let audioChunks = [];
+    let stream; // Store the stream to close it later
 
-  // Handle Start Recording
-  document
-    .querySelector(".start-recording")
-    .addEventListener("click", async () => {
+    // Handle Start Recording
+    document.querySelector(".start-recording").addEventListener("click", async () => {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorder = new MediaRecorder(stream);
       audioChunks = [];
@@ -121,117 +110,117 @@
       document.querySelector(".stop-recording").disabled = false;
     });
 
-  // Handle Stop Recording
-  document.querySelector(".stop-recording").addEventListener("click", () => {
-    mediaRecorder.stop();
-  });
+    // Handle Stop Recording
+    document.querySelector(".stop-recording").addEventListener("click", () => {
+      mediaRecorder.stop();
+    });
 
-  // Handle Adding Linked Words
-  document.querySelector(".add-linked-word").addEventListener("click", () => {
-    const linkedWordsList = document.querySelector(".linked-words-list");
-    const newWordInput = document.querySelector(".new-linked-word-input");
-    const newWord = newWordInput.value.trim();
+    // Handle Adding Linked Words
+    document.querySelector(".add-linked-word").addEventListener("click", () => {
+      const linkedWordsList = document.querySelector(".linked-words-list");
+      const newWordInput = document.querySelector(".new-linked-word-input");
+      const newWord = newWordInput.value.trim();
 
-    if (newWord) {
-      if (
-        linkedWordsList.children[0] &&
-        linkedWordsList.children[0].classList.contains("text-muted")
-      ) {
-        linkedWordsList.innerHTML = ""; // Remove default "No linked words" message
-      }
-
-      const listItem = document.createElement("li");
-      listItem.className =
-        "list-group-item d-flex justify-content-between align-items-center";
-      listItem.innerHTML = `${newWord} <button class="btn btn-sm btn-danger remove-word"><i class="fa-solid fa-xmark"></i></button>`;
-
-      // Append to the list
-      linkedWordsList.appendChild(listItem);
-      newWordInput.value = ""; // Clear input
-
-      // Handle Removing Words
-      listItem.querySelector(".remove-word").addEventListener("click", () => {
-        listItem.remove();
-        if (linkedWordsList.children.length === 0) {
-          linkedWordsList.innerHTML =
-            '<li class="list-group-item text-muted">No linked words</li>';
+      if (newWord) {
+        if (
+          linkedWordsList.children[0] &&
+          linkedWordsList.children[0].classList.contains("text-muted")
+        ) {
+          linkedWordsList.innerHTML = ""; // Remove default "No linked words" message
         }
-      });
-    }
-  });
 
-  // Handle Save Button Click
-  document.querySelector(".save-button").addEventListener("click", async () => {
-    const word = document.querySelector(".word-input").value.trim();
-    const translation = document
-      .querySelector(".definition-input")
-      .value.trim();
-    const linkedWordsElements = document.querySelectorAll(
-      ".linked-words-list li:not(.text-muted)"
-    );
-    const linkedWords = Array.from(linkedWordsElements).map((el) =>
-      el.textContent.replace(`<i class="fa-solid fa-xmark"></i>`, "").trim()
-    );
-    const audioFile = document.querySelector(".audio-upload").files[0];
+        const listItem = document.createElement("li");
+        listItem.className =
+          "list-group-item d-flex justify-content-between align-items-center";
+        listItem.innerHTML = `<p>${newWord}</p> <button class="linkedBtn btn-danger remove-word hoverable hoverableShadow"><i class="fa-solid fa-xmark"></i></button>`;
 
-    if (!word || !translation) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Please fill in all required fields!",
-      });
-      return;
-    }
+        // Append to the list
+        linkedWordsList.appendChild(listItem);
+        newWordInput.value = ""; // Clear input
 
-    const formData = new FormData();
-    formData.append("word", word);
-    formData.append("translation", translation);
-    formData.append("linkedWords", JSON.stringify(linkedWords));
-
-    // Check if an audio file is uploaded
-    if (audioFile) {
-      formData.append("audio", audioFile);
-    }
-    // If a recording is available, convert it to a file
-    else if (audioChunks.length > 0) {
-      const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-      formData.append("audio", audioBlob, "recorded_audio.wav");
-    }
-
-    try {
-      const response = await fetch("/admin/translations/add-word", {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        // Show confirmation popup and redirect
-        Swal.fire({
-          title: "Success!",
-          text: "Word added successfully!",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          window.location.href = "/admin/translations";
+        // Handle Removing Words
+        listItem.querySelector(".remove-word").addEventListener("click", () => {
+          listItem.remove();
+          if (linkedWordsList.children.length === 0) {
+            linkedWordsList.innerHTML =
+            '<li class="list-group-item text-muted"><p>No linked words</p></li>';
+          }
         });
-      } else {
+      }
+    });
+
+    // Handle Save Button Click
+    document.querySelector(".save-button").addEventListener("click", async () => {
+      const word = document.querySelector(".word-input").value.trim();
+      const translation = document
+        .querySelector(".definition-input")
+        .value.trim();
+      const linkedWordsElements = document.querySelectorAll(
+        ".linked-words-list li:not(.text-muted)"
+      );
+      const linkedWords = Array.from(linkedWordsElements).map((el) =>
+        el.textContent.replace(`<i class="fa-solid fa-xmark"></i>`, "").trim()
+      );
+      const audioFile = document.querySelector(".audio-upload").files[0];
+
+      if (!word || !translation) {
         Swal.fire({
           icon: "error",
-          title: "Failed!",
-          text: "Something went wrong. Please try again.",
+          title: "Oops...",
+          text: "Please fill in all required fields!",
+        });
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("word", word);
+      formData.append("translation", translation);
+      formData.append("linkedWords", JSON.stringify(linkedWords));
+
+      // Check if an audio file is uploaded
+      if (audioFile) {
+        formData.append("audio", audioFile);
+      }
+      // If a recording is available, convert it to a file
+      else if (audioChunks.length > 0) {
+        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        formData.append("audio", audioBlob, "recorded_audio.wav");
+      }
+
+      try {
+        const response = await fetch("/admin/translations/add-word", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Show confirmation popup and redirect
+          Swal.fire({
+            title: "Success!",
+            text: "Word added successfully!",
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            window.location.href = "/admin/translations";
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Failed!",
+            text: "Something went wrong. Please try again.",
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "An unexpected error occurred.",
         });
       }
-    } catch (error) {
-      console.error("Error:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "An unexpected error occurred.",
-      });
-    }
-  });
-</script>
+    });
+  </script>
 
-<%- include('./layout/footer_auth') %>
+  <%- include('./layout/footer_auth') %>
