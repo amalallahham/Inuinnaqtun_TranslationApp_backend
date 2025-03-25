@@ -80,6 +80,11 @@
   transition-duration: 0.3s;
 }
 
+.btn p,
+.btn path {
+  color: #e9f1ff;
+}
+
 @media screen and (max-width: 500px) {
   .sideNavContents_wrap {
     padding: 0 30px 30px 30px;
@@ -162,13 +167,24 @@
 .linked-words-input,
 .linked-words-list {
   width: 100%;
-  background-color: #D9D9D9;
+  background-color: #76a8ff6a;
   border-radius: 7px;
+}
+
+.linked-words-list {
+  overflow: hidden;
+}
+
+.linked-words-input input {
+  background-color: unset;
+}
+
+.list-group-item {
+  background-color: #76a8ff6a;
 }
 
 .linked-words-list p {
   width: 100%;
-  background-color: #D9D9D9;
   padding: 20px 30px;
   border-radius: 7px;
   font-size: 20px;
@@ -207,7 +223,7 @@
   box-sizing: border-box;
   padding: 80px 30px 20px 30px;
   border-radius: 7px;
-  background-color: gray;
+  background-color: #76a8ff6a;
   font-size: 20px;
   text-align: center;
   display: flex;
@@ -220,7 +236,7 @@
 .audioUpload input::-webkit-file-upload-button {
   width: 100%;
   border: 0;
-  background-color: #D9D9D9;
+  background-color: #76a8ff6a;
   padding: 20px 30px;
   border-radius: 7px 7px 0 0;
   font-size: 20px;
@@ -238,14 +254,15 @@
 
 .audioUpload input::file-selector-button:hover,
 .audioUpload input::-webkit-file-upload-button:hover {
-  box-shadow: inset 0 0 10px black;
+  /* box-shadow: inset 0 0 10px black; */
+  box-shadow: 0 0 10px #17063b49;
 }
 
 .audioRecordInput,
 .editWordAudioRecordInput {
   display: flex;
   flex-direction: row !important;
-  gap: 20px;
+  gap: 20px !important;
   align-items: center;
 }
 
@@ -272,8 +289,29 @@ audio {
   margin-bottom: 20px;
 }
 
+/* audio::-webkit-media-controls-play-button, */
+audio::-webkit-media-controls-panel {
+  background-color: #76a8ff6a;
+  color: #20063B;
+}
+
 @media screen and (max-width: 415px) {
   .audioRecordInput {
     flex-direction: column !important;
   }
+}
+
+.darkBlueBtn {
+  background-color: #20063B;
+}
+
+button:disabled {
+  background-color: #5c80bc;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  box-shadow: none;
+  text-shadow: none;
+  filter: drop-shadow(none);
 }

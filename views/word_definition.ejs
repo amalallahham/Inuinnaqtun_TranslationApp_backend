@@ -1,6 +1,12 @@
 <%- include('./layout/header_auth') %>
   <link href="/css/login.css" rel="stylesheet" />
 
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
+    <a href="/admin/translations">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </a>
+  </button>
+
   <h1 class="title headerFont semi-bold">Edit Translation</h1>
 
   <div class="feedbackWrap">
@@ -28,7 +34,7 @@
       </div>
 
       <!-- Linked Words -->
-      <div>
+      <div class="mb-3">
         <label class="form-label">Linked Words</label>
         <ul class="list-group linked-words-list" data-id="<%= data._id %>">
           <% if (data.similarWords && data.similarWords.length> 0) { %> 
@@ -86,10 +92,10 @@
       <div>
         <label class="form-label">Record New Audio</label>
         <div class="audioRecordInput editWordAudioRecordInput">
-          <button class="btn btn-primary record-audio start-recording hoverable hoverableBtn" data-id="<%= data._id %>">
+          <button class="btn darkBlueBtn record-audio start-recording hoverable hoverableBtn" data-id="<%= data._id %>">
             <i class="fa-solid fa-microphone"></i> <p>Start Recording</p>
           </button>
-          <button class="btn btn-danger ms-2 stop-recording hoverable hoverableBtn">
+          <button class="btn darkBlueBtn ms-2 stop-recording hoverable hoverableBtn" disabled>
             <i class="fa-solid fa-stop"></i> <p>Stop Recording</p>
           </button>
         </div>
@@ -97,10 +103,10 @@
       </div>
 
       <div class="audioRecordInput">
-        <button class="btn submitBtn save-button" data-id="<%= data._id %>">
+        <button class="btn submitBtn save-button hoverable hoverableBtn" data-id="<%= data._id %>">
           <i class="fa-solid fa-save"></i> Save Changes
         </button>
-        <button class="btn submitBtn delete-button ms-2" data-id="<%= data._id %>">
+        <button class="btn submitBtn delete-button hoverable hoverableBtn" data-id="<%= data._id %>">
           <i class="fa-solid fa-trash"></i> Delete Word
         </button>
       </div>
@@ -121,7 +127,7 @@
           let target = event.target;
 
           // Start Recording Audio
-          if (target.classList.contains("record-audio")) {
+          if (target.classList.contains("record-audio") || target.parentElement.classList.contains("record-audio")) {
             let stopButton = document.querySelector(".stop-recording");
             let recordedAudio = document.getElementById("recordedAudio");
 
@@ -154,9 +160,9 @@
                 document.querySelector(".start-recording").disabled = false;
                 document.querySelector(".stop-recording").disabled = true;
               };
-
+ 
               mediaRecorder.start();
-
+ 
               document.querySelector(".start-recording").disabled = true;
               document.querySelector(".stop-recording").disabled = false;
             } catch (error) {
@@ -170,7 +176,7 @@
           }
 
           // Stop Recording Audio
-          if (target.classList.contains("stop-recording")) {
+          if (target.classList.contains("stop-recording") || target.parentElement.classList.contains("stop-recording")) {
             let startButton = document.querySelector(".record-audio");
             // target.style.display = "none"; // Hide Stop Recording button
             // startButton.style.display = "inline-block"; // Show Start Recording button
@@ -215,10 +221,9 @@
           // Remove Linked Word Event (Client-side Only)
           if (target.closest(".remove-linked-word")) {
             let listItem = target.closest("li");
-            listItem.remove();
-
             // Check if the list is empty, add "No linked words" message
             let list = listItem.closest(".linked-words-list");
+            listItem.remove();
             if (!list.querySelector("li")) {
               list.innerHTML =
               '<li class="list-group-item text-muted"><p>No linked words</p></li>';

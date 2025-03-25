@@ -58,10 +58,10 @@
     <div>
       <label class="form-label">Or Record Audio</label>
       <div class="audioRecordInput">
-        <button class="btn btn-danger start-recording hoverable hoverableBtn">
+        <button class="btn darkBlueBtn start-recording hoverable hoverableBtn">
           <i class="fa-solid fa-microphone"></i> <p>Start Recording</p>
         </button>
-        <button class="btn btn-secondary stop-recording hoverable hoverableBtn" disabled>
+        <button class="btn darkBlueBtn stop-recording hoverable hoverableBtn" disabled>
           <i class="fa-solid fa-circle-stop"></i> <p>Stop Recording</p>
         </button>
       </div>
@@ -69,7 +69,7 @@
     </div>
 
     <!-- Save Button -->
-    <button class="btn btn-outline-success save-button  hoverable hoverableBtn">
+    <button class="btn btn-outline-success save-button hoverable hoverableBtn">
       <i class="fa-solid fa-save"></i> Save Word
     </button>
   </div>
@@ -131,7 +131,7 @@
 
         const listItem = document.createElement("li");
         listItem.className =
-          "list-group-item d-flex justify-content-between align-items-center";
+          "list-group-item";
         listItem.innerHTML = `<p>${newWord}</p> <button class="linkedBtn btn-danger remove-word hoverable hoverableShadow"><i class="fa-solid fa-xmark"></i></button>`;
 
         // Append to the list
