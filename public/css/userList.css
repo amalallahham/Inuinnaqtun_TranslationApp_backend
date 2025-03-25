@@ -33,7 +33,7 @@
     padding: 10px 25px;
     border-radius: 10px;
     border: 0;
-    background-color: gray;
+    background-color: #5c80bc;
     cursor: pointer;
     transition-duration: 0.3s;
 }
@@ -63,7 +63,7 @@
 
 .userTable {
     width: 100%;
-    background-color: lightgray;
+    background-color: #76a8ff6a;
     border-radius: 10px;
     border-collapse: separate;
     border-spacing: 0;
@@ -76,7 +76,8 @@ th, td {
 }
 
 .entryTitle th {
-    border-bottom: 1px solid black;
+    /* border-bottom: 1px solid black; */
+    border-bottom: 1px solid #20063B;
 }
 
 .entry:first-of-type td {
@@ -84,7 +85,8 @@ th, td {
 }
 
 .entry td {
-    border-top: 1px solid rgba(0, 0, 0, 0.5);
+    /* border-top: 1px solid rgba(0, 0, 0, 0.5); */
+    border-top: 1px solid #20063b4f;
 }
 
 .btnWrap {
@@ -103,16 +105,21 @@ th, td {
     font-size: 16px;
     border-radius: 1000px;
     border: 0;
-    background-color: gray;
+    background-color: #5c80bc;
 }
 
 .btn-warning {
-    background-color: gold;
+    color: #e9f1ff;
+    background-color: #20063B;
 }
 
 .btn-danger {
-    color: #eee;
+    color: #e9f1ff;
     background-color: #780116;
+}
+
+.btn path {
+    color: #e9f1ff;
 }
 
 /* Pagination styling */
@@ -133,8 +140,15 @@ th, td {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: gray;
+    background-color: #5c80bc;
     border-radius: 1000px;
+}
+
+.pageNumber a {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 30px;
 }
 
 /* Modal popups styling */
@@ -155,11 +169,18 @@ th, td {
 }
 
 .modalWrap select {
-    width: 100%;
+    /* width: 100%;
     border: 0;
     border-radius: 10px;
     padding: 15px 20px;
-    background-color: lightgray;
+    background-color: #76a8ff6a;
+    font-size: 20px; */
+    all: unset;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #76a8ff6a;
+    padding: 20px 30px;
+    border-radius: 7px;
     font-size: 20px;
 }
 
@@ -173,8 +194,10 @@ th, td {
     width: 90%;
     padding: 50px;
     border-radius: 10px;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    /* background-color: white; */
+    background-color: rgb(246, 247, 255);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
+    box-shadow: 0 0 10px #17063b49;
     position: relative;
 }
 
@@ -209,7 +232,7 @@ th, td {
     border: 0;
     border-radius: 10px;
     padding: 15px 20px;
-    background-color: gray;
+    background-color: #76a8ff6a;
     font-size: 20px;
 }
 
@@ -239,7 +262,7 @@ th, td {
     border: 0;
     border-radius: 10px;
     padding: 15px 20px;
-    background-color: gray;
+    background-color: #76a8ff6a;
     font-size: 20px;
     display: flex;
     justify-content: space-between;

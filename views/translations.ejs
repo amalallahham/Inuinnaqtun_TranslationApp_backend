@@ -82,7 +82,7 @@
       <nav aria-label="Page navigation" class="paginationWrap">
         <ul class="pagination">
           <% if (currentPage > 1) { %>
-          <li class="">
+          <li class="hoverable hoverableText">
             <a href="/admin/translations?page=<%= currentPage - 1 %>&query=<%= query %>&filter=<%= filter %>&order=<%= order %>"
               class="">Previous</a>
           </li>
@@ -98,7 +98,7 @@
 
             for (let i = startPage; i <= endPage; i++) { 
           %>
-            <li class="pageNumber <%= i === currentPage ? 'active' : '' %>">
+            <li class="pageNumber <%= i === currentPage ? 'active' : '' %> hoverable hoverableShadow">
               <a href="/admin/translations?page=<%= i %>&query=<%= query %>&filter=<%= filter %>&order=<%= order %>">
                 <%= i %>
               </a>
@@ -106,7 +106,7 @@
           <% } %>
           
           <% if (currentPage < totalPages) { %>
-          <li class="">
+          <li class="hoverable hoverableText">
             <a href="/admin/translations?page=<%= currentPage + 1 %>&query=<%= query %>&filter=<%= filter %>&order=<%= order %>"
               class="">Next</a>
           </li>

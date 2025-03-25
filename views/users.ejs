@@ -64,17 +64,17 @@
 
       <nav aria-label="Page navigation" class="paginationWrap">
         <ul class="pagination">
-          <li class="<%= currentPage === 1 ? 'disabled' : '' %>">
+          <li class="<%= currentPage === 1 ? 'disabled' : '' %> hoverable hoverableText">
             <a class="" href="/admin/users?page=<%= currentPage - 1 %>">Previous</a>
           </li>
           <% for (let i=1; i <=totalPages; i++) { %>
-            <li class="pageNumber <%= i === currentPage ? 'active' : '' %>">
+            <li class="pageNumber <%= i === currentPage ? 'active' : '' %> hoverable hoverableShadow">
               <a class="" href="/admin/users?page=<%= i %>">
                 <%= i %>
               </a>
             </li>
           <% } %>
-          <li class="<%= currentPage === totalPages ? 'disabled' : '' %>">
+          <li class="<%= currentPage === totalPages ? 'disabled' : '' %> hoverable hoverableText">
             <a class="" href="/admin/users?page=<%= currentPage + 1 %>">Next</a>
           </li>
         </ul>
@@ -145,17 +145,17 @@
 
       <nav aria-label="Page navigation" class="paginationWrap">
         <ul class="pagination">
-          <li class="<%= currentPage === 1 ? 'disabled' : '' %>">
+          <li class="<%= currentPage === 1 ? 'disabled' : '' %> hoverable hoverableText">
             <a class="" href="/admin/users?page=<%= currentPage - 1 %>">Previous</a>
           </li>
           <% for (let i=1; i <=totalPages; i++) { %>
-            <li class="<%= i === currentPage ? 'active' : '' %>">
+            <li class="<%= i === currentPage ? 'active' : '' %> hoverable hoverableShadow">
               <a class="pageNumber" href="/admin/users?page=<%= i %>">
                 <%= i %>
               </a>
             </li>
           <% } %>
-          <li class="<%= currentPage === totalPages ? 'disabled' : '' %>">
+          <li class="<%= currentPage === totalPages ? 'disabled' : '' %> hoverable hoverableText">
             <a class="" href="/admin/users?page=<%= currentPage + 1 %>">Next</a>
           </li>
         </ul>
