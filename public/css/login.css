@@ -85,20 +85,6 @@
     padding: 20px 30px;
   }
 
-  .logo a {
-    font-size: 30px;
-    gap: 20px;
-  }
-
-  .headerLogo {
-    width: 65px;
-    height: 65px;
-  }
-
-  .goBackBtn {
-    font-size: 15px;
-  }
-
   .title {
     font-size: 40px;
   }

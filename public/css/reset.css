@@ -1,6 +1,6 @@
 /* Global settings */
-* { margin: 0; padding: 0; box-sizing: border-box; transition-duration: 0.3s; }
-a { text-decoration: none; color: #1a1a1a; }
+* { margin: 0; padding: 0; box-sizing: border-box; color: #20063B; }
+a { text-decoration: none; color: #20063B; }
 img { width: 100%; height: 100%; }
 
 /* Settings for navbar toggle */
@@ -13,6 +13,7 @@ img { width: 100%; height: 100%; }
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    transition-duration: 0.3s;
 }
 
 .sideNavToggled {
@@ -42,7 +43,10 @@ img { width: 100%; height: 100%; }
 }
 
 .sideNavFooter {
-    margin-top: 30px;
+    width: 100%;
+    border-top: 1px solid #20063B;
+    margin-top: 50px;
+    padding-top: 15px;
     text-wrap: nowrap;
 }
 
@@ -54,12 +58,13 @@ img { width: 100%; height: 100%; }
     /* background-image: linear-gradient(grey, rgba(0, 0, 0, 0));; */
     background-image: linear-gradient(#5C80BC, #5c7fbc00);;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
 .logo {
     font-size: 50px;
+    display: flex;
 }
 
 .logo>a {
@@ -85,13 +90,12 @@ img { width: 100%; height: 100%; }
     height: 100px;
     background-color: #20063B;
     border-radius: 10000px;
+    overflow: hidden;
 }
 
 .navLoginBtn,
 .navMenu {
-    padding: 20px 0 0 20px;
-    font-size: 30px;
-    align-self: start;
+    font-size: 40px;
 }
 
 /* Media queries for logo */
@@ -107,13 +111,18 @@ img { width: 100%; height: 100%; }
 
     .navLoginBtn,
     .navMenu {
-        font-size: 18px;
+        padding: 0 0 0 30px;
+        font-size: 30px;
     }
 }
 
 @media screen and (max-width: 550px) {
     .navBar {
         padding: 0 30px;
+    }
+
+    .logo {
+        width: 100%;
     }
 }
 
@@ -126,15 +135,40 @@ img { width: 100%; height: 100%; }
         flex-direction: column;
         gap: 0;
     }
+
+    .logoText p {
+        margin: 0;
+    }
+
+    .navLoginBtn,
+    .navMenu {
+        padding: 0 0 0 20px;
+        font-size: 25px;
+    }
 }
 
-@media screen and (max-width: 410px) {
+@media screen and (max-width: 415px) {
     .logo {
-        font-size: 35px;
+        font-size: 33px;
+    }
+
+    .logo a {
+        gap: 10px;
     }
 
     .navBar {
-        padding: 0 20px;
+        padding: 0 15px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .headerLogo {
+        width: 65px;
+        height: 65px;
+    }
+    
+    .goBackBtn {
+        font-size: 15px;
     }
 }
 
@@ -145,24 +179,26 @@ img { width: 100%; height: 100%; }
     padding: 10px 25px;
     border-radius: 10px;
     border: 0;
-    background-color: #726E60;
+    /* background-color: #726E60; */
+    background-color: #5c80bc;
 }
 
 /* Hover styling */
 .hoverable {
     cursor: pointer;
+    transition-duration: 0.3s;
 }
 
 .hoverableBtn:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
 .hoverableText:hover {
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
 .hoverableShadow:hover {
-    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.4));
 }
 
 /* Feedback styling */
