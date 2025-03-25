@@ -28,57 +28,48 @@
           </tr>
         </thead>
         <tbody id="userTableBody">
-          <% if (users.length===0) { %>
+          <% if (dataEntryUsers.length === 0) { %>
             <tr>
-              <td colspan="5" class="text-center">No users found</td>
+              <td colspan="5" class="text-center">No Data Input Users found</td>
             </tr>
           <% } else { %>
-            <% users.forEach((ele, index)=> { %>
-              <% if (ele.role === "DataEntry") { %>
-                <tr class="entry">
-                  <!-- <td>
-                    <%= index + 1 %>
-                  </td> -->
-                  <td>
-                    <%= ele.email %>
-                  </td>
-                  <td>
-                    <%= ele.username %>
-                  </td>
-                  <td class="btnWrap">
-                    <a href="/admin/users/edit/<%= ele._id %>" class="btn btn-warning hoverable hoverableBtn"><i class="fa-solid fa-pen"></i></a>
-
-                    <% if (ele.email !== userEmail) { %>
-                      <button class="btn btn-danger hoverable hoverableBtn"
-                        onclick="showDeleteModal('<%= ele._id %>', '<%= ele.email %>')">
-                        <i class="fa-solid fa-trash"></i>
-                      </button>
-                    <% } %>
-                  </td>
-                </tr>
-              <% } %>
-            <% }) %>
-          <% } %>
+            <% dataEntryUsers.forEach((ele) => { %>
+              <tr class="entry">
+                <td><%= ele.email %></td>
+                <td><%= ele.username %></td>
+                <td class="btnWrap">
+                  <a href="/admin/users/edit/<%= ele._id %>" class="btn btn-warning hoverable hoverableBtn">
+                    <i class="fa-solid fa-pen"></i>
+                  </a>
+                  <% if (ele.email !== userEmail) { %>
+                    <button class="btn btn-danger hoverable hoverableBtn"
+                      onclick="showDeleteModal('<%= ele._id %>', '<%= ele.email %>')">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+          <% } %>          
         </tbody>
       </table>
 
+      <!-- Pagination for data entry users -->
       <nav aria-label="Page navigation" class="paginationWrap">
         <ul class="pagination">
-          <li class="<%= currentPage === 1 ? 'disabled' : '' %> hoverable hoverableText">
-            <a class="" href="/admin/users?page=<%= currentPage - 1 %>">Previous</a>
+          <li class="<%= currentPageDataEntry === 1 ? 'disabled' : 'hoverable hoverableText' %>">
+            <a href="/admin/users?pageDataEntry=<%= currentPageDataEntry - 1 %>&pageAdmin=<%= currentPageAdmin %>">Previous</a>
           </li>
-          <% for (let i=1; i <=totalPages; i++) { %>
-            <li class="pageNumber <%= i === currentPage ? 'active' : '' %> hoverable hoverableShadow">
-              <a class="" href="/admin/users?page=<%= i %>">
-                <%= i %>
-              </a>
+          <% for (let i = 1; i <= totalPagesDataEntry; i++) { %>
+            <li class="pageNumber <%= i === currentPageDataEntry ? 'active' : '' %> hoverable hoverableShadow">
+              <a href="/admin/users?pageDataEntry=<%= i %>&pageAdmin=<%= currentPageAdmin %>"><%= i %></a>
             </li>
           <% } %>
-          <li class="<%= currentPage === totalPages ? 'disabled' : '' %> hoverable hoverableText">
-            <a class="" href="/admin/users?page=<%= currentPage + 1 %>">Next</a>
+          <li class="<%= currentPageDataEntry === totalPagesDataEntry ? 'disabled' : 'hoverable hoverableText' %>">
+            <a href="/admin/users?pageDataEntry=<%= currentPageDataEntry + 1 %>&pageAdmin=<%= currentPageAdmin %>">Next</a>
           </li>
         </ul>
-      </nav>
+      </nav>                
     </div>
   </div>
 
@@ -109,57 +100,48 @@
           </tr>
         </thead>
         <tbody id="userTableBody">
-          <% if (users.length===0) { %>
+          <% if (adminUsers.length === 0) { %>
             <tr>
-              <td colspan="5" class="text-center">No users found</td>
+              <td colspan="5" class="text-center">No Admin Users found</td>
             </tr>
           <% } else { %>
-            <% users.forEach((ele, index)=> { %>
-              <% if (ele.role === "Admin") { %>
-                <tr class="entry">
-                  <!-- <td>
-                    <%= index + 1 %>
-                  </td> -->
-                  <td>
-                    <%= ele.email %>
-                  </td>
-                  <td>
-                    <%= ele.username %>
-                  </td>
-                  <td class="btnWrap">
-                    <a href="/admin/users/edit/<%= ele._id %>" class="btn btn-warning hoverable hoverableBtn"><i class="fa-solid fa-pen"></i></a>
-
-                    <% if (ele.email !== userEmail) { %>
-                      <button class="btn btn-danger hoverable hoverableBtn"
-                        onclick="showDeleteModal('<%= ele._id %>', '<%= ele.email %>')">
-                        <i class="fa-solid fa-trash"></i>
-                      </button>
-                    <% } %>
-                  </td>
-                </tr>
-              <% } %>
-            <% }) %>
+            <% adminUsers.forEach((ele, index) => { %>
+              <tr class="entry">
+                <td><%= ele.email %></td>
+                <td><%= ele.username %></td>
+                <td class="btnWrap">
+                  <a href="/admin/users/edit/<%= ele._id %>" class="btn btn-warning hoverable hoverableBtn">
+                    <i class="fa-solid fa-pen"></i>
+                  </a>
+                  <% if (ele.email !== userEmail) { %>
+                    <button class="btn btn-danger hoverable hoverableBtn"
+                      onclick="showDeleteModal('<%= ele._id %>', '<%= ele.email %>')">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
           <% } %>
         </tbody>
       </table>
-
+      
+      <!-- Pagination for Admins -->
       <nav aria-label="Page navigation" class="paginationWrap">
         <ul class="pagination">
-          <li class="<%= currentPage === 1 ? 'disabled' : '' %> hoverable hoverableText">
-            <a class="" href="/admin/users?page=<%= currentPage - 1 %>">Previous</a>
+          <li class="<%= currentPageAdmin === 1 ? 'disabled' : 'hoverable hoverableText' %>">
+            <a href="/admin/users?pageDataEntry=<%= currentPageDataEntry %>&pageAdmin=<%= currentPageAdmin - 1 %>">Previous</a>
           </li>
-          <% for (let i=1; i <=totalPages; i++) { %>
-            <li class="<%= i === currentPage ? 'active' : '' %> hoverable hoverableShadow">
-              <a class="pageNumber" href="/admin/users?page=<%= i %>">
-                <%= i %>
-              </a>
+          <% for (let i = 1; i <= totalPagesAdmin; i++) { %>
+            <li class="pageNumber <%= i === currentPageAdmin ? 'active' : '' %> hoverable hoverableShadow">
+              <a href="/admin/users?pageDataEntry=<%= currentPageDataEntry %>&pageAdmin=<%= i %>"><%= i %></a>
             </li>
           <% } %>
-          <li class="<%= currentPage === totalPages ? 'disabled' : '' %> hoverable hoverableText">
-            <a class="" href="/admin/users?page=<%= currentPage + 1 %>">Next</a>
+          <li class="<%= currentPageAdmin === totalPagesAdmin ? 'disabled' : 'hoverable hoverableText' %>">
+            <a href="/admin/users?pageDataEntry=<%= currentPageDataEntry %>&pageAdmin=<%= currentPageAdmin + 1 %>">Next</a>
           </li>
         </ul>
-      </nav>
+      </nav>      
     </div>
   </div>
 

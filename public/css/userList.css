@@ -151,6 +151,15 @@ th, td {
     line-height: 30px;
 }
 
+.disabled {
+    cursor: not-allowed;
+}
+
+.disabled a {
+    color: #17063b49;
+    pointer-events: none;
+}
+
 /* Modal popups styling */
 .modalWrap {
     width: 100%;
