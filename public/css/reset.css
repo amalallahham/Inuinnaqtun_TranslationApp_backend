@@ -190,15 +190,18 @@ img { width: 100%; height: 100%; }
 }
 
 .hoverableBtn:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); */
+    box-shadow: 0 0 10px #17063b49;
 }
 
 .hoverableText:hover {
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    /* text-shadow: 0 0 10px rgba(0, 0, 0, 0.4); */
+    text-shadow: 0 0 10px #17063b49;
 }
 
 .hoverableShadow:hover {
-    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.4));
+    /* filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.4)); */
+    filter: drop-shadow(0 0 10px #17063b49);
 }
 
 /* Feedback styling */
@@ -238,7 +241,8 @@ input {
 
 /* Changing placeholder styling */
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: rgba(0, 0, 0, 0.7);
+    /* color: rgba(0, 0, 0, 0.7); */
+    color: #20063bc7;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -246,14 +250,16 @@ input {
     opacity: 1; /* Firefox */
 }
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: rgba(0, 0, 0, 0.7);
+    /* color: rgba(0, 0, 0, 0.7); */
+    color: #20063bc7;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
 } 
 ::-ms-input-placeholder { /* Microsoft Edge */
-    color: rgba(0, 0, 0, 0.7);
+    /* color: rgba(0, 0, 0, 0.7); */
+    color: #20063bc7;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;

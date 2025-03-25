@@ -57,7 +57,7 @@
 .formWrap input {
   all: unset;
   width: 100%;
-  background-color: #D9D9D9;
+  background-color: #76a8ff6a;
   padding: 20px 30px;
   border-radius: 7px;
   font-size: 20px;
@@ -70,10 +70,10 @@
 .btn {
   all: unset;
   width: 100%;
-  background-color: #780116;
+  background-color: #780123;
   padding: 20px 30px;
   border-radius: 7px;
-  color: #E4DFDA;
+  color: #e9f1ff;
   text-align: center;
   font-size: 20px;
   cursor: pointer;
