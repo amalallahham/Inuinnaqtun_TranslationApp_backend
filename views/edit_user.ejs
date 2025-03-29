@@ -1,49 +1,47 @@
 <%- include('./layout/header_auth') %>
+  <link href="/css/login.css" rel="stylesheet" />
 
-<div class="container my-4 px-5">
-  <h2 class="mb-3 semi-bold">Edit User</h2>
+  <h1 class="title headerFont semi-bold">Edit User</h1>
 
-  <% if (error) { %>
-    <div class="alert alert-danger"><%= error %></div>
-  <% } %>
-
-  <% if (success) { %>
-    <div class="alert alert-success"><%= success %></div>
-  <% } %>
-
-  <div class="card">
-    <div class="card-body">
-      <form action="/admin/users/edit/<%= user._id %>" method="POST">
-        
-        <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" required>
-        </div>
-
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" required>
-        </div>
-
-        <div class="mb-3">
-          <label for="role" class="form-label">Role</label>
-          <select class="form-control" id="role" name="role" <%= user.role === 'Admin' ? 'disabled="disabled"' : '' %>>
-            <option value="Admin" <%= user.role === 'Admin' ? 'selected="selected"' : '' %>>Admin</option>
-            <option value="DataEntry" <%= user.role === 'DataEntry' ? 'selected="selected"' : '' %>>Data Entry</option>
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label for="password" class="form-label">New Password (Leave blank to keep current)</label>
-          <input type="password" class="form-control" id="password" name="password">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Update User</button>
-        <a href="/admin/users" class="btn btn-secondary">Cancel</a>
-
-      </form>
-    </div>
+  <div class="feedbackWrap">
+    <% if (error) { %>
+      <div class="alert alert-danger <%= error ? 'displayAlert' : '' %>"><%= error %></div>
+    <% } %>
+    <% if (success) { %>
+      <div class="alert alert-success <%= success ? 'displayAlert' : '' %>"><%= success %></div>
+    <% } %>
   </div>
-</div>
+
+  <form action="/admin/users/edit/<%= user._id %>" method="POST" class="formWrap editUserWrap">
+    
+    <div>
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" required>
+    </div>
+
+    <div>
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" required>
+    </div>
+
+    <div>
+      <label for="role" class="form-label">Role</label>
+      <select id="role" name="role" <%= user.role === 'Admin' ? 'disabled="disabled"' : '' %>>
+        <option value="Admin" <%= user.role === 'Admin' ? 'selected="selected"' : '' %>>Admin</option>
+        <option value="DataEntry" <%= user.role === 'DataEntry' ? 'selected="selected"' : '' %>>Data Entry</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="password" class="form-label">New Password (Leave blank to keep current)</label>
+      <input type="password" class="form-control" id="password" name="password">
+    </div>
+
+    <div>
+      <button type="submit" class="btn submitBtn semi-bold hoverable hoverableBtn">Update User</button>
+      <a href="/admin/users" class="btn submitBtn semi-bold hoverable hoverableBtn">Cancel</a>
+    </div>
+
+  </form>
 
 <%- include('./layout/footer_auth') %>
