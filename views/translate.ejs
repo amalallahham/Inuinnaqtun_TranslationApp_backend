@@ -1,0 +1,97 @@
+<%- include('./layout/header') %>
+
+    <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+        <div class="container bg-white p-4 rounded shadow text-center" style="max-width: 400px;">
+            <textarea id="input-text" class="form-control mb-2" rows="4" placeholder="Enter text..."></textarea>
+            <div class="d-flex align-items-center mb-2">
+                <div id="input-lang" class="border p-2 rounded bg-light"></div>
+                <button class="btn border w-100 mb-2" onclick="reverseLanguages()">&#x21c4;</button>
+                <div id="output-lang" class="border p-2 rounded bg-light"></div>
+            </div>
+            <textarea id="output-text" class="form-control mb-2" rows="4" placeholder="Translation..."
+                readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        const en = "English";
+        const inu = "Inuinnaqtun";
+
+        let inputLanguage = en;
+        let outputLanguage = inu;
+
+        const inputDescriptor = document.getElementById("input-lang");
+        const outputDescriptor = document.getElementById("output-lang");
+
+        const inputElement = document.getElementById("input-text");
+        const outputElement = document.getElementById("output-text");
+
+        let controller;
+        let inputTimeout;
+        inputElement.addEventListener('input', () => {
+            const input = inputElement.value;
+
+            // Timer before request and request are cancelled if more is inputted
+            if (inputTimeout) {
+                clearTimeout(inputTimeout)
+            }
+            if (controller) {
+                controller.abort();
+            }
+
+
+            if (input === "") {
+                outputElement.value = "";
+            } else {
+                controller = new AbortController();
+
+                //Prevents continuous requests for translation while client is typing
+                inputTimeout = setTimeout(() => {
+                    translate(input);
+                }, 700);
+            }
+        });
+
+        //Sets the language descriptors
+        function setDescriptors() {
+            inputDescriptor.innerHTML = inputLanguage;
+            outputDescriptor.innerHTML = outputLanguage;
+        }
+
+        //Reverses the language translation
+        function reverseLanguages() {
+            let temp = outputLanguage;
+            outputLanguage = inputLanguage;
+            inputLanguage = temp;
+
+            temp = outputElement.value;
+            outputElement.value = inputElement.value;
+            inputElement.value = temp
+
+            setDescriptors();
+            translate(inputElement.value)
+        }
+
+        //Fetches the translation
+        function translate(input) {
+            fetch("/translate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    text: input,
+                    sourceLang: inputLanguage,
+                    targetLang: outputLanguage,
+                }),
+                signal: controller.signal
+            })
+                .then(response => response.json())
+                .then(data => {
+                    outputElement.value = data.translation;
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
+
+        setDescriptors();
+    </script>
+    <%- include('./layout/footer') %>
