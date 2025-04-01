@@ -1,7 +1,63 @@
-
-
 </div>
 </div>
+<footer class="footer" id="footer">
+    <div class="footerMenu">
+        <% if (user?.role==='Admin' ) { %>
+            <a class="footerItem hoverable hoverableShadow" href="/admin/users">
+                <div class="footerIcon">
+                    <i class="fa-solid fa-users-gear"></i>
+                </div>
+                <div class="footerDesc">
+                    Users
+                </div>
+            </a>
+            <a class="footerItem hoverable hoverableShadow" href="/admin/translations">
+                <div class="footerIcon">
+                    <i class="fa-solid fa-language"></i>
+                </div>
+                <div class="footerDesc">
+                    Translations
+                </div>
+            </a>
+            <a class="footerItem hoverable hoverableShadow" href="/admin/logs">
+                <div class="footerIcon">
+                    <i class="fa-solid fa-list-ul"></i>
+                </div>
+                <div class="footerDesc">
+                    Logs
+                </div>
+            </a>
+        <% } else { %>
+            <!-- Data Input users nav items -->
+        <% } %>
+
+        <!-- <a class="footerItem hoverable hoverableShadow" href="#!">
+            <div class="footerIcon">
+                <i class="fa-solid fa-gear"></i>
+            </div>
+            <div class="footerDesc">
+                Settings
+            </div>
+        </a> -->
+        <a class="footerItem hoverable hoverableShadow" href="#!">
+            <div class="footerIcon">
+                <i class="fa-solid fa-earth-americas"></i>
+            </div>
+            <div class="footerDesc">
+                Info
+            </div>
+        </a>
+        <a class="footerItem hoverable hoverableShadow" href="/admin/logout">
+            <div class="footerIcon">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </div>
+            <div class="footerDesc">
+                Logout
+            </div>
+        </a>
+    </div>
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

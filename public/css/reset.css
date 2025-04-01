@@ -20,6 +20,7 @@ body { background-color: rgb(240, 241, 255); }
 .sideNavToggled {
     width: 225px;
     padding: 20px;
+    overflow: visible;
 }
 
 .sideNavMenu {
@@ -49,6 +50,16 @@ body { background-color: rgb(240, 241, 255); }
     margin-top: 50px;
     padding-top: 15px;
     text-wrap: nowrap;
+}
+
+@media screen and (max-width: 815px) {
+    .sideBarItem {
+        font-size: 18px;
+    }
+
+    .sideBarIcon {
+        font-size: 20px;
+    }
 }
 
 /* Nav bar settings */
@@ -99,6 +110,36 @@ body { background-color: rgb(240, 241, 255); }
     font-size: 40px;
 }
 
+/* Footer settings */
+.footer {
+    width: 95%;
+    padding: 20px;
+    background-color: #BDD3FF;
+    border-radius: 10px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 2.5vw;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.footerMenu {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+}
+
+.footerItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 /* Media queries for logo */
 @media screen and (max-width: 675px) {
     .logo {
@@ -114,6 +155,21 @@ body { background-color: rgb(240, 241, 255); }
     .navMenu {
         padding: 0 0 0 30px;
         font-size: 30px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .footerItem {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .footerIcon {
+        font-size: 20px;
+    }
+
+    .footerDesc {
+        font-size: 16px;
     }
 }
 
@@ -145,6 +201,18 @@ body { background-color: rgb(240, 241, 255); }
     .navMenu {
         padding: 0 0 0 20px;
         font-size: 25px;
+    }
+
+    .footer {
+        padding: 10px;
+    }
+
+    .footerIcon {
+        font-size: 25px;
+    }
+
+    .footerDesc {
+        display: none;
     }
 }
 
