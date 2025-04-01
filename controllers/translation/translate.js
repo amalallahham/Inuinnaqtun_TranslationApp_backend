@@ -3,7 +3,11 @@ import { AutoTokenizer } from '@xenova/transformers';
 
 //Get method for /translate
 export const get_translate = async (req, res) => {
-  res.render("translate", { error: "", title: "Translate" });
+  // Checking if user is admin for different nav bar
+  if (!req.session || !req.session.adminId) {
+    res.render("translate", { error: "", title: "Translate", isAdmin: false });
+  }
+  res.render("translate", { error: "", title: "Translate", isAdmin: true });
 };
 
 //Post method for /translate

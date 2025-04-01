@@ -1,15 +1,20 @@
-<%- include('./layout/header') %>
+<% if (isAdmin) { %>
+    <%- include('./layout/header_auth') %>
+<% } else { %>
+    <%- include('./layout/header') %>
+<% } %>
+
 <link href="/css/translate.css" rel="stylesheet" />
 
     <div class="main">
-        <div class="inputWrap container bg-white p-4 rounded shadow text-center">
-            <textarea id="input-text" class="textArea mb-2" rows="4" placeholder="Enter or paste text" ></textarea>
-            <div class="changeLanguageArea d-flex align-items-center mb-2">
+        <div class="inputWrap">
+            <textarea id="input-text" class="textArea" rows="4" placeholder="Enter or paste text" ></textarea>
+            <div class="changeLanguageArea">
                 <div id="input-lang" class="languageOption"></div>
-                <button id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableBtn btn border w-100 mb-2" onclick="reverseLanguages()">&#x21c4;</button>
+                <button id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableBtn" onclick="reverseLanguages()">&#x21c4;</button>
                 <div id="output-lang" class="languageOption"></div>
             </div>
-            <textarea id="output-text" class="textArea outputText mb-2" rows="4" placeholder="Translation" readonly></textarea>
+            <textarea id="output-text" class="textArea outputText" rows="4" placeholder="Translation" readonly></textarea>
         </div>
     </div>
 
