@@ -1,19 +1,24 @@
 <%- include('./layout/header') %>
+<link href="/css/translate.css" rel="stylesheet" />
 
-    <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
-        <div class="container bg-white p-4 rounded shadow text-center" style="max-width: 400px;">
-            <textarea id="input-text" class="form-control mb-2" rows="4" placeholder="Enter text..."></textarea>
-            <div class="d-flex align-items-center mb-2">
-                <div id="input-lang" class="border p-2 rounded bg-light"></div>
-                <button class="btn border w-100 mb-2" onclick="reverseLanguages()">&#x21c4;</button>
-                <div id="output-lang" class="border p-2 rounded bg-light"></div>
+    <div class="main">
+        <div class="inputWrap container bg-white p-4 rounded shadow text-center">
+            <textarea id="input-text" class="textArea mb-2" rows="4" placeholder="Enter or paste text" ></textarea>
+            <div class="changeLanguageArea d-flex align-items-center mb-2">
+                <div id="input-lang" class="languageOption"></div>
+                <button id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableBtn btn border w-100 mb-2" onclick="reverseLanguages()">&#x21c4;</button>
+                <div id="output-lang" class="languageOption"></div>
             </div>
-            <textarea id="output-text" class="form-control mb-2" rows="4" placeholder="Translation..."
-                readonly></textarea>
+            <textarea id="output-text" class="textArea outputText mb-2" rows="4" placeholder="Translation" readonly></textarea>
         </div>
     </div>
 
     <script>
+        // Lodaing event elements
+        let loadingInterval; // Stores the interval ID
+        let loadingStates = ["Translating", "Translating.", "Translating..", "Translating..."];
+        let loadingIndex = 0;
+
         const en = "English";
         const inu = "Inuinnaqtun";
 
@@ -74,6 +79,8 @@
 
         //Fetches the translations
         function translate(input) {
+            startLoadingEvent(); // Start loading effect
+
             fetch("/translate", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -84,14 +91,38 @@
                 }),
                 signal: controller.signal
             })
-                .then(response => response.json())
-                .then(data => {
-                    outputElement.value = data.translation;
-                })
-                .catch(error => console.error("Error:", error));
+            .then(response => response.json())
+            .then(data => {
+                stopLoadingEvent(); // Stop loading effect
+                outputElement.value = data.translation;
+            })
+            .catch(error => console.error("Error:", error));
         }
 
-
         setDescriptors();
+
+
+        // Loading Event
+        function loadingEvent() {
+            setTimeout(() => {
+                outputDescriptor.value += "."
+            }, 100);
+        }
+
+        function startLoadingEvent() {
+            stopLoadingEvent(); // Ensure no previous interval is running
+            loadingIndex = 0;
+            outputElement.value = "Translating";
+
+            loadingInterval = setInterval(() => {
+                outputElement.value = loadingStates[loadingIndex];
+                loadingIndex = (loadingIndex + 1) % loadingStates.length;
+            }, 400);
+        }
+
+        function stopLoadingEvent () {
+            clearInterval(loadingInterval);
+        }
     </script>
-    <%- include('./layout/footer') %>
+    
+<%- include('./layout/footer') %>
