@@ -70,6 +70,8 @@
 
         //Reverses the language translation
         function reverseLanguages() {
+            document.getElementById("changeLanguageBtn").classList.toggle("rotateEvent");
+
             let temp = outputLanguage;
             outputLanguage = inputLanguage;
             inputLanguage = temp;
@@ -106,27 +108,22 @@
 
         setDescriptors();
 
-
         // Loading Event
-        function loadingEvent() {
-            setTimeout(() => {
-                outputDescriptor.value += "."
-            }, 100);
-        }
-
         function startLoadingEvent() {
             stopLoadingEvent(); // Ensure no previous interval is running
             loadingIndex = 0;
-            outputElement.value = "Translating";
+            outputElement.placeholder = "Translating";
 
             loadingInterval = setInterval(() => {
-                outputElement.value = loadingStates[loadingIndex];
+                outputElement.placeholder = loadingStates[loadingIndex];
                 loadingIndex = (loadingIndex + 1) % loadingStates.length;
             }, 400);
         }
 
-        function stopLoadingEvent () {
+        function stopLoadingEvent() {
             clearInterval(loadingInterval);
+            outputElement.value = "";
+            outputElement.placeholder = "Translation";
         }
     </script>
     
