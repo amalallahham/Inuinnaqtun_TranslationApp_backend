@@ -12,12 +12,10 @@
   display: flex;
 }
 
-
 .hoverable-primary:hover {
-    color: rgba(var(--bs-primary-rgb))!important;
+  color: rgba(var(--bs-primary-rgb))!important;
 }
 
 .z-index-1 {
-    z-index: 1 !important;
+  z-index: 1 !important;
 }
-

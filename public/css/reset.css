@@ -1,0 +1,354 @@
+/* Global settings */
+* { margin: 0; padding: 0; box-sizing: border-box; color: #20063B; }
+a { text-decoration: none; color: #20063B; }
+img { width: 100%; height: 100%; }
+body { background-color: rgb(240, 241, 255); }
+
+/* Settings for navbar toggle */
+.sideNavContents {
+    display: flex;
+}
+
+.sideNav {
+    width: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition-duration: 0.3s;
+}
+
+.sideNavToggled {
+    width: 225px;
+    padding: 20px;
+    overflow: visible;
+}
+
+.sideNavMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sideNavMenu>a {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.sideBarItem {
+    font-size: 20px;
+    text-wrap: nowrap;
+}
+
+.sideBarIcon {
+    font-size: 25px;
+}
+
+.sideNavFooter {
+    width: 100%;
+    border-top: 1px solid #20063B;
+    margin-top: 50px;
+    padding-top: 15px;
+    text-wrap: nowrap;
+}
+
+@media screen and (max-width: 815px) {
+    .sideBarItem {
+        font-size: 18px;
+    }
+
+    .sideBarIcon {
+        font-size: 20px;
+    }
+}
+
+/* Nav bar settings */
+.navBar {
+    width: 100%;
+    height: 150px;
+    padding: 0 50px;
+    /* background-image: linear-gradient(grey, rgba(0, 0, 0, 0));; */
+    background-image: linear-gradient(#5C80BC, #5c7fbc00);;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 50px;
+    display: flex;
+}
+
+.logo>a {
+    display: flex;
+    align-items: center;
+    line-height: 1.3;
+    gap: 30px;
+}
+
+.logoText {
+    display: flex;
+    flex-wrap: wrap;
+    /* gap: 15px; */
+}
+
+.logoText p {
+    margin: 0;
+    margin-left: 15px;
+}
+
+.headerLogo {
+    width: 100px;
+    height: 100px;
+    background-color: #20063B;
+    border-radius: 10000px;
+    overflow: hidden;
+}
+
+.navLoginBtn,
+.navMenu {
+    font-size: 40px;
+}
+
+/* Footer settings */
+.footer {
+    width: 95%;
+    padding: 20px;
+    background-color: #BDD3FF;
+    border-radius: 10px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 2.5vw;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.footerMenu {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+}
+
+.footerItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Media queries for logo */
+@media screen and (max-width: 675px) {
+    .logo {
+        font-size: 40px;
+    }
+
+    .headerLogo {
+        width: 80px;
+        height: 80px;
+    }
+
+    .navLoginBtn,
+    .navMenu {
+        padding: 0 0 0 30px;
+        font-size: 30px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .footerItem {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .footerIcon {
+        font-size: 20px;
+    }
+
+    .footerDesc {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .navBar {
+        padding: 0 30px;
+    }
+
+    .logo {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 490px) {
+    .logo>a {
+        gap: 20px;
+    }
+
+    .logoText {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .logoText p {
+        margin: 0;
+    }
+
+    .navLoginBtn,
+    .navMenu {
+        padding: 0 0 0 20px;
+        font-size: 25px;
+    }
+
+    .footer {
+        padding: 10px;
+    }
+
+    .footerIcon {
+        font-size: 25px;
+    }
+
+    .footerDesc {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 415px) {
+    .logo {
+        font-size: 33px;
+    }
+
+    .logo a {
+        gap: 10px;
+    }
+
+    .navBar {
+        padding: 0 15px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .headerLogo {
+        width: 65px;
+        height: 65px;
+    }
+    
+    .goBackBtn {
+        font-size: 15px;
+    }
+}
+
+/* Go back button */
+.goBackBtn {
+    align-self: flex-start;
+    font-size: 16px;
+    padding: 10px 25px;
+    border-radius: 10px;
+    border: 0;
+    /* background-color: #726E60; */
+    background-color: #5c80bc;
+}
+
+/* Hover styling */
+.hoverable {
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+
+.hoverableBtn:hover {
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); */
+    box-shadow: 0 0 10px #17063b49;
+}
+
+.hoverableText:hover {
+    /* text-shadow: 0 0 10px rgba(0, 0, 0, 0.4); */
+    text-shadow: 0 0 10px #17063b49;
+}
+
+.hoverableShadow:hover {
+    /* filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.4)); */
+    filter: drop-shadow(0 0 10px #17063b49);
+}
+
+/* Feedback styling */
+.alert {
+    width: 100%;
+    padding: .75rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    display: none;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.displayAlert {
+    display: block;
+}
+
+/* Input field styling */
+input {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Making sure the dropdown button on select shows up */
+select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background: url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") #76a8ff6a no-repeat 96% !important;
+}
+
+select::-ms-expand { display: none; }
+
+/* Changing placeholder styling */
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    /* color: rgba(0, 0, 0, 0.7); */
+    color: #20063bc7;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;    
+    opacity: 1; /* Firefox */
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    /* color: rgba(0, 0, 0, 0.7); */
+    color: #20063bc7;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+} 
+::-ms-input-placeholder { /* Microsoft Edge */
+    /* color: rgba(0, 0, 0, 0.7); */
+    color: #20063bc7;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Disabling autofill to change the background color of input fields */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s !important;
+}

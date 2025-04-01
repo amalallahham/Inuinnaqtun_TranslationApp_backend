@@ -2,33 +2,84 @@ import User from "../../models/users.js";
 import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 
+// export const get_users = async (req, res) => {
+//   try {
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = 5; 
+//     const skip = (page - 1) * limit;
+
+//     const users = await User.find({}).skip(skip).limit(limit);
+
+//     const totalUsers = await User.countDocuments();
+//     const totalPages = Math.ceil(totalUsers / limit);
+
+//     res.render("users", {
+//       title: "Users Management",
+//       users,
+//       error: null,
+//       currentPage: page,
+//       totalPages,
+//       userEmail: req.session.email,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.render("users", {
+//       title: "Users Management",
+//       users: [],
+//       error: "Failed to fetch users.",
+//       currentPage: 1,
+//       totalPages: 1,
+//       userEmail: req.session.email,
+//     });
+//   }
+// };
+
+// Loads different list for different user types
 export const get_users = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = 5; 
-    const skip = (page - 1) * limit;
+    // Get separate page queries
+    const pageDataEntry = parseInt(req.query.pageDataEntry) || 1;
+    const pageAdmin = parseInt(req.query.pageAdmin) || 1;
+    const limit = 5;
 
-    const users = await User.find({}).skip(skip).limit(limit);
+    // Calculate skips
+    const skipDataEntry = (pageDataEntry - 1) * limit;
+    const skipAdmin = (pageAdmin - 1) * limit;
 
-    const totalUsers = await User.countDocuments();
-    const totalPages = Math.ceil(totalUsers / limit);
+    // Get total counts
+    const totalDataEntryUsers = await User.countDocuments({ role: "DataEntry" });
+    const totalAdminUsers = await User.countDocuments({ role: "Admin" });
+
+    // Calculate total pages
+    const totalPagesDataEntry = Math.ceil(totalDataEntryUsers / limit);
+    const totalPagesAdmin = Math.ceil(totalAdminUsers / limit);
+
+    // Fetch users with pagination
+    const dataEntryUsers = await User.find({ role: "DataEntry" }).skip(skipDataEntry).limit(limit);
+    const adminUsers = await User.find({ role: "Admin" }).skip(skipAdmin).limit(limit);
 
     res.render("users", {
       title: "Users Management",
-      users,
+      dataEntryUsers,
+      adminUsers,
       error: null,
-      currentPage: page,
-      totalPages,
+      currentPageDataEntry: pageDataEntry,
+      currentPageAdmin: pageAdmin,
+      totalPagesDataEntry,
+      totalPagesAdmin,
       userEmail: req.session.email,
     });
   } catch (error) {
     console.error(error);
     res.render("users", {
       title: "Users Management",
-      users: [],
+      dataEntryUsers: [],
+      adminUsers: [],
       error: "Failed to fetch users.",
-      currentPage: 1,
-      totalPages: 1,
+      currentPageDataEntry: 1,
+      currentPageAdmin: 1,
+      totalPagesDataEntry: 1,
+      totalPagesAdmin: 1,
       userEmail: req.session.email,
     });
   }

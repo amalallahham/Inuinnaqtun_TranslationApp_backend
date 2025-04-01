@@ -1,36 +1,44 @@
 <%- include('./layout/header_auth') %>
 <link href="/css/logs.css" rel="stylesheet" />
 
-<div class="container my-4">
-  <h4 class="m-0 bold mb-3"><%= title %></h4>
-  <div class="position-relative">
-    <div class="d-flex align-items-center justify-content-end">
-      <div class="date-con">
-        <p class="m-0"><%= new Date(log.createdAt).toLocaleString() %></p>
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
+    <a href="/admin/logs">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </a>
+  </button>
+
+  <h1 class="title headerFont semi-bold"><%= title %></h1>
+
+  <div class="logWrap">
+    <div class="logDateWrap d-flex align-items-center justify-content-end">
+      <div class="logDate">
+        <p class="date"><%= new Date(log.createdAt).toLocaleDateString() %></p>
+        <p class="time"><%= new Date(log.createdAt).toLocaleTimeString() %></p>
       </div>
     </div>
-    <div class="card">
-      <div class="card-body p-1">
+    <div class="logContentsWrap">
+      <div class="logContents card-body p-1">
         <% if (error) { %>
-        <div class="alert alert-danger"><%= error %></div>
+          <div class="feedbackWrap">
+            <div class="alert alert-danger"><%= error %></div>
+          </div>
         <% } else { %>
-        <ul class="list-group list-group-flush my-2">
-          <li class="list-group-item">
-            <strong>Action:</strong> <%= log.action %>
-          </li>
-          <li class="list-group-item">
-            <strong>Data Entry (Type):</strong> <%= log.type %>
-          </li>
-          <li class="list-group-item">
-            <strong>Date:</strong> <%= new Date(log.createdAt).toLocaleString()
-            %>
-          </li>
-        </ul>
+          <ul class="logItemsWrap">
+            <li>
+              <strong>Action:</strong> <%= log.action %>
+            </li>
+            <li>
+              <strong>Data Entry (Type):</strong> <%= log.type %>
+            </li>
+            <li>
+              <strong>Date:</strong> <%= new Date(log.createdAt).toLocaleString()
+              %>
+            </li>
+          </ul>
         <% } %>
-        <a href="/admin/logs" class="btn btn-secondary m-3">Back to Logs</a>
+        <!-- <a href="/admin/logs" class="btn btn-secondary m-3">Back to Logs</a> -->
       </div>
     </div>
   </div>
-</div>
 
 <%- include('./layout/footer_auth') %>

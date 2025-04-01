@@ -1,0 +1,140 @@
+<% if (isAdmin) { %>
+    <%- include('./layout/header_auth') %>
+<% } else { %>
+    <%- include('./layout/header') %>
+<% } %>
+
+<link href="/css/translate.css" rel="stylesheet" />
+
+    <div class="main">
+        <div class="inputWrap">
+            <textarea id="input-text" class="textArea" rows="4" placeholder="Enter or paste text here" ></textarea>
+            <div class="changeLanguageArea">
+                <div id="input-lang" class="languageOption"></div>
+                <button id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableBtn" onclick="reverseLanguages()">&#x21c4;</button>
+                <div id="output-lang" class="languageOption"></div>
+            </div>
+            <textarea id="output-text" class="textArea outputText" rows="4" placeholder="Translation" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        // Lodaing event elements
+        let loadingInterval; // Stores the interval ID
+        let loadingStates = ["Translating", "Translating.", "Translating..", "Translating..."];
+        let loadingIndex = 0;
+
+        const en = "English";
+        const inu = "Inuinnaqtun";
+
+        let inputLanguage = en;
+        let outputLanguage = inu;
+
+        const inputDescriptor = document.getElementById("input-lang");
+        const outputDescriptor = document.getElementById("output-lang");
+
+        const inputElement = document.getElementById("input-text");
+        const outputElement = document.getElementById("output-text");
+
+        let controller;
+        let inputTimeout;
+        inputElement.addEventListener('input', () => {
+            const input = inputElement.value;
+
+            // Timer before request and request are cancelled if more is inputted
+            if (inputTimeout) {
+                clearTimeout(inputTimeout)
+            }
+            if (controller) {
+                controller.abort();
+            }
+
+
+            if (input === "" || input.trim() === "") {
+                stopLoadingEvent();
+            } else {
+                controller = new AbortController();
+
+                //Prevents continuous requests for translation while client is typing
+                inputTimeout = setTimeout(() => {
+                    translate(input);
+                }, 700);
+            }
+        });
+
+        //Sets the language descriptors
+        function setDescriptors() {
+            inputDescriptor.innerHTML = inputLanguage;
+            outputDescriptor.innerHTML = outputLanguage;
+        }
+
+        //Reverses the language translation
+        function reverseLanguages() {
+            document.getElementById("changeLanguageBtn").classList.toggle("rotateEvent");
+
+            let temp = outputLanguage;
+            outputLanguage = inputLanguage;
+            inputLanguage = temp;
+
+            temp = outputElement.value;
+            outputElement.value = inputElement.value;
+            inputElement.value = temp
+
+            setDescriptors();
+
+            if (inputElement.value === "" || inputElement.value.trim() === "") {
+                stopLoadingEvent();
+            } else {
+                controller = new AbortController();
+                translate(inputElement.value)
+            }
+        }
+
+        //Fetches the translations
+        function translate(input) {
+            startLoadingEvent(); // Start loading effect
+
+            fetch("/translate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    text: input,
+                    sourceLang: inputLanguage,
+                    targetLang: outputLanguage,
+                }),
+                signal: controller.signal
+            })
+            .then(response => response.json())
+            .then(data => {
+                stopLoadingEvent(); // Stop loading effect
+                outputElement.value = data.translation;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        setDescriptors();
+
+        // Loading Event
+        function startLoadingEvent() {
+            stopLoadingEvent(); // Ensure no previous interval is running
+            loadingIndex = 0;
+            outputElement.placeholder = "Translating";
+
+            loadingInterval = setInterval(() => {
+                outputElement.placeholder = loadingStates[loadingIndex];
+                loadingIndex = (loadingIndex + 1) % loadingStates.length;
+            }, 400);
+        }
+
+        function stopLoadingEvent() {
+            clearInterval(loadingInterval);
+            outputElement.value = "";
+            outputElement.placeholder = "Translation";
+        }
+    </script>
+    
+<% if (isAdmin) { %>
+    <%- include('./layout/footer_auth') %>
+<% } else { %>
+    <%- include('./layout/footer') %>
+<% } %>
