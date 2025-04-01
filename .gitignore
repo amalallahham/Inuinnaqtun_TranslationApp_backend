@@ -33,3 +33,5 @@ build/
 
 # Misc
 coverage/
+LLM/EchoOfTheNorth_model.onnx
+
