@@ -307,3 +307,95 @@ th, td {
 .submitFilterBtn {
     font-size: 25px;
 }
+
+/* Log filter */
+.logModal {
+    max-height: 85svh;
+    padding: 40px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.logModal::-webkit-scrollbar {
+    width: 5px;
+}
+.logModal::-webkit-scrollbar-track {
+    background: none;
+    border-radius: 10px;
+}
+.logModal::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+
+.logCategories {
+    margin-bottom: 20px;
+}
+
+.logCategories,
+.logOrderby {
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.logCategories,
+.logOrderby {
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.logCategories input,
+.logOrderby input {
+    padding: 0;
+}
+
+/* Disabling default radio styling */
+.logCategories input[type="radio"],
+.logOrderby input[type="radio"] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    /* Remove most all native input styles */
+    appearance: none;
+    /* For iOS < 15 */
+    background-color: var(--form-background);
+    /* Not removed via appearance */
+    margin: 0;
+}
+
+.logCategories input[type="radio"]::before,
+.logOrderby input[type="radio"]::before {
+    width: 30px;
+    height: 30px;
+    background-color: rgb(240, 241, 255);
+    border-radius: 1000px;
+    border: none;
+    display: block;
+    content: "";
+}
+
+.logCategories input[type="radio"]:checked::before,
+.logOrderby input[type="radio"]:checked::before {
+    background-color: #20063B;
+    content: "✓";
+    color: #e9f1ff;
+    text-align: center;
+}
+
+.logRadioBtn {
+    background-color: #76a8ff6a;
+    padding: 7px 7px 7px 20px;
+    border-radius: 1000px;
+    font-size: 18px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+@media screen and (max-width: 500px) {
+    .logModal {
+        padding: 35px;
+    }
+}
