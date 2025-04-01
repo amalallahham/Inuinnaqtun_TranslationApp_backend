@@ -50,8 +50,8 @@
             }
 
 
-            if (input === "") {
-                outputElement.value = "";
+            if (input === "" || input.trim() === "") {
+                stopLoadingEvent();
             } else {
                 controller = new AbortController();
 
@@ -81,7 +81,13 @@
             inputElement.value = temp
 
             setDescriptors();
-            translate(inputElement.value)
+
+            if (inputElement.value === "" || inputElement.value.trim() === "") {
+                stopLoadingEvent();
+            } else {
+                controller = new AbortController();
+                translate(inputElement.value)
+            }
         }
 
         //Fetches the translations
