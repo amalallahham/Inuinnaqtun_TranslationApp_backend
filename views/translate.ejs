@@ -14,7 +14,11 @@
                 <button id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableBtn" onclick="reverseLanguages()">&#x21c4;</button>
                 <div id="output-lang" class="languageOption"></div>
             </div>
-            <textarea id="output-text" class="textArea outputText" rows="4" placeholder="Translation" readonly></textarea>
+            <div id="output-text" class="textArea outputText">Translation</div>
+        </div>
+
+        <div id="word-details">
+           
         </div>
     </div>
 
@@ -35,6 +39,8 @@
 
         const inputElement = document.getElementById("input-text");
         const outputElement = document.getElementById("output-text");
+
+        const wordDetails = document.getElementById("word-details");
 
         let controller;
         let inputTimeout;
@@ -84,6 +90,7 @@
 
             if (inputElement.value === "" || inputElement.value.trim() === "") {
                 stopLoadingEvent();
+                outputElement.innerHTML = "Translation";
             } else {
                 controller = new AbortController();
                 translate(inputElement.value)
@@ -107,9 +114,105 @@
             .then(response => response.json())
             .then(data => {
                 stopLoadingEvent(); // Stop loading effect
-                outputElement.value = data.translation;
+                displayTranslation(data);
             })
             .catch(error => console.error("Error:", error));
+        }
+
+        function displayTranslation(data) {
+            const words = data.translation.split(' ');
+            const details = data.recordedWords;
+
+            const space = document.createTextNode(" ");
+
+            let translation = '';
+            for(const word of words){
+                if(details[word]){
+                    const info = details[word][0];
+                    const wordSpan = document.createElement('span');
+
+                    outputElement.appendChild(wordSpan);
+                    outputElement.appendChild(space);
+
+                    wordSpan.classList.add('selectable', 'notSelected');
+                    wordSpan.innerHTML = word;
+
+                    wordSpan.addEventListener('click', ()=> {
+                        getWordDetails(info._id);
+                        const selectedElements = document.getElementsByClassName('selected');
+                        for(const element of selectedElements){
+                            element.classList.replace('selected', 'notSelected');
+                        }
+
+                        wordSpan.classList.replace('notSelected', 'selected');
+                    });
+
+                    
+                } else {
+                    outputElement.innerHTML += `${word} `;
+                }
+            }
+        }
+
+        function getWordDetails(id){
+            fetch(`/word-details/${id}`, {
+                method: "GET"
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success){
+                    displayWordDetails(data.details);
+                } else {
+                    wordDetails.innerHTML = data.error;
+                }
+                
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function displayWordDetails(info){
+            while (wordDetails.firstChild) wordDetails.removeChild(wordDetails.firstChild);
+
+            const describedWord = document.createElement('h4');
+            const englishEquivalent = document.createElement('p');
+
+            if(info['audioFiles'].length > 0){
+                const audio = document.createElement('audio');
+                const playButton = document.createElement('button');
+
+                wordDetails.appendChild(playButton);
+                wordDetails.appendChild(audio);
+
+                playButton.innerHTML = "PLAY (replace with icon)";
+                audio.src = info['audioFiles'][0];
+                playButton.addEventListener('click', ()=>{
+                    audio.play();
+                });
+            }
+                
+            describedWord.innerHTML = info['word'];
+            englishEquivalent.innerHTML = `"${info['translation']}"`;
+   
+            wordDetails.appendChild(describedWord);
+            wordDetails.appendChild(englishEquivalent);
+
+            const similarWords = info['similarWords'];
+            if(similarWords.length > 0){
+                for(const altWord of similarWords){
+                    const alternativeWord = document.createElement('p');
+                    const linkArrow = document.createElement('span');
+                    linkArrow.innerHTML = '&#8594;';
+                    alternativeWord.innerHTML = `<i>see ${altWord.prefix}</i>`;
+                    alternativeWord.appendChild(linkArrow);
+                    wordDetails.appendChild(alternativeWord);
+
+
+                    linkArrow.classList.add('selectable');
+                    linkArrow.addEventListener('click', ()=>{
+                        getWordDetails(altWord._id);
+                    });
+                }
+            }
         }
 
         setDescriptors();
@@ -118,18 +221,18 @@
         function startLoadingEvent() {
             stopLoadingEvent(); // Ensure no previous interval is running
             loadingIndex = 0;
-            outputElement.placeholder = "Translating";
+            outputElement.innerHTML = "Translating";
 
             loadingInterval = setInterval(() => {
-                outputElement.placeholder = loadingStates[loadingIndex];
+                outputElement.innerHTML = loadingStates[loadingIndex];
                 loadingIndex = (loadingIndex + 1) % loadingStates.length;
             }, 400);
         }
 
         function stopLoadingEvent() {
             clearInterval(loadingInterval);
-            outputElement.value = "";
-            outputElement.placeholder = "Translation";
+            outputElement.innerHTML = "";
+            // outputElement.placeholder = "Translation";
         }
     </script>
     
