@@ -11,14 +11,14 @@
             <textarea id="input-text" class="textArea" rows="4" placeholder="Enter or paste text here" ></textarea>
             <div class="changeLanguageArea">
                 <div id="input-lang" class="languageOption"></div>
-                <button id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableBtn" onclick="reverseLanguages()">&#x21c4;</button>
+                <!-- <button id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableBtn" onclick="reverseLanguages()"><img src="/icons/swap.png"></button> -->
+                <div id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableShadow" onclick="reverseLanguages()">
+                    <img src="/icons/swap.png">
+                </div>
                 <div id="output-lang" class="languageOption"></div>
             </div>
             <div id="output-text" class="textArea outputText">Translation</div>
-        </div>
-
-        <div id="word-details">
-           
+            <div id="word-details"></div>
         </div>
     </div>
 
@@ -172,6 +172,7 @@
 
         function displayWordDetails(info){
             while (wordDetails.firstChild) wordDetails.removeChild(wordDetails.firstChild);
+            document.getElementById("word-details").style.display = "flex";
 
             const describedWord = document.createElement('h4');
             const englishEquivalent = document.createElement('p');
@@ -179,11 +180,14 @@
             if(info['audioFiles'].length > 0){
                 const audio = document.createElement('audio');
                 const playButton = document.createElement('button');
+                playButton.classList.add("audioBtn");
+                playButton.classList.add("hoverable");
+                playButton.classList.add("hoverableShadow");
 
                 wordDetails.appendChild(playButton);
                 wordDetails.appendChild(audio);
 
-                playButton.innerHTML = "PLAY (replace with icon)";
+                playButton.innerHTML = `<img src="/icons/volume.png">`;
                 audio.src = info['audioFiles'][0];
                 playButton.addEventListener('click', ()=>{
                     audio.play();

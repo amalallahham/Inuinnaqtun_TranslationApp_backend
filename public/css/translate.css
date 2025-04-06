@@ -69,17 +69,18 @@
 
 .changeLanguageBtn {
     width: 15%;
-    padding: 10px 0;
+    /* padding: 10px 0; */
     border: 0;
-    border-radius: 1000px;
-    background-color: #20063B;
+    /* border-radius: 1000px; */
+    /* background-color: #20063B; */
     color: #E9F1FF;
     text-align: center;
-    font-size: 25px;
+    /* font-size: 25px; */
 }
 
 .rotateEvent {
     transform: rotate(180deg);
+    transform-origin: center;
 }
 
 .outputText {
@@ -98,9 +99,35 @@
     background-color: #e1f05e /* Change! This is temporary*/
 }
 
+/* word details styling */
+#word-details {
+    width: 100%;
+    background-color: #76a8ff6a;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+}
+
+.audioBtn {
+    width: 40px;
+    background-color: unset;
+    border: 0;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
 @media screen and (max-width: 400px) {
     .wrap {
         height: max-content;
+        padding: 40px 20px;
+    }
+
+    .sideNavContents_wrap {
         padding: 40px 20px;
     }
 
@@ -113,7 +140,7 @@
     }
 
     .changeLanguageBtn {
-        font-size: 18px;
+        /* font-size: 18px; */
     }
 }
   
