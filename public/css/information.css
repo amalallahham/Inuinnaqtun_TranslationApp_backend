@@ -1,5 +1,5 @@
 .wrap {
-    max-height: 100svh;
+    /* max-height: 100svh; */
     /* height: 100svh; */
     /* height: calc(100svh - 150px); */
     padding: 30px 40px;
@@ -40,6 +40,10 @@
     height: auto;
 }
 
+.publishDate {
+    margin-bottom: 40px;
+}
+
 @media screen and (max-width: 500px) {
     .sideNavContents_wrap {
         padding: 0 30px 30px 30px;
@@ -61,6 +65,10 @@
 
     .formWrap input {
         font-size: 18px;
+    }
+
+    .infoDesc{
+        font-size: 16px;
     }
 }
   
