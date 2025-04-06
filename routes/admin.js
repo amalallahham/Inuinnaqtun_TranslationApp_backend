@@ -47,10 +47,10 @@ router.post("/translations/update-word/:wordId", upload.single("audio"), updateW
 router.get("/logs", is_admin, get_logs);
 router.get("/logs/:id", is_admin, get_log_details);
 
-router.get("/information", get_information);
-router.get("/information/add_info", get_add_information);
-router.get("/information/:id", get_information_by_id);
-router.post("/information/add_info", add_information);
+router.get("/information", is_admin, get_information);
+router.get("/information/add_info", is_admin, get_add_information);
+router.get("/information/:id", is_admin, get_information_by_id);
+router.post("/information/add_info", is_admin, add_information);
 
 
 
