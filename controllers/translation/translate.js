@@ -1,3 +1,6 @@
+import DialectWord from "../../models/dialectWords.js";
+import AudioFile from "../../models/audioFile.js";
+
 import ort from 'onnxruntime-node';
 import { AutoTokenizer } from '@xenova/transformers';
 
@@ -33,7 +36,7 @@ export const translate_text = async (req, res) => {
   const tokens = await tokenize(prompt, tokenizer);
   let inputIds = createInputArray(tokens, maxLength, padToken);
   let inputMask = createInputMask(inputIds, padToken);
-  
+
   //Create feeds for the model
   let input_ids = new ort.Tensor("int32", new Int32Array(inputIds), [1, inputIds.length]);
   let attention_mask = new ort.Tensor("int32", new Int32Array(inputMask), [1, inputIds.length]);
@@ -73,8 +76,66 @@ export const translate_text = async (req, res) => {
 
   //Detokenize model output into text and send as json response
   const generatedText = await detokenize(generatedTokens, tokenizer);
-  res.json({translation: generatedText});
+  const recordedWords = await selectRecordedWords(generatedText);
+  res.json({ translation: generatedText, recordedWords: recordedWords });
 }
+
+export const getWordDetails = async (req, res) => {
+  const wordId = req.params.id;
+  const word = await DialectWord.findById(wordId)
+    .lean();
+  
+  if(!word){
+    res.json({success: false, error: "This word has not been recorded in our database! "})
+    return;
+  }
+  
+  const audioFiles = await AudioFile.find({
+    wordId: wordId,
+  }).lean();
+
+  const audioMap = {};
+  audioFiles.forEach((audio) => {
+    if (!audioMap[audio.wordId]) {
+      audioMap[audio.wordId] = [];
+    }
+    audioMap[audio.wordId].push(audio.filePath);
+  });
+
+  const wordAndAudio = {
+    word: word.word,
+    translation: word.translation,
+    similarWords: word.similarWords,
+    created_at: word.createdAt,
+    audioFiles: audioMap[word._id] || [],
+  };
+
+  res.json({success: true, details: wordAndAudio});
+}
+
+const selectRecordedWords = async (translation) => {
+  let searchFilter = { word: { $in: translation.split(' ') } };
+  const words = await DialectWord.find(searchFilter)
+    .sort({createdAt: -1})
+    .lean();
+
+  const wordMap = words.map((word)=> ({
+    _id: word._id,
+    word: word.word
+  }));
+
+  let result = {};
+  for(const word of wordMap){
+    if(result[word.word]){
+      result[word.word].push(word);
+    } else {
+      result[word.word] = [word];
+    }
+  }
+  return result;
+}
+
+
 
 
 // ----- TRANSLATION HELPER FUNCTIONS
