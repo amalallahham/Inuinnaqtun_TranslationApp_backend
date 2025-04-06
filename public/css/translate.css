@@ -86,6 +86,18 @@
     cursor: default; /* Change later */
 }
 
+.selectable {
+    cursor: pointer;
+}
+
+.selectable.notSelected {
+    background-color: #9331cf /* Change! This is temporary*/
+}
+
+.selectable.selected {
+    background-color: #e1f05e /* Change! This is temporary*/
+}
+
 @media screen and (max-width: 400px) {
     .wrap {
         height: max-content;
