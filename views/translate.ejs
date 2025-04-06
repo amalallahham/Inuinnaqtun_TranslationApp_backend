@@ -236,6 +236,7 @@
         function stopLoadingEvent() {
             clearInterval(loadingInterval);
             outputElement.innerHTML = "";
+            document.getElementById("word-details").style.display = "none";
             // outputElement.placeholder = "Translation";
         }
     </script>
