@@ -1,23 +1,23 @@
 <%- include('./layout/header_auth') %>
+<link href="/css/userList.css" rel="stylesheet" />
 
-<div class="container my-4 px-5">
-    <div class="d-flex align-items-center justify-content-between">
-        <h2 class="mb-3 semi-bold">Information Management</h2>
-
-        <!-- Add Info Button -->
-        <a href="/admin/information/add_info" class="btn btn-primary mb-3">Add Information</a>
-    </div>
-
-    <div class="card">
-        <div class="card-body p-0">
+    <div class="userListWrap">
+        <div class="listTitle headerFont textWrap">
+            <h2 class="semi-bold">Informations</h2>
+      
+            <!-- Add User Button (Opens Modal) -->
+            <a href="/admin/information/add_info" class="addUserBtn textBtn hoverable hoverableBtn">Add Information</a>
+        </div>
+        
+        <div class="userTableWrap">
             <% if (typeof error !== "undefined" && error) { %>
                 <div class="alert alert-danger"><%= error %></div>
             <% } %>
 
-            <table class="table table-hover my-2">
+            <table class="userTable">
                 <thead>
-                    <tr>
-                        <th class="px-4">#</th>
+                    <tr class="entryTitle">
+                        <th>#</th>
                         <th>Title</th>
                         <th>Status</th>
                         <th>Created By</th>
@@ -32,17 +32,23 @@
                         </tr>
                     <% } else { %>
                         <% data.forEach((info, index) => { %>
-                            <tr>
+                            <tr class="entry">
                                 <td class="px-4"><%= index + 1 %></td>
                                 <td><%= info.title %></td>
                                 <td><%= info.status %></td>
                                 <td><%= info.createdBy?.username || 'N/A' %></td>
                                 <td><%= info.createdAt.toLocaleDateString() %></td>
-                                <td>
-                                    <a href="/admin/information/<%= info._id %>" class="btn btn-info btn-sm">View</a>
-                                    <a href="/admin/information/<%= info._id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+                                <td class="btnWrap">
+                                    <a href="/admin/information/<%= info._id %>" class="btn btn-info hoverable hoverableBtn">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                    <a href="/admin/information/<%= info._id %>/edit" class="btn btn-warning hoverable hoverableBtn">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
                                     <form action="/admin/information/<%= info._id %>/delete" method="POST" class="d-inline">
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        <button type="submit" class="btn btn-danger hoverable hoverableBtn">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -52,6 +58,5 @@
             </table>
         </div>
     </div>
-</div>
 
 <%- include('./layout/footer_auth') %>
