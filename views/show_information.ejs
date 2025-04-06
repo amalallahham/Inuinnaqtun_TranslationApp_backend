@@ -1,36 +1,18 @@
 <%- include('./layout/header_auth') %>
+<link href="/css/information.css" rel="stylesheet" />
 
-<div class="container my-4 px-5">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="semi-bold"><%= info.title %></h2>
-    <a href="/admin/information" class="btn btn-secondary">Back</a>
-  </div>
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
+    <a href="/admin/information">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </a>
+  </button>
 
-  <div class="card">
-    <div class="card-body">
-      <div class="quill-content">
-        <%- info.content %> 
-      </div>
+  <h1 class="title headerFont semi-bold"><%= info.title %></h1>
+
+  <div class="infoDesc">
+    <div class="quill-content">
+      <%- info.content %> 
     </div>
   </div>
-</div>
 
 <%- include('./layout/footer_auth') %>
-
-<style>
-  .quill-content {
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-
-  .quill-content img,
-  .quill-content iframe {
-    max-width: 100%;
-    height: auto;
-  }
-
-  .quill-content h1, .quill-content h2, .quill-content h3 {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-  }
-</style>
