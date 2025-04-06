@@ -89,6 +89,8 @@
 
 .outputText {
     cursor: default; /* Change later */
+    text-wrap: pretty;
+    word-wrap: break-word;
 }
 
 .selectable {
