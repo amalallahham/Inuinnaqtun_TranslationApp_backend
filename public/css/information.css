@@ -18,9 +18,10 @@
 }
 
 .title {
-  font-size: 60px;
-  text-align: center;
-  padding: 20px 0 0 0;
+    line-height: 1;
+    font-size: 60px;
+    text-align: center;
+    padding: 20px 0 0 0;
 }
 
 .infoDesc{

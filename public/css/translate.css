@@ -68,7 +68,8 @@
 }
 
 .changeLanguageBtn {
-    width: 15%;
+    /* width: 15%; */
+    height: 49px;
     /* padding: 10px 0; */
     border: 0;
     /* border-radius: 1000px; */
@@ -76,6 +77,9 @@
     color: #E9F1FF;
     text-align: center;
     /* font-size: 25px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .rotateEvent {
@@ -137,6 +141,10 @@
 
     .languageOption {
         font-size: 13px;
+    }
+
+    .changeLanguageBtn {
+        height: 46px;
     }
 }
   
