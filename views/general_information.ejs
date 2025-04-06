@@ -1,20 +1,12 @@
 <%- include('./layout/header') %>
+<link href="/css/information.css" rel="stylesheet" />
 
+  <h1 class="title headerFont semi-bold"><%= info.title %></h1>
 
-<div class="container my-4 px-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="semi-bold"><%= info.title %></h2>
-    </div>
-  
-    <div class="card border-0">
-      <div class="card-body">
-        <div class="quill-content">
-          <%- info.content %> 
-
-          <small>Published on: <%= new Date(info.createdAt).toLocaleString() %></small>
-
-        </div>
-      </div>
+  <div class="infoDesc">
+    <div class="quill-content">
+      <%- info.content %> 
+      <small>Published on: <%= new Date(info.createdAt).toLocaleString() %></small>
     </div>
   </div>
 
