@@ -1,12 +1,13 @@
 import express from "express";
-import { getUsers } from "../controllers/users.js";
-import { get_translate, translate_text } from "../controllers/translation/translate.js";
+import { get_information } from "../controllers/general_user/general_user.js"
 
 const router = express.Router();
 
-router.get("/", getUsers);
+// router.get("/", getUsers);
 
-router.get("/translate", get_translate);
+router.get('/information', get_information)
 
-router.post("/translate", translate_text);
+// router.get("/translate", get_translate);
+
+// router.post("/translate", translate_text);
 export default router;
