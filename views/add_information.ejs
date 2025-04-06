@@ -1,21 +1,21 @@
 <%- include('./layout/header_auth') %>
+<link href="/css/login.css" rel="stylesheet" />
 
-<div class="container my-4 px-5">
-  <h2 class="mb-4 semi-bold">Add New Information</h2>
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
+    <a href="/admin/information">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </a>
+  </button>
 
-  <form action="/admin/information/add_info"  method="POST" onsubmit="return submitForm()">
-    <div class="mb-3">
+  <h1 class="title headerFont semi-bold">Add New Information</h1>
+
+  <form action="/admin/information/add_info" class="formWrap editUserWrap" method="POST" onsubmit="return submitForm()" style="margin-top: 20px;">
+    <div>
       <label for="title" class="form-label">Title</label>
-      <input
-        type="text"
-        class="form-control"
-        id="title"
-        name="title"
-        required
-      />
+      <input type="text" class="form-control" id="title" name="title" required />
     </div>
 
-    <div class="mb-3">
+    <div>
       <label for="status" class="form-label">Status</label>
       <select class="form-select" id="status" name="status" required>
         <option value="" disabled selected></option>
@@ -25,16 +25,17 @@
       </select>
     </div>
 
-    <div class="mb-3">
+    <div>
       <label class="form-label">Content</label>
       <div id="editor" style="height: 200px"></div>
       <input type="hidden" name="content" id="content" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a href="/admin/information" class="btn btn-secondary">Cancel</a>
+    <div class="audioRecordInput">
+      <button type="submit" class="btn darkBlueBtn hoverable hoverableBtn">Create</button>
+      <a href="/admin/information" class="btn btn-secondary hoverable hoverableBtn">Cancel</a>
+    </div>
   </form>
-</div>
 
 <!-- Quill.js CDN -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
