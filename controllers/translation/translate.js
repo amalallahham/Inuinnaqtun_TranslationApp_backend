@@ -22,7 +22,6 @@ export const translate_text = async (req, res) => {
 
   //Prompt given to model
   const prompt = createPrompt(req);
-  console.log('created')
 
   //Load model and tokenizer
   const [session, tokenizer] = await Promise.all([
@@ -32,7 +31,6 @@ export const translate_text = async (req, res) => {
       cache_dir: 'LLM/',
     })
   ]);
-  console.log('created')
   
 
   //Tokenize and pad/truncate input

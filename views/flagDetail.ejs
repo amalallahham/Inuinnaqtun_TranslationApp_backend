@@ -1,31 +1,42 @@
 <%- include('./layout/header_auth') %>
-<link href="/css/login.css" rel="stylesheet" />
 
+<div class="container py-5">
+  <a href="/admin/flags" class="btn btn-outline-secondary mb-4">
+    <i class="fa-solid fa-arrow-left"></i> Go Back
+  </a>
 
-<div class="container">
-  <a href="/admin/flags" class="goBackBtn">← Back to Flags</a>
-  
-  <h2>Flag Detail</h2>
-  <div class="flag-detail-box">
-    <p><strong>Word:</strong> <%= flag.wordId.word %></p>
-    <p><strong>Translation:</strong> "<%= flag.wordId.translation %>"</p>
-    <p><strong>Reason:</strong> <%= flag.flagReason %></p>
-    <p><strong>Status:</strong> <%= flag.status %></p>
-    <p><strong>Date:</strong> <%= new Date(flag.createdAt).toLocaleString() %></p>
+  <h1 class="mb-4"><%= title %></h1>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <p><strong>Word:</strong> <%= flag.wordId.word %></p>
+      <p><strong>Translation:</strong> "<%= flag.wordId.translation %>"</p>
+      <p><strong>Reason:</strong> <%= flag.flagReason %></p>
+      <p>
+        <strong>Status:</strong> 
+        <span class="badge 
+          <%= flag.status === 'pending' ? 'bg-warning text-dark' : 
+                flag.status === 'resolved' ? 'bg-success' : 
+                'bg-secondary' %>">
+          <%= flag.status %>
+        </span>
+      </p>
+      <p><strong>Date:</strong> <%= new Date(flag.createdAt).toLocaleString() %></p>
+    </div>
   </div>
 
-  <div class="admin-actions">
+  <div class="d-flex align-items-center gap-3">
     <% if(flag.status !== 'resolved') { %>
-      <form action="/admin/flag/<%= flag._id %>/resolve" method="POST" style="display:inline-block;">
-        <button type="submit" class="adminBtn resolveBtn">
+      <form action="/admin/flag/<%= flag._id %>/resolve" method="POST">
+        <button type="submit" class="btn btn-success">
           <i class="fa-solid fa-check"></i> Resolve
         </button>
       </form>
     <% } else { %>
-      <span>This flag was resolved by admin.</span>
+      <span class="text-muted">This flag was resolved by admin.</span>
     <% } %>
 
-    <a href="/admin/translations/<%= flag.wordId._id %>" class="adminBtn editBtn">
+    <a href="/admin/translations/<%= flag.wordId._id %>" class="btn btn-primary">
       <i class="fa-solid fa-pen-to-square"></i> Edit Translation
     </a>
   </div>

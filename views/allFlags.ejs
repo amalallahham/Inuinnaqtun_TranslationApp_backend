@@ -1,29 +1,41 @@
 <%- include('./layout/header_auth') %>
 
-<div class="container">
-  <h2>All Flags</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Word</th>
-        <th>Reason</th>
-        <th>Status</th>
-        <th>Date</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% flags.forEach(flag => { %>
+<div class="container py-5">
+  <h2 class="mb-4">All Flags</h2>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
         <tr>
-          <td><%= flag.wordId.word %></td>
-          <td><%= flag.flagReason %></td>
-          <td><%= flag.status %></td>
-          <td><%= new Date(flag.createdAt).toLocaleDateString() %></td>
-          <td><a href="/admin/flag_view/<%= flag._id %>">View</a></td>
+          <th scope="col">Word</th>
+          <th scope="col">Reason</th>
+          <th scope="col">Status</th>
+          <th scope="col">Date</th>
+          <th scope="col">Action</th>
         </tr>
-      <% }); %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% flags.forEach(flag => { %>
+          <tr>
+            <td><%= flag.wordId.word %></td>
+            <td><%= flag.flagReason %></td>
+            <td>
+              <span class="badge 
+                <%= flag.status === 'pending' ? 'bg-warning text-dark' : 
+                      flag.status === 'resolved' ? 'bg-success' : 
+                      'bg-secondary' %>">
+                <%= flag.status %>
+              </span>
+            </td>
+            <td><%= new Date(flag.createdAt).toLocaleDateString() %></td>
+            <td>
+              <a href="/admin/flag_view/<%= flag._id %>" class="btn btn-sm btn-primary">View</a>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <%- include('./layout/footer_auth') %>
