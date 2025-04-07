@@ -120,22 +120,46 @@
         }
 
         function displayTranslation(data) {
-            const words = data.translation.split(' ');
+            outputElement.innerHTML = '';
+            const phrases = extractAllPhrases(data.translation);
+            phrases.sort((a, b) => {
+                const wordCountA = a.trim().split(/\s+/).length;
+                const wordCountB = b.trim().split(/\s+/).length;
+                return wordCountA - wordCountB;
+            });
             const details = data.recordedWords;
 
             const space = document.createTextNode(" ");
 
-            let translation = '';
-            for(const word of words){
-                if(details[word]){
-                    const info = details[word][0];
+            let translationWordList = data.translation.split();
+            let translation = data.translation;
+            for(const phrase of Object.keys(details)){
+                if(translation.includes(phrase)){
+                    let phraseWords = phrase.split(' ');
+                    let phraseStarted = false;
+                    for(let i =0; i < translationWordList.length; i++){
+                        if(phraseWords[0] != translationWordList[0]){
+                            if(phraseStarted){
+                                translation = translationaWordList.join(" ");
+                                break;
+                            }
+                            outputElement.innerHTML += translationWordList[0];
+                            translationWordList.shift();
+                        } else {
+                            translationWordList.shift();
+                            phraseWords.shift();
+                            phraseStarted = true;
+                        }
+                    }
+
+                    const info = details[phrase][0];
                     const wordSpan = document.createElement('span');
 
                     outputElement.appendChild(wordSpan);
                     outputElement.appendChild(space);
 
                     wordSpan.classList.add('selectable', 'notSelected');
-                    wordSpan.innerHTML = word;
+                    wordSpan.innerHTML = phrase;
 
                     wordSpan.addEventListener('click', ()=> {
                         getWordDetails(info._id);
@@ -146,13 +170,26 @@
 
                         wordSpan.classList.replace('notSelected', 'selected');
                     });
-
-                    
-                } else {
-                    outputElement.innerHTML += `${word} `;
+            
                 }
+                
             }
         }
+
+        function extractAllPhrases(translation) {
+            const words = translation.split(' ');
+            const phrases = [];
+
+            for (let start = 0; start < words.length; start++) {
+                for (let end = start + 1; end <= words.length; end++) {
+                const phrase = words.slice(start, end).join(' ');
+                phrases.push(phrase);
+                }
+            }
+
+            return phrases;
+        }
+
 
         function getWordDetails(id){
             fetch(`/word-details/${id}`, {
