@@ -1,0 +1,29 @@
+<%- include('./layout/header_auth') %>
+
+<div class="container">
+  <h2>All Flags</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Word</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% flags.forEach(flag => { %>
+        <tr>
+          <td><%= flag.wordId.word %></td>
+          <td><%= flag.flagReason %></td>
+          <td><%= flag.status %></td>
+          <td><%= new Date(flag.createdAt).toLocaleDateString() %></td>
+          <td><a href="/admin/flag_view/<%= flag._id %>">View</a></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('./layout/footer_auth') %>

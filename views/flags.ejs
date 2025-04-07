@@ -1,0 +1,45 @@
+<% if (isAdmin) { %>
+    <%- include('./layout/header_auth') %>
+  <% } else { %>
+    <%- include('./layout/header') %>
+  <% } %>
+  
+  <link rel="stylesheet" href="/css/flagReport.css">
+  
+  <div class="flag-container">
+    <a href="javascript:history.back()" class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">← Go Back</a>
+  
+    <h2 class="title headerFont semi-bold my-4">Flag Report</h2>
+  
+    <div class="word-box">
+      <strong><%= word.word %></strong>
+      <p>"<%= word.translation %>"</p>
+  
+      <% if (word.similarWords.length > 0) { %>
+        <% word.similarWords.forEach(similar => { %>
+          <p><i><%= similar.type %></i> "<%= similar.prefix %>" →</p>
+        <% }); %>
+      <% } %>
+    </div>
+  
+    <form action="<%= isAdmin ? `/admin/flag/${word._id}` : `/flag/${word._id}` %>" method="POST">
+        <label for="flagReason">Flag Category</label>
+      <select name="flagReason" required>
+        <option value="Translation">Translation</option>
+        <option value="Audio">Audio</option>
+        <option value="Other">Other</option>
+      </select>
+  
+      <label for="description">Description</label>
+      <textarea name="description" placeholder="Describe what this flag is about" required></textarea>
+  
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  
+  <% if (isAdmin) { %>
+    <%- include('./layout/footer_auth') %>
+  <% } else { %>
+    <%- include('./layout/footer') %>
+  <% } %>
+  

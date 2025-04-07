@@ -14,4 +14,7 @@ router.get("/word-details/:id", getWordDetails);
 
 router.post("/translate", translate_text);
 
+// router.post("/flag/:id", translate_text);
+
+
 export default router;

@@ -7,7 +7,7 @@ body { background-color: rgb(240, 241, 255); }
 /* Settings for navbar toggle */
 .sideNavContents {
     display: flex;
-    flex-direction: row-reverse;
+    /* flex-direction: row-reverse; */
 }
 
 .sideNav {
@@ -18,9 +18,14 @@ body { background-color: rgb(240, 241, 255); }
     transition-duration: 0.3s;
 }
 
+.noborder {
+    background: unset;
+    border: none;
+}
+
 .sideNavToggled {
     width: 225px;
-    padding-right: 20px;
+    padding-left: 20px;
     overflow: visible;
 }
 
@@ -309,6 +314,8 @@ body { background-color: rgb(240, 241, 255); }
     /* filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.4)); */
     filter: drop-shadow(0 0 10px #17063b49);
 }
+
+
 
 /* Feedback styling */
 .alert {

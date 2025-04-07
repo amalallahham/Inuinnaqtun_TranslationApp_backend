@@ -22,6 +22,7 @@ export const translate_text = async (req, res) => {
 
   //Prompt given to model
   const prompt = createPrompt(req);
+  console.log('created')
 
   //Load model and tokenizer
   const [session, tokenizer] = await Promise.all([
@@ -31,6 +32,8 @@ export const translate_text = async (req, res) => {
       cache_dir: 'LLM/',
     })
   ]);
+  console.log('created')
+  
 
   //Tokenize and pad/truncate input
   const tokens = await tokenize(prompt, tokenizer);
@@ -103,6 +106,7 @@ export const getWordDetails = async (req, res) => {
   });
 
   const wordAndAudio = {
+    id: word?._id,
     word: word.word,
     translation: word.translation,
     similarWords: word.similarWords,

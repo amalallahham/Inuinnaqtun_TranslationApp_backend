@@ -1,0 +1,34 @@
+<%- include('./layout/header_auth') %>
+<link href="/css/login.css" rel="stylesheet" />
+
+
+<div class="container">
+  <a href="/admin/flags" class="goBackBtn">← Back to Flags</a>
+  
+  <h2>Flag Detail</h2>
+  <div class="flag-detail-box">
+    <p><strong>Word:</strong> <%= flag.wordId.word %></p>
+    <p><strong>Translation:</strong> "<%= flag.wordId.translation %>"</p>
+    <p><strong>Reason:</strong> <%= flag.flagReason %></p>
+    <p><strong>Status:</strong> <%= flag.status %></p>
+    <p><strong>Date:</strong> <%= new Date(flag.createdAt).toLocaleString() %></p>
+  </div>
+
+  <div class="admin-actions">
+    <% if(flag.status !== 'resolved') { %>
+      <form action="/admin/flag/<%= flag._id %>/resolve" method="POST" style="display:inline-block;">
+        <button type="submit" class="adminBtn resolveBtn">
+          <i class="fa-solid fa-check"></i> Resolve
+        </button>
+      </form>
+    <% } else { %>
+      <span>This flag was resolved by admin.</span>
+    <% } %>
+
+    <a href="/admin/translations/<%= flag.wordId._id %>" class="adminBtn editBtn">
+      <i class="fa-solid fa-pen-to-square"></i> Edit Translation
+    </a>
+  </div>
+</div>
+
+<%- include('./layout/footer_auth') %>
