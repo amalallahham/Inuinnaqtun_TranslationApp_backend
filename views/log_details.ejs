@@ -31,6 +31,9 @@
               <strong>Data Entry (Type):</strong> <%= log.type %>
             </li>
             <li>
+              <strong>Performed By:</strong> <%= log.performedBy?.username || 'Anonymous' %>
+            </li>
+            <li>
               <strong>Date:</strong> <%= new Date(log.createdAt).toLocaleString()
               %>
             </li>

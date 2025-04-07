@@ -31,6 +31,7 @@ export const translate_text = async (req, res) => {
       cache_dir: 'LLM/',
     })
   ]);
+  
 
   //Tokenize and pad/truncate input
   const tokens = await tokenize(prompt, tokenizer);
@@ -103,6 +104,7 @@ export const getWordDetails = async (req, res) => {
   });
 
   const wordAndAudio = {
+    id: word?._id,
     word: word.word,
     translation: word.translation,
     similarWords: word.similarWords,

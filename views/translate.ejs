@@ -1,285 +1,252 @@
-<% if (isAdmin) { %>
-    <%- include('./layout/header_auth') %>
-<% } else { %>
-    <%- include('./layout/header') %>
-<% } %>
+<% if (isAdmin) { %> <%- include('./layout/header_auth') %> <% } else { %> <%-
+include('./layout/header') %> <% } %>
 
 <link href="/css/translate.css" rel="stylesheet" />
 
-    <div class="main">
-        <div class="inputWrap">
-            <textarea id="input-text" class="textArea" rows="4" placeholder="Enter or paste text here" ></textarea>
-            <div class="changeLanguageArea">
-                <div id="input-lang" class="languageOption"></div>
-                <!-- <button id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableBtn" onclick="reverseLanguages()"><img src="/icons/swap.png"></button> -->
-                <div id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableShadow" onclick="reverseLanguages()">
-                    <img src="/icons/swap.png">
-                </div>
-                <div id="output-lang" class="languageOption"></div>
-            </div>
-            <div id="output-text" class="textArea outputText">Translation</div>
-            <div id="word-details"></div>
-        </div>
+<div class="main">
+  <div class="inputWrap">
+    <textarea
+      id="input-text"
+      class="textArea"
+      rows="4"
+      placeholder="Enter or paste text here"
+    ></textarea>
+    <div class="changeLanguageArea">
+      <div id="input-lang" class="languageOption"></div>
+      <!-- <button id="changeLanguageBtn" class="changeLanguageBtn hoverable hoverableBtn" onclick="reverseLanguages()"><img src="/icons/swap.png"></button> -->
+      <div
+        id="changeLanguageBtn"
+        class="changeLanguageBtn hoverable hoverableShadow"
+        onclick="reverseLanguages()"
+      >
+        <img src="/icons/swap.png" />
+      </div>
+      <div id="output-lang" class="languageOption"></div>
     </div>
+    <div id="output-text" class="textArea outputText">Translation</div>
+    <div id="word-details"></div>
+  </div>
+</div>
 
-    <script>
-        // Lodaing event elements
-        let loadingInterval; // Stores the interval ID
-        let loadingStates = ["Translating", "Translating.", "Translating..", "Translating..."];
-        let loadingIndex = 0;
+<script>
+  const en = "English";
+  const inu = "Inuinnaqtun";
+  let inputLanguage = en;
+  let outputLanguage = inu;
 
-        const en = "English";
-        const inu = "Inuinnaqtun";
+  const inputElement = document.getElementById("input-text");
+  const outputElement = document.getElementById("output-text");
+  const inputDescriptor = document.getElementById("input-lang");
+  const outputDescriptor = document.getElementById("output-lang");
+  const wordDetails = document.getElementById("word-details");
 
-        let inputLanguage = en;
-        let outputLanguage = inu;
+  let controller;
+  let inputTimeout;
+  let loadingInterval;
+  let loadingIndex = 0;
+  const loadingStates = [
+    "Translating",
+    "Translating.",
+    "Translating..",
+    "Translating...",
+  ];
 
-        const inputDescriptor = document.getElementById("input-lang");
-        const outputDescriptor = document.getElementById("output-lang");
+  setDescriptors();
 
-        const inputElement = document.getElementById("input-text");
-        const outputElement = document.getElementById("output-text");
+  inputElement.addEventListener("input", () => {
+    const input = inputElement.value.trim();
 
-        const wordDetails = document.getElementById("word-details");
+    if (inputTimeout) clearTimeout(inputTimeout);
+    if (controller) controller.abort();
 
-        let controller;
-        let inputTimeout;
-        inputElement.addEventListener('input', () => {
-            const input = inputElement.value;
+    if (input === "") {
+      stopLoadingEvent();
+    } else {
+      controller = new AbortController();
+      inputTimeout = setTimeout(() => {
+        translate(input);
+      }, 700);
+    }
+  });
 
-            // Timer before request and request are cancelled if more is inputted
-            if (inputTimeout) {
-                clearTimeout(inputTimeout)
-            }
-            if (controller) {
-                controller.abort();
-            }
+  function setDescriptors() {
+    inputDescriptor.innerText = inputLanguage;
+    outputDescriptor.innerText = outputLanguage;
+  }
 
+  function reverseLanguages() {
+    document
+      .getElementById("changeLanguageBtn")
+      .classList.toggle("rotateEvent");
 
-            if (input === "" || input.trim() === "") {
-                stopLoadingEvent();
-            } else {
-                controller = new AbortController();
+    [inputLanguage, outputLanguage] = [outputLanguage, inputLanguage];
+    [inputElement.value, outputElement.value] = [
+      outputElement.value,
+      inputElement.value,
+    ];
 
-                //Prevents continuous requests for translation while client is typing
-                inputTimeout = setTimeout(() => {
-                    translate(input);
-                }, 700);
-            }
+    setDescriptors();
+
+    if (inputElement.value.trim() === "") {
+      stopLoadingEvent();
+      outputElement.innerHTML = "Translation";
+    } else {
+      controller = new AbortController();
+      translate(inputElement.value);
+    }
+  }
+
+  function translate(input) {
+    startLoadingEvent();
+
+    fetch("/translate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: input,
+        sourceLang: inputLanguage,
+        targetLang: outputLanguage,
+      }),
+      signal: controller.signal,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        stopLoadingEvent();
+        displayTranslation(data);
+      })
+      .catch((err) => console.error("Error:", err));
+  }
+
+  function displayTranslation(data) {
+    outputElement.innerHTML = "";
+    const words = data.translation.split(" ");
+    const details = data.recordedWords;
+
+    for (const word of words) {
+      const space = document.createTextNode(" ");
+
+      if (details[word]) {
+        const info = details[word][0];
+        const wordSpan = document.createElement("span");
+        wordSpan.classList.add("selectable", "notSelected");
+        wordSpan.innerText = word;
+
+        wordSpan.addEventListener("click", () => {
+          getWordDetails(info._id);
+
+          document.querySelectorAll(".selected").forEach((el) => {
+            el.classList.replace("selected", "notSelected");
+          });
+
+          wordSpan.classList.replace("notSelected", "selected");
         });
 
-        //Sets the language descriptors
-        function setDescriptors() {
-            inputDescriptor.innerHTML = inputLanguage;
-            outputDescriptor.innerHTML = outputLanguage;
+        outputElement.appendChild(wordSpan);
+        outputElement.appendChild(space);
+      } else {
+        outputElement.innerHTML += `${word} `;
+      }
+    }
+  }
+
+  function getWordDetails(id) {
+    fetch(`/word-details/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          displayWordDetails(data.details);
+        } else {
+          wordDetails.innerText = data.error;
         }
+      })
+      .catch((err) => console.error("Error:", err));
+  }
 
-        //Reverses the language translation
-        function reverseLanguages() {
-            document.getElementById("changeLanguageBtn").classList.toggle("rotateEvent");
+  function displayWordDetails(info) {
+    wordDetails.innerHTML = "";
+    wordDetails.style.display = "flex";
 
-            let temp = outputLanguage;
-            outputLanguage = inputLanguage;
-            inputLanguage = temp;
+    const container = document.createElement("div");
+    container.classList.add("wordInfoBox");
 
-            temp = outputElement.value;
-            outputElement.value = inputElement.value;
-            inputElement.value = temp
+    const wordTitle = document.createElement("h4");
+    wordTitle.innerText = info.word;
 
-            setDescriptors();
+    const translation = document.createElement("p");
+    translation.innerText = `"${info.translation}"`;
 
-            if (inputElement.value === "" || inputElement.value.trim() === "") {
-                stopLoadingEvent();
-                outputElement.innerHTML = "Translation";
-            } else {
-                controller = new AbortController();
-                translate(inputElement.value)
-            }
-        }
+    container.appendChild(wordTitle);
+    container.appendChild(translation);
 
-        //Fetches the translations
-        function translate(input) {
-            startLoadingEvent(); // Start loading effect
+    if (info.audioFiles.length > 0) {
+      const audio = document.createElement("audio");
+      audio.src = info.audioFiles[0];
 
-            fetch("/translate", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    text: input,
-                    sourceLang: inputLanguage,
-                    targetLang: outputLanguage,
-                }),
-                signal: controller.signal
-            })
-            .then(response => response.json())
-            .then(data => {
-                stopLoadingEvent(); // Stop loading effect
-                displayTranslation(data);
-            })
-            .catch(error => console.error("Error:", error));
-        }
+      const buttonGroup = document.createElement("div");
+      buttonGroup.style.display = "flex";
+      buttonGroup.style.flexDirection = "column";
+      buttonGroup.style.gap = "8px";
+      buttonGroup.classList.add("audioBtn");
 
-        function displayTranslation(data) {
-            outputElement.innerHTML = '';
-            const phrases = extractAllPhrases(data.translation);
-            phrases.sort((a, b) => {
-                const wordCountA = a.trim().split(/\s+/).length;
-                const wordCountB = b.trim().split(/\s+/).length;
-                return wordCountA - wordCountB;
-            });
-            const details = data.recordedWords;
+      const playBtn = document.createElement("button");
+      playBtn.classList.add("hoverable", "hoverableShadow", "noborder");
+      playBtn.style.fontSize = "27px";
+      playBtn.innerHTML = `<i class="fa-solid fa-volume-high"></i>`;
+      playBtn.addEventListener("click", () => audio.play());
 
-            const space = document.createTextNode(" ");
+      const flagBtn = document.createElement("button");
+      flagBtn.classList.add("hoverable", "hoverableShadow", "noborder");
+      flagBtn.innerHTML = `<i class="fa-regular fa-flag"></i>`;
+      flagBtn.title = "flag a word";
+      flagBtn.style.fontSize = "27px";
 
-            let translationWordList = data.translation.split();
-            let translation = data.translation;
-            for(const phrase of Object.keys(details)){
-                if(translation.includes(phrase)){
-                    let phraseWords = phrase.split(' ');
-                    let phraseStarted = false;
-                    for(let i =0; i < translationWordList.length; i++){
-                        if(phraseWords[0] != translationWordList[0]){
-                            if(phraseStarted){
-                                translation = translationaWordList.join(" ");
-                                break;
-                            }
-                            outputElement.innerHTML += translationWordList[0];
-                            translationWordList.shift();
-                        } else {
-                            translationWordList.shift();
-                            phraseWords.shift();
-                            phraseStarted = true;
-                        }
-                    }
+      flagBtn.addEventListener("click", () => {
+        window.location.href = `/admin/flag/${info.id}`;
+      });
 
-                    const info = details[phrase][0];
-                    const wordSpan = document.createElement('span');
+      buttonGroup.appendChild(playBtn);
+      buttonGroup.appendChild(flagBtn);
 
-                    outputElement.appendChild(wordSpan);
-                    outputElement.appendChild(space);
+      container.appendChild(buttonGroup);
+      container.appendChild(audio);
+    }
 
-                    wordSpan.classList.add('selectable', 'notSelected');
-                    wordSpan.innerHTML = phrase;
+    wordDetails.appendChild(container);
 
-                    wordSpan.addEventListener('click', ()=> {
-                        getWordDetails(info._id);
-                        const selectedElements = document.getElementsByClassName('selected');
-                        for(const element of selectedElements){
-                            element.classList.replace('selected', 'notSelected');
-                        }
+    // Add similar words
+    if (info.similarWords.length > 0) {
+      for (const alt of info.similarWords) {
+        const altPara = document.createElement("p");
+        const link = document.createElement("span");
+        link.classList.add("selectable");
+        link.innerHTML = " &#8594;";
+        link.addEventListener("click", () => getWordDetails(alt._id));
 
-                        wordSpan.classList.replace('notSelected', 'selected');
-                    });
-            
-                }
-                
-            }
-        }
+        altPara.innerHTML = `<i>see ${alt.prefix}</i>`;
+        altPara.appendChild(link);
 
-        function extractAllPhrases(translation) {
-            const words = translation.split(' ');
-            const phrases = [];
+        wordDetails.appendChild(altPara);
+      }
+    }
+  }
 
-            for (let start = 0; start < words.length; start++) {
-                for (let end = start + 1; end <= words.length; end++) {
-                const phrase = words.slice(start, end).join(' ');
-                phrases.push(phrase);
-                }
-            }
+  function startLoadingEvent() {
+    stopLoadingEvent();
+    loadingIndex = 0;
+    outputElement.innerHTML = "Translating";
 
-            return phrases;
-        }
+    loadingInterval = setInterval(() => {
+      outputElement.innerHTML = loadingStates[loadingIndex];
+      loadingIndex = (loadingIndex + 1) % loadingStates.length;
+    }, 400);
+  }
 
+  function stopLoadingEvent() {
+    clearInterval(loadingInterval);
+    outputElement.innerHTML = "";
+    wordDetails.style.display = "none";
+  }
+</script>
 
-        function getWordDetails(id){
-            fetch(`/word-details/${id}`, {
-                method: "GET"
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success){
-                    displayWordDetails(data.details);
-                } else {
-                    wordDetails.innerHTML = data.error;
-                }
-                
-            })
-            .catch(error => console.error("Error:", error));
-        }
-
-        function displayWordDetails(info){
-            while (wordDetails.firstChild) wordDetails.removeChild(wordDetails.firstChild);
-            document.getElementById("word-details").style.display = "flex";
-
-            const describedWord = document.createElement('h4');
-            const englishEquivalent = document.createElement('p');
-
-            if(info['audioFiles'].length > 0){
-                const audio = document.createElement('audio');
-                const playButton = document.createElement('button');
-                playButton.classList.add("audioBtn");
-                playButton.classList.add("hoverable");
-                playButton.classList.add("hoverableShadow");
-
-                wordDetails.appendChild(playButton);
-                wordDetails.appendChild(audio);
-
-                playButton.innerHTML = `<img src="/icons/volume.png">`;
-                audio.src = info['audioFiles'][0];
-                playButton.addEventListener('click', ()=>{
-                    audio.play();
-                });
-            }
-                
-            describedWord.innerHTML = info['word'];
-            englishEquivalent.innerHTML = `"${info['translation']}"`;
-   
-            wordDetails.appendChild(describedWord);
-            wordDetails.appendChild(englishEquivalent);
-
-            const similarWords = info['similarWords'];
-            if(similarWords.length > 0){
-                for(const altWord of similarWords){
-                    const alternativeWord = document.createElement('p');
-                    const linkArrow = document.createElement('span');
-                    linkArrow.innerHTML = '&#8594;';
-                    alternativeWord.innerHTML = `<i>see ${altWord.prefix}</i>`;
-                    alternativeWord.appendChild(linkArrow);
-                    wordDetails.appendChild(alternativeWord);
-
-
-                    linkArrow.classList.add('selectable');
-                    linkArrow.addEventListener('click', ()=>{
-                        getWordDetails(altWord._id);
-                    });
-                }
-            }
-        }
-
-        setDescriptors();
-
-        // Loading Event
-        function startLoadingEvent() {
-            stopLoadingEvent(); // Ensure no previous interval is running
-            loadingIndex = 0;
-            outputElement.innerHTML = "Translating";
-
-            loadingInterval = setInterval(() => {
-                outputElement.innerHTML = loadingStates[loadingIndex];
-                loadingIndex = (loadingIndex + 1) % loadingStates.length;
-            }, 400);
-        }
-
-        function stopLoadingEvent() {
-            clearInterval(loadingInterval);
-            outputElement.innerHTML = "";
-            document.getElementById("word-details").style.display = "none";
-            // outputElement.placeholder = "Translation";
-        }
-    </script>
-    
-<% if (isAdmin) { %>
-    <%- include('./layout/footer_auth') %>
-<% } else { %>
-    <%- include('./layout/footer') %>
-<% } %>
+<% if (isAdmin) { %> <%- include('./layout/footer_auth') %> <% } else { %> <%-
+include('./layout/footer') %> <% } %>

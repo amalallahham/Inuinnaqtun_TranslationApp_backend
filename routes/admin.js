@@ -11,6 +11,7 @@ import { add_translation, delete_word, get_add_translation, get_translations, ge
 import upload from "../middlewares/uploadMiddleware.js";
 import { get_log_details, get_logs } from "../controllers/admin/logs.js";
 import { add_information, deleteInformation, get_add_information, get_edit_by_id, get_information, get_information_by_id, updateInformation } from "../controllers/admin/information.js";
+import { getAllFlags, getFlagDetail, renderFlagForm, resolveFlag, submitFlag } from "../controllers/flag/flag.js";
 const router = express.Router();
 
 router.get("/login", redirectIfAuthenticated, get_login);
@@ -40,7 +41,7 @@ router.get("/translations/add-word", get_add_translation);
 router.post("/translations/add-word", upload.single("audio"), add_translation);
 
 router.get("/translations/:id", get_word_details);
-router.delete("/translations/:id", delete_word);
+router.delete("/translations/:id", is_admin, delete_word);
 
 router.post("/translations/update-word/:wordId", upload.single("audio"), updateWord);
 
@@ -56,9 +57,12 @@ router.post("/information/add_info", is_admin, add_information);
 router.delete('/information/delete/:id', deleteInformation);
 
 
+router.get('/flag/:id', renderFlagForm);
+router.post('/flag/:id', submitFlag);
 
-
-
+router.get('/flags', is_admin, getAllFlags);
+router.get('/flag_view/:id', is_admin, getFlagDetail);
+router.post('/flag/:id/resolve', is_admin, resolveFlag);
 router.get("/", verifySession, get_dashboard);
 
 export default router;

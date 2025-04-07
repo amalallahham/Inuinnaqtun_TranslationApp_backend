@@ -12,9 +12,7 @@
                     Info
                 </div>
             </a>
-        <% } %>
-
-        <% if (title.toLowerCase() == "information") {%>
+        <% } else {%>
             <a class="footerItem hoverable hoverableShadow" href="/translate">
                 <div class="footerIcon">
                     <i class="fa-solid fa-language"></i>
@@ -36,8 +34,11 @@
         // Activating footer for mobile view
         if (document.body.offsetWidth <= 550) {
             document.getElementById("footer").style.display = "flex";
-            document.querySelector(".hideWhenFooter").style.display = "none";
-            document.querySelector(".wrap").style.paddingBottom = `${40 + document.getElementById("footer").offsetHeight}px`;
+            if (document.querySelector(".hideWhenFooter")) {
+                document.querySelector(".hideWhenFooter").style.display = "none";
+            }
+            document.querySelector(".wrap").style.paddingBottom = `${100 + document.getElementById("footer").offsetHeight}px`;
+            console.log(40 + document.getElementById("footer").offsetHeight)
         }
     });
 </script>

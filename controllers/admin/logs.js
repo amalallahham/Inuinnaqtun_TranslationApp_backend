@@ -60,7 +60,7 @@ export const get_logs = async (req, res) => {
 
 export const get_log_details = async (req, res) => {
   try {
-    const log = await Log.findById(req.params.id).lean();
+    const log = await Log.findById(req.params.id) .populate('performedBy', 'username').lean();
 
     if (!log) {
       return res.status(404).render("log_details", {

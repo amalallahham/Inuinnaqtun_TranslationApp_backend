@@ -118,6 +118,12 @@
     position: relative;
 }
 
+.wordInfoBox {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 .audioBtn {
     width: 40px;
     background-color: unset;
