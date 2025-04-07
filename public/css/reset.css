@@ -7,7 +7,7 @@ body { background-color: rgb(240, 241, 255); }
 /* Settings for navbar toggle */
 .sideNavContents {
     display: flex;
-    /* flex-direction: row-reverse; */
+    flex-direction: row-reverse;
 }
 
 .sideNav {
@@ -25,7 +25,7 @@ body { background-color: rgb(240, 241, 255); }
 
 .sideNavToggled {
     width: 225px;
-    padding-left: 20px;
+    padding-right: 20px;
     overflow: visible;
 }
 
@@ -77,7 +77,6 @@ body { background-color: rgb(240, 241, 255); }
     /* background-image: linear-gradient(grey, rgba(0, 0, 0, 0));; */
     background-image: linear-gradient(#5C80BC, #5c7fbc00);;
     display: flex;
-    gap: 20px;
     justify-content: space-between;
     align-items: center;
 }
@@ -118,13 +117,6 @@ body { background-color: rgb(240, 241, 255); }
     font-size: 40px;
 }
 
-.sideNavMenuWrap {
-    max-width: 120px;
-    display: flex;
-    /* flex-wrap: wrap; */
-    gap: 30px;
-}
-
 /* Footer settings */
 .footer {
     width: 95%;
@@ -156,25 +148,6 @@ body { background-color: rgb(240, 241, 255); }
 }
 
 /* Media queries for logo */
-@media screen and (max-width: 750px) {
-    .navBar {
-        padding: 0 30px;
-    }
-
-    .logo>a {
-        gap: 20px;
-    }
-
-    .sideNavMenuWrap {
-        padding: 0 0 0 30px;
-    }
-
-    .navLoginBtn,
-    .navMenu {
-        font-size: 30px;
-    }
-}
-
 @media screen and (max-width: 675px) {
     .logo {
         font-size: 40px;
@@ -185,13 +158,10 @@ body { background-color: rgb(240, 241, 255); }
         height: 80px;
     }
 
-    .sideNavMenuWrap {
-        gap: 15px;
-    }
-
     .navLoginBtn,
     .navMenu {
-        font-size: 25px;
+        padding: 0 0 0 30px;
+        font-size: 30px;
     }
 }
 
@@ -208,24 +178,23 @@ body { background-color: rgb(240, 241, 255); }
     .footerDesc {
         font-size: 16px;
     }
-
-    .navBar {
-        gap: 0;
-    }
-
-    .sideNavMenuWrap {
-        flex-direction: column;
-        gap: 5px;
-    }
 }
 
 @media screen and (max-width: 550px) {
+    .navBar {
+        padding: 0 30px;
+    }
+
     .logo {
         width: 100%;
     }
 }
 
 @media screen and (max-width: 490px) {
+    .logo>a {
+        gap: 20px;
+    }
+
     .logoText {
         flex-direction: column;
         gap: 0;
@@ -235,12 +204,9 @@ body { background-color: rgb(240, 241, 255); }
         margin: 0;
     }
 
-    .sideNavMenuWrap {
-        padding: 0 0 0 20px;
-    }
-
     .navLoginBtn,
     .navMenu {
+        padding: 0 0 0 20px;
         font-size: 25px;
     }
 
@@ -285,7 +251,6 @@ body { background-color: rgb(240, 241, 255); }
 /* Go back button */
 .goBackBtn {
     align-self: flex-start;
-    margin-bottom: 20px;
     font-size: 16px;
     padding: 10px 25px;
     border-radius: 10px;
@@ -314,8 +279,6 @@ body { background-color: rgb(240, 241, 255); }
     /* filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.4)); */
     filter: drop-shadow(0 0 10px #17063b49);
 }
-
-
 
 /* Feedback styling */
 .alert {
