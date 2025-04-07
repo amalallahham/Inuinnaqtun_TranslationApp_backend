@@ -41,7 +41,7 @@ router.get("/translations/add-word", get_add_translation);
 router.post("/translations/add-word", upload.single("audio"), add_translation);
 
 router.get("/translations/:id", get_word_details);
-router.delete("/translations/:id", delete_word);
+router.delete("/translations/:id", is_admin, delete_word);
 
 router.post("/translations/update-word/:wordId", upload.single("audio"), updateWord);
 
