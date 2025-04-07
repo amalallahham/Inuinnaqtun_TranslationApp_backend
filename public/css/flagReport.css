@@ -111,3 +111,53 @@
     align-items: center;
     gap: 20px;
 }
+
+/* Making new flags */
+.formWrap {
+    margin-top: 30px;
+}
+
+.wordWrap {
+    background-color: #BDD3FF;
+    padding: 20px 30px;
+    border-radius: 7px;
+    font-size: 20px;
+}
+
+.wordWrap ul {
+    background-color: unset;
+    list-style: none;
+}
+
+.wordWrap li {
+    background-color: unset;
+}
+
+.wordDetail {
+    font-size: 25px;
+}
+
+.textArea {
+    width: 100%;
+    max-height: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 20px;
+    background-color: #76a8ff6a;
+    border: 0;
+    outline: 0;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    resize: none;
+}
+
+#flagForm {
+    margin-top: 0;
+}
+
+.wrap {
+    max-height: unset !important;
+    /* padding-bottom: 100px !important; */
+}

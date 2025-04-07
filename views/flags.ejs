@@ -4,19 +4,21 @@
   <%- include('./layout/header') %>
 <% } %>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/flagReport.css">
+<link href="/css/login.css" rel="stylesheet" />
 
-<div class="container py-4">
-  <a href="javascript:history.back()" class="btn btn-outline-secondary mb-3">&larr; Go Back</a>
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
+    <a href="javascript:history.back()">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </a>
+  </button>
 
-  <h2 class="mb-4">Flag Report</h2>
+  <h1 class="title headerFont semi-bold">Flag Report</h1>
 
-  <div class="card mb-4">
-    <div class="card-body">
-      <h5 class="card-title"><strong><%= word.word %></strong></h5>
+  <div class="formWrap editUserWrap">
+    <div class="wordWrap">
+      <h5 class="card-title wordDetail"><%= word.word %></h5>
       <p class="card-text">"<%= word.translation %>"</p>
-
       <% if (word.similarWords.length > 0) { %>
         <ul class="list-group list-group-flush">
           <% word.similarWords.forEach(similar => { %>
@@ -27,25 +29,24 @@
         </ul>
       <% } %>
     </div>
+
+    <form id="flagForm"  class="formWrap editUserWrap">
+      <div class="mb-3">
+        <label for="flagReason" class="form-label">Flag Category</label>
+        <select name="flagReason" id="flagReason" class="form-select" required>
+          <option value="Translation">Translation</option>
+          <option value="Audio">Audio</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description" id="description" class="form-control textArea" placeholder="Describe what this flag is about" required></textarea>
+      </div>
+
+      <button type="submit" class="btn submitBtn hoverable hoverableBtn">Submit</button>
+    </form>
   </div>
-
-  <form id="flagForm">
-    <div class="mb-3">
-      <label for="flagReason" class="form-label">Flag Category</label>
-      <select name="flagReason" id="flagReason" class="form-select" required>
-        <option value="Translation">Translation</option>
-        <option value="Audio">Audio</option>
-      </select>
-    </div>
-
-    <div class="mb-3">
-      <label for="description" class="form-label">Description</label>
-      <textarea name="description" id="description" class="form-control" placeholder="Describe what this flag is about" required></textarea>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
