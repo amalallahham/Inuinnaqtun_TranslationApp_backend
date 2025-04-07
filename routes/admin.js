@@ -10,7 +10,7 @@ import { delete_user, edit_user, get_edit_user, get_users, invite_user } from ".
 import { add_translation, delete_word, get_add_translation, get_translations, get_word_details, updateWord } from "../controllers/admin/translations.js";
 import upload from "../middlewares/uploadMiddleware.js";
 import { get_log_details, get_logs } from "../controllers/admin/logs.js";
-import { add_information, get_add_information, get_information, get_information_by_id } from "../controllers/admin/information.js";
+import { add_information, deleteInformation, get_add_information, get_edit_by_id, get_information, get_information_by_id, updateInformation } from "../controllers/admin/information.js";
 const router = express.Router();
 
 router.get("/login", redirectIfAuthenticated, get_login);
@@ -50,8 +50,10 @@ router.get("/logs/:id", is_admin, get_log_details);
 router.get("/information", is_admin, get_information);
 router.get("/information/add_info", is_admin, get_add_information);
 router.get("/information/:id", is_admin, get_information_by_id);
+router.get("/information/edit/:id", is_admin, get_edit_by_id);
+router.post("/information/edit/:id", is_admin, updateInformation);
 router.post("/information/add_info", is_admin, add_information);
-
+router.delete('/information/delete/:id', deleteInformation);
 
 
 

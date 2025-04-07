@@ -11,12 +11,14 @@ const informationSchema = new mongoose.Schema({
   createdBy: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: "User", 
-    required: true 
+    required: true,
+    index: true
   },
   createdAt: { type: Date, default: Date.now }
 });
 
 const Information = mongoose.model("Information", informationSchema);
 
+informationSchema.index({ createdBy: 1 });
 
 export default Information;

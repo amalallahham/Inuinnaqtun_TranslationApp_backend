@@ -1,7 +1,11 @@
 import Information from "../../models/information.js";
 
 export const get_information = async (req, res) => {
-  const infoList = await Information.find().populate("createdBy");
+  
+  const infoList = await Information.find()
+  .sort({ createdAt: -1 })
+  .populate("createdBy", "username")
+  .lean();
 
   res.render("information", {
     error: "",
@@ -47,16 +51,57 @@ export const get_information_by_id = async (req, res) => {
   });
 };
 
-export const update_information = async (req, res) => {
-  const { title, content, status } = req.body;
-  await Information.findByIdAndUpdate(req.params.id, {
-    title,
-    content,
-    status,
-  });
+export const get_edit_by_id = async (req, res) => {
+  try {
+    const info = await Information.findById(req.params.id);
+    if (!info) {
+      return res.status(404).send("Information not found");
+    }
+
+    res.render('edit_information', { info , title: 'Edit Information'});
+  } catch (err) {
+    console.error("Render Edit Error:", err);
+    res.status(500).send("Server error");
+  }
 };
 
-export const remove = async (req, res) => {
-  await Information.findByIdAndDelete(req.params.id);
-  res.redirect("/information");
+export const updateInformation = async (req, res) => {
+  try {
+    const { title, content, status } = req.body;
+
+    const info = await Information.findById(req.params.id);
+    if (!info) {
+      return res.status(404).send("Information not found");
+    }
+
+    info.title = title;
+    info.content = content;
+    info.status = status;
+
+    await info.save();
+
+    res.redirect('/admin/information');
+  } catch (err) {
+    console.error("Update Error:", err);
+    res.status(500).send("Server error");
+  }
+};
+
+
+
+export const deleteInformation = async (req, res) => {
+  const infoId = req.params.id;
+
+  try {
+    const info = await Information.findById(infoId);
+    if (!info) {
+      return res.status(404).json({ success: false, message: "Information not found" });
+    }
+
+    await Information.findByIdAndDelete(infoId);
+    return res.json({ success: true, message: "Information deleted successfully" });
+  } catch (err) {
+    console.error("Delete error:", err);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
 };
