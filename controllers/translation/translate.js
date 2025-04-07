@@ -90,7 +90,7 @@ export const getWordDetails = async (req, res) => {
     res.json({success: false, error: "This word has not been recorded in our database! "})
     return;
   }
-  
+
   const audioFiles = await AudioFile.find({
     wordId: wordId,
   }).lean();
@@ -116,7 +116,8 @@ export const getWordDetails = async (req, res) => {
 }
 
 const selectRecordedWords = async (translation) => {
-  let searchFilter = { word: { $in: translation.split(' ') } };
+  const allPhrases = extractAllPhrases(translation);
+  let searchFilter = { word: { $in: allPhrases } };
   const words = await DialectWord.find(searchFilter)
     .sort({createdAt: -1})
     .lean();
@@ -138,7 +139,19 @@ const selectRecordedWords = async (translation) => {
 }
 
 
+const extractAllPhrases = (translation) => {
+  const words = translation.split(' ');
+  const phrases = [];
 
+  for (let start = 0; start < words.length; start++) {
+    for (let end = start + 1; end <= words.length; end++) {
+      const phrase = words.slice(start, end).join(' ');
+      phrases.push(phrase);
+    }
+  }
+
+  return phrases;
+}
 
 // ----- TRANSLATION HELPER FUNCTIONS
 
