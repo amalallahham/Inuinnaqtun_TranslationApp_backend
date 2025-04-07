@@ -190,6 +190,7 @@ include('./layout/header') %> <% } %>
 
       const playBtn = document.createElement("button");
       playBtn.classList.add("hoverable", "hoverableShadow", "noborder");
+      playBtn.style.fontSize = "27px";
       playBtn.innerHTML = `<i class="fa-solid fa-volume-high"></i>`;
       playBtn.addEventListener("click", () => audio.play());
 
@@ -197,6 +198,8 @@ include('./layout/header') %> <% } %>
       flagBtn.classList.add("hoverable", "hoverableShadow", "noborder");
       flagBtn.innerHTML = `<i class="fa-regular fa-flag"></i>`;
       flagBtn.title = "flag a word";
+      flagBtn.style.fontSize = "27px";
+
       flagBtn.addEventListener("click", () => {
         window.location.href = `/admin/flag/${info.id}`;
       });
