@@ -1,14 +1,17 @@
 <%- include('./layout/header_auth') %>
+<link href="/css/userList.css" rel="stylesheet" />
 
-<div class="container py-5">
-  <h2 class="mb-4">All Flags</h2>
+<div class="userListWrap">
+  <div class="listTitle headerFont translationsTitle">
+    <h2 class="semi-bold">All Flags</h2>
+  </div>
 
-  <div class="table-responsive">
-    <table class="table table-hover align-middle">
+  <div class="userTableWrap">
+    <table class="userTable">
       <thead class="table-light">
-        <tr>
+        <tr class="entryTitle">
           <th scope="col">Word</th>
-          <th scope="col">Reason</th>
+          <!-- <th scope="col">Reason</th> -->
           <th scope="col">Status</th>
           <th scope="col">Date</th>
           <th scope="col">Action</th>
@@ -16,9 +19,9 @@
       </thead>
       <tbody>
         <% flags.forEach(flag => { %>
-          <tr>
+          <tr class="entry">
             <td><%= flag.wordId.word %></td>
-            <td><%= flag.flagReason %></td>
+            <!-- <td><%= flag.flagReason %></td> -->
             <td>
               <span class="badge 
                 <%= flag.status === 'pending' ? 'bg-warning text-dark' : 
@@ -29,7 +32,9 @@
             </td>
             <td><%= new Date(flag.createdAt).toLocaleDateString() %></td>
             <td>
-              <a href="/admin/flag_view/<%= flag._id %>" class="btn btn-sm btn-primary">View</a>
+              <a href="/admin/flag_view/<%= flag._id %>" class="btn hoverable hoverableBtn">
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
             </td>
           </tr>
         <% }); %>
