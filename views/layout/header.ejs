@@ -17,7 +17,7 @@
     <body class="sb-nav-fixed">
         <!-- <nav class="sb-topnav navbar navbar-expand  d-flex justify-content-between"> -->
             <nav class="navBar">
-                <div class="logo titleFont hoverable bold">
+                <div class="logo titleFont hoverable bold" style="gap: 15px;">
                     <a href="/translate">
                         <div class="headerLogo">
                             <img src="/image/tempLogo.png" alt="Logo">
@@ -27,10 +27,25 @@
                         </div>
                     </a>
                 </div>
-                <div class="navLoginBtn hoverable hoverableShadow">
-                    <a href="/admin/login">
-                        <i class="fa-solid fa-user"></i>
-                    </a>
+                <div class="sideNavMenuWrap">
+                    <% if (title.toLowerCase() == "translate") {%>
+                        <div class="navLoginBtn hoverable hoverableShadow hideWhenFooter">
+                            <a href="/information">
+                                <i class="fa-solid fa-earth-americas"></i>
+                            </a>
+                        </div>
+                    <% } else if (title.toLowerCase() == "information") { %>
+                        <div class="navLoginBtn hoverable hoverableShadow hideWhenFooter">
+                            <a href="/translate">
+                                <i class="fa-solid fa-language"></i>
+                            </a>
+                        </div>
+                    <% } %>
+                    <div class="navLoginBtn hoverable hoverableShadow">
+                        <a href="/admin/login">
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                    </div>
                 </div>
 
             <!-- Navbar Brand-->

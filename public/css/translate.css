@@ -137,7 +137,8 @@
         padding: 40px 20px;
     }
 
-    .textArea {
+    .textArea,
+    #word-details {
         font-size: 16px;
     }
 
