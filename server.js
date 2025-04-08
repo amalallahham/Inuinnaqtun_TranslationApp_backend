@@ -54,5 +54,6 @@ app.use((req, res) => {
   res.status(404).render("404", { title: "Page Not Found", user: null });
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 80;
+const IPADDRESS = process.env.ADDRESS || '142.232.76.197';
+app.listen(PORT, IPADDRESS, () => console.log(`Server running on port ${PORT}`));
