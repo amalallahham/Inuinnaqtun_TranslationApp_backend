@@ -1,5 +1,5 @@
 import User from "../../models/users.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export const get_register = (req, res) => {
   res.render("register", { title: "Register", error: null });
