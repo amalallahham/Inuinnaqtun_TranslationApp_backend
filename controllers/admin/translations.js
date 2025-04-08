@@ -294,6 +294,7 @@ export const updateWord = async (req, res) => {
       action: "edit",
       performedBy: req.session?.user?._id,
       wordId: wordId,
+      type: "translation"
     });
 
     res.status(200).json({
