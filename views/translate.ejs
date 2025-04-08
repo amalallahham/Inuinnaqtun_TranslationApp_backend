@@ -118,36 +118,90 @@ include('./layout/header') %> <% } %>
   }
 
   function displayTranslation(data) {
-    outputElement.innerHTML = "";
-    const words = data.translation.split(" ");
-    const details = data.recordedWords;
+    outputElement.innerHTML = '';
+            const details = data.recordedWords;
 
-    for (const word of words) {
-      const space = document.createTextNode(" ");
+            const space = document.createTextNode(" ");
 
-      if (details[word]) {
-        const info = details[word][0];
-        const wordSpan = document.createElement("span");
-        wordSpan.classList.add("selectable", "notSelected");
-        wordSpan.innerText = word;
+            let translationWordList = data.translation.split(' ');
+            let translation = data.translation;
 
-        wordSpan.addEventListener("click", () => {
-          getWordDetails(info._id);
+            console.log(details);
+            console.log(translation);
+            const allPhrases = Object.keys(details);
+            allPhrases.sort((a, b) => {
+                const wordCountA = a.trim().split(/\s+/).length;
+                const wordCountB = b.trim().split(/\s+/).length;
+                return wordCountB - wordCountA;
+            });
 
-          document.querySelectorAll(".selected").forEach((el) => {
-            el.classList.replace("selected", "notSelected");
-          });
+            console.log(allPhrases);
+            for(const phrase of allPhrases){
+                if(translation.includes(phrase)){
+                    let phraseWords = phrase.split(' ');
+                    let phraseStarted = false;
+                    let length = translationWordList.length;
+                    for(let i =0; i < length; i++){
+                        console.log(phraseWords[0] + " " + translationWordList[0] + " " + i)
+                        if(phraseWords[0] != translationWordList[0]){
+                            if(phraseStarted){
+                                translation = translationWordList.join(" ");
+                                break;
+                            }
+                            outputElement.innerHTML += translationWordList[0];
+                            translationWordList.shift();
+                        } else {
+                            translationWordList.shift();
+                            phraseWords.shift();
+                            phraseStarted = true;
+                        }
+                    }
+                    translation = translationWordList.join(" ");
+                    console.log(translation);
 
-          wordSpan.classList.replace("notSelected", "selected");
-        });
+                    const info = details[phrase][0];
+                    const wordSpan = document.createElement('span');
 
-        outputElement.appendChild(wordSpan);
-        outputElement.appendChild(space);
-      } else {
-        outputElement.innerHTML += `${word} `;
-      }
-    }
+                    outputElement.appendChild(wordSpan);
+                    outputElement.appendChild(space);
+
+                    if(phrase == allPhrases[allPhrases.length - 1] || translation === ""){
+                        wordSpan.classList.add('selectable', 'selected');
+                        getWordDetails(info._id);
+                    } else {
+                        wordSpan.classList.add('selectable', 'notSelected');
+                    }
+                    
+                    wordSpan.innerHTML = phrase;
+
+                    wordSpan.addEventListener('click', ()=> {
+                        getWordDetails(info._id);
+                        const selectedElements = document.getElementsByClassName('selected');
+                        for(const element of selectedElements){
+                            element.classList.replace('selected', 'notSelected');
+                        }
+
+                        wordSpan.classList.replace('notSelected', 'selected');
+                    });
+            
+                }
+                
+            }
   }
+
+  function extractAllPhrases(translation) {
+            const words = translation.split(' ');
+            const phrases = [];
+
+            for (let start = 0; start < words.length; start++) {
+                for (let end = start + 1; end <= words.length; end++) {
+                const phrase = words.slice(start, end).join(' ');
+                phrases.push(phrase);
+                }
+            }
+
+            return phrases;
+        }
 
   function getWordDetails(id) {
     fetch(`/word-details/${id}`)
