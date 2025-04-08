@@ -124,6 +124,11 @@
     gap: 15px;
 }
 
+.wordInfoBox h4,
+.wordInfoBox p {
+    width: calc(100% - 50px);
+}
+
 .audioBtn {
     width: 40px;
     background-color: unset;
