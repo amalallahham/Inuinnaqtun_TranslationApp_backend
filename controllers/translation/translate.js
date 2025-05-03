@@ -4,6 +4,7 @@ import AudioFile from "../../models/audioFile.js";
 import ort from 'onnxruntime-node';
 import { AutoTokenizer } from '@xenova/transformers';
 
+
 //Get method for /translate
 export const get_translate = async (req, res) => {
   // Checking if user is admin for different nav bar
@@ -15,13 +16,83 @@ export const get_translate = async (req, res) => {
 
 //Post method for /translate
 export const translate_text = async (req, res) => {
+  //Before translating check if phrase is present in database
+  let generatedText = await getDatabaseTranslation(req);
+  if(!generatedText){
+    //Prompt given to model
+    const prompt = createPrompt(req);
+
+    //Detokenize model output into text and send as json response
+    generatedText = await generateTranslation(prompt);
+  }
+  
+  // const specialDemoPhrases = ["hello world", "akana nunatak taman", "thank you all for listening", "quana tamaffi nalagaffi", "i hope to talk to you soon", "Uqaqvigiyumayagin kakugunuaq"];
+  // const specialDemoPhrasesMap = {
+  //   "hello world" : "akana nunatak taman",
+  //   "thank you all for listening": "quana tamaffi nalagaffi",
+  //   "i hope to talk to you soon": "uqaqvigiyumayagin kakugunuaq",
+  //   "akana nunatak taman": "hello world",
+  //   "quana tamaffi nalagaffi": "thank you all for listening",
+  //   "uqaqvigiyumayagin kakugunuaq": "i hope to talk to you soon"
+  // }
+
+  // const originalRequest = req.body.text.toLowerCase();
+  // if(specialDemoPhrases.includes(originalRequest)){
+  //   if(generatedText != specialDemoPhrasesMap[originalRequest]){
+  //     generatedText = specialDemoPhrasesMap[originalRequest];
+  //   }
+  // }
+
+  const recordedWords = await selectRecordedWords(generatedText);
+
+  
+  res.json({ translation: generatedText, recordedWords: recordedWords });
+}
+
+export const getRecordedWords = async (req, res) => {
+  const recordedWords = await selectRecordedWords(req.params.text);
+  res.json({recordedWords: recordedWords});
+}
+
+export const getWordDetails = async (req, res) => {
+  const wordId = req.params.id;
+  const word = await DialectWord.findById(wordId)
+    .lean();
+  
+  if(!word){
+    res.json({success: false, error: "This word has not been recorded in our database! "})
+    return;
+  }
+
+  const audioFiles = await AudioFile.find({
+    wordId: wordId,
+  }).lean();
+
+  const audioMap = {};
+  audioFiles.forEach((audio) => {
+    if (!audioMap[audio.wordId]) {
+      audioMap[audio.wordId] = [];
+    }
+    audioMap[audio.wordId].push(audio.filePath);
+  });
+
+  const wordAndAudio = {
+    _id: word?._id,
+    word: word.word,
+    translation: word.translation,
+    similarWords: word.similarWords,
+    created_at: word.createdAt,
+    audioFiles: audioMap[word._id] || [],
+  };
+
+  res.json({success: true, details: wordAndAudio});
+}
+
+const generateTranslation = async(text) => {
   const maxLength = 300;
   const vocabSize = 32128;
   const padToken = 0;
   const endOfSequence = 1;
-
-  //Prompt given to model
-  const prompt = createPrompt(req);
 
   //Load model and tokenizer
   const [session, tokenizer] = await Promise.all([
@@ -34,7 +105,7 @@ export const translate_text = async (req, res) => {
   
 
   //Tokenize and pad/truncate input
-  const tokens = await tokenize(prompt, tokenizer);
+  const tokens = await tokenize(text, tokenizer);
   let inputIds = createInputArray(tokens, maxLength, padToken);
   let inputMask = createInputMask(inputIds, padToken);
 
@@ -75,63 +146,9 @@ export const translate_text = async (req, res) => {
     }
   }
 
-  //Detokenize model output into text and send as json response
-  let generatedText = await detokenize(generatedTokens, tokenizer);
-  const specialDemoPhrases = ["hello world", "akana nunatak taman", "thank you all for listening", "quana tamaffi nalagaffi", "i hope to talk to you soon", "Uqaqvigiyumayagin kakugunuaq"];
-  const specialDemoPhrasesMap = {
-    "hello world" : "akana nunatak taman",
-    "thank you all for listening": "quana tamaffi nalagaffi",
-    "i hope to talk to you soon": "uqaqvigiyumayagin kakugunuaq",
-    "akana nunatak taman": "hello world",
-    "quana tamaffi nalagaffi": "thank you all for listening",
-    "uqaqvigiyumayagin kakugunuaq": "i hope to talk to you soon"
-  }
+  const generatedText = await detokenize(generatedTokens, tokenizer);
 
-  const originalRequest = req.body.text.toLowerCase();
-  if(specialDemoPhrases.includes(originalRequest)){
-    if(generatedText != specialDemoPhrasesMap[originalRequest]){
-      generatedText = specialDemoPhrasesMap[originalRequest];
-    }
-  }
-
-  const recordedWords = await selectRecordedWords(generatedText);
-
-  
-  res.json({ translation: generatedText, recordedWords: recordedWords });
-}
-
-export const getWordDetails = async (req, res) => {
-  const wordId = req.params.id;
-  const word = await DialectWord.findById(wordId)
-    .lean();
-  
-  if(!word){
-    res.json({success: false, error: "This word has not been recorded in our database! "})
-    return;
-  }
-
-  const audioFiles = await AudioFile.find({
-    wordId: wordId,
-  }).lean();
-
-  const audioMap = {};
-  audioFiles.forEach((audio) => {
-    if (!audioMap[audio.wordId]) {
-      audioMap[audio.wordId] = [];
-    }
-    audioMap[audio.wordId].push(audio.filePath);
-  });
-
-  const wordAndAudio = {
-    id: word?._id,
-    word: word.word,
-    translation: word.translation,
-    similarWords: word.similarWords,
-    created_at: word.createdAt,
-    audioFiles: audioMap[word._id] || [],
-  };
-
-  res.json({success: true, details: wordAndAudio});
+  return generatedText;
 }
 
 const selectRecordedWords = async (translation) => {
@@ -156,6 +173,31 @@ const selectRecordedWords = async (translation) => {
   return result;
 }
 
+const getDatabaseTranslation = async(req) => {
+  const inputLanguage = req.body.sourceLang;
+  const text = req.body.text.toLowerCase();
+  if(inputLanguage === 'Inuinnaqtun'){
+    let searchFilter = { word: text };
+    const translations = await DialectWord.find(searchFilter)
+      .sort({createdAt: -1})
+      .lean();
+    if(translations[0]){
+      return translations[0].translation;
+    }
+
+  } else if(inputLanguage === 'English') {
+    let searchFilter = { translation: text };
+    const translations = await DialectWord.find(searchFilter)
+      .sort({createdAt: -1})
+      .lean();
+    
+    if(translations[0]){
+      return translations[0].word;
+    }
+  } 
+
+  return null;
+}
 
 const extractAllPhrases = (translation) => {
   const words = translation.split(' ');
@@ -180,7 +222,7 @@ const createPrompt = (req) => {
 
   const prefix = `translate ${inputLanguage} to ${outputLanguage}: `;
 
-  return prefix + req.body.text;
+  return prefix + req.body.text.toLowerCase();
 }
 
 //Tokenizes the text into the input the model expects
