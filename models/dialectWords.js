@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const dialectWordSchema = new mongoose.Schema({
   word: { type: String, required: true },
   translation: { type: String, required: true },
+  addedToModel: { type: Boolean, default: false },
   similarWords: [
     {
       prefix: { type: String, required: true },
@@ -29,6 +30,9 @@ const dialectWordSchema = new mongoose.Schema({
 });
 
 
+
 const DialectWord = mongoose.model("DialectWord", dialectWordSchema);
+
+
 
 export default DialectWord;
