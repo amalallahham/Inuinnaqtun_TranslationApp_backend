@@ -9,6 +9,8 @@ import crypto from "crypto";
 import session from "express-session";
 import adminRoutes from "./routes/admin.js";
 import userRoutes from "./routes/user.js";
+import apiRoutes from "./routes/api.js";
+
 import bodyParser from 'body-parser';
 
 dotenv.config();
@@ -49,6 +51,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/admin", adminRoutes);
 app.use("/", userRoutes);
+app.use("/api", apiRoutes);
 
 app.use((req, res) => {
   res.status(404).render("404", { title: "Page Not Found", user: null });

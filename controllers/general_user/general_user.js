@@ -6,7 +6,6 @@ export const get_information = async (req, res) => {
       .sort({ createdAt: -1 })
       .exec();
 
-    console.log(lastPublished, lastPublished?.title);
 
     if (!lastPublished) {
       return res.render("general_information", {
