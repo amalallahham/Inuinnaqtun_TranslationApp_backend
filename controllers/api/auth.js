@@ -107,39 +107,44 @@ export const apiLogin = async (req, res) => {
   }
 };
 
+
+// Forgot Password - Send Reset Link
 export const apiForgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({ error: 'Email is required.' });
+    console.log(email)
+    if (!email?.email) {
+      return res.status(400).json({ error: "Email is required." });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email : email?.email });
     if (!user) {
-      return res.status(404).json({ error: "User doesn't exist." });
+      return res.status(404).json({ error: "User not found." });
     }
 
-    const token = jwt.sign({ email, type: 'email' }, JWT_SECRET, { expiresIn: '24h' });
+    // Generate a token that expires in 24 hours
+    const token = jwt.sign({ email, type: "reset" }, JWT_SECRET, { expiresIn: "24h" });
 
+    // Create reset password link (deep link format)
+    const resetLink = `https://echoofthenorth.com/reset-password?token=${token}`;
+
+    // Setup nodemailer transporter
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
 
-    const resetLink = `${CLIENT_URL}/admin/reset-password?token=${token}`;
-
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'Reset Your Password',
+      to: email?.email,
+      subject: "Reset Your Password",
       html: `
         <p>Hello,</p>
-        <p>You have requested to reset your password. Click the link below to proceed:</p>
-        <p><a href="${resetLink}" target="_blank">Reset Password</a></p>
+        <p>You requested to reset your password. Click the link below to proceed:</p>
+        <a href="${resetLink}" target="_blank">Reset Password</a>
         <p><strong>This link will expire in 24 hours.</strong></p>
         <p>If you did not request this, please ignore this email.</p>
       `,
@@ -147,42 +152,43 @@ export const apiForgotPassword = async (req, res) => {
 
     await transporter.sendMail(mailOptions);
 
-    return res.status(200).json({ message: 'Password reset email sent. Please check your inbox.', emailToken: token });
+    return res.status(200).json({ message: "Password reset link sent. Check your email.", emailToken: token });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Failed to send email. Please try again later.' });
+    return res.status(500).json({ error: "Error sending reset link. Please try again." });
   }
 };
 
-
-
+// Reset Password - Update the Password
 export const apiResetPassword = async (req, res) => {
-  const { password, confirmPassword, token } = req.body;
-
-  if (!password || !confirmPassword || !token) {
-    return res.status(400).json({ error: 'All fields are required.' });
-  }
-
-  if (password !== confirmPassword) {
-    return res.status(400).json({ error: 'Passwords do not match.' });
-  }
-
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const email = decoded.email;
+    const { token, newPassword } = req.body;
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: "User doesn't exist." });
+    if (!token || !newPassword) {
+      return res.status(400).json({ error: "Token and new password are required." });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Verify the JWT token
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (!decoded || decoded.type !== "reset") {
+      return res.status(400).json({ error: "Invalid or expired token." });
+    }
+
+    const user = await User.findOne({ email: decoded.email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password
     user.password = hashedPassword;
     await user.save();
 
-    return res.status(200).json({ message: 'Password has been reset successfully. You can now log in.' });
+    return res.status(200).json({ message: "Password has been reset successfully." });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ error: 'Invalid or expired token.' });
+    return res.status(500).json({ error: "Error resetting password. Please try again." });
   }
 };
