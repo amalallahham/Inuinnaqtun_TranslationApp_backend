@@ -1,14 +1,9 @@
 import mongoose from 'mongoose';
 
 const dialectWordSchema = new mongoose.Schema({
-  word: { type: String, required: true },
-  
-  // Changed: translation is now an array of strings
+  word: { type: String, required: true },  
   translation: [{ type: String, required: true }],
-
   addedToModel: { type: Boolean, default: false },
-
-  // Changed: similarWords now has both a prefix and a reference to another word
   similarWords: [
     {
       prefix: { type: String, required: true },
