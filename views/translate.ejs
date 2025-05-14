@@ -232,10 +232,11 @@ include('./layout/header') %> <% } %>
   }
 
   function getWordDetails(info) {
-    fetch(`/word-details/${info._id}`)
+    fetch(`/word-details/${info.word}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
+          console.log("Word details: ",data.details);
           displayWordDetails(data.details, info.containedPhrases);
         } else {
           wordDetails.innerText = data.error;
@@ -255,7 +256,7 @@ include('./layout/header') %> <% } %>
     wordTitle.innerText = info.word;
 
     const translation = document.createElement("p");
-    translation.innerText = `"${info.translation}"`;
+    translation.innerText = `"${(info.translation.join("/"))}"`;
 
     container.appendChild(wordTitle);
     container.appendChild(translation);
@@ -306,9 +307,10 @@ include('./layout/header') %> <% } %>
         const link = document.createElement("span");
         link.classList.add("selectable");
         link.innerHTML = " &#8594;";
+        alt.word = alt.prefix ? alt.prefix : alt.word;
         link.addEventListener("click", () => getWordDetails(alt));
 
-        altPara.innerHTML = `<i>see ${alt.prefix ? alt.prefix : alt.word}</i>`;
+        altPara.innerHTML = `<i>see ${alt.word}</i>`;
         altPara.appendChild(link);
 
         wordDetails.appendChild(altPara);

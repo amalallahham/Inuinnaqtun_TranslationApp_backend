@@ -11,7 +11,7 @@ router.get('/information', get_information)
 
 router.get("/translate", get_translate);
 
-router.get("/word-details/:id", getWordDetails);
+router.get("/word-details/:word", getWordDetails);
 
 router.get("/recorded-words/:text", getRecordedWords);
 

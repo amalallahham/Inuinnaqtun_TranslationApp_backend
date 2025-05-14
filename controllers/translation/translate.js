@@ -19,6 +19,7 @@ export const translate_text = async (req, res) => {
   //Before translating check if phrase is present in database
   let generatedText = await getDatabaseTranslation(req);
   if(!generatedText){
+    console.log("Phrase not found in database, generating translation");
     //Prompt given to model
     const prompt = createPrompt(req);
 
@@ -55,17 +56,18 @@ export const getRecordedWords = async (req, res) => {
 }
 
 export const getWordDetails = async (req, res) => {
-  const wordId = req.params.id;
-  const word = await DialectWord.findById(wordId)
+  console.log("Getting word details");
+  const word = req.params.word;
+  const wordRecord = await DialectWord.findOne({word: word})
+    .sort({createdAt: -1})
     .lean();
-  
-  if(!word){
+  if(!wordRecord){
     res.json({success: false, error: "This word has not been recorded in our database! "})
     return;
   }
 
   const audioFiles = await AudioFile.find({
-    wordId: wordId,
+    wordId: wordRecord._id,
   }).lean();
 
   const audioMap = {};
@@ -77,13 +79,15 @@ export const getWordDetails = async (req, res) => {
   });
 
   const wordAndAudio = {
-    _id: word?._id,
-    word: word.word,
-    translation: word.translation,
-    similarWords: word.similarWords,
-    created_at: word.createdAt,
-    audioFiles: audioMap[word._id] || [],
+    _id: wordRecord?._id,
+    word: wordRecord.word,
+    translation: wordRecord.translation,
+    similarWords: wordRecord.similarWords,
+    created_at: wordRecord.createdAt,
+    audioFiles: audioMap[wordRecord._id] || [],
   };
+
+  console.log(wordAndAudio);  
 
   res.json({success: true, details: wordAndAudio});
 }
@@ -182,7 +186,7 @@ const getDatabaseTranslation = async(req) => {
       .sort({createdAt: -1})
       .lean();
     if(translations[0]){
-      return translations[0].translation;
+      return translations[0].translation[0];
     }
 
   } else if(inputLanguage === 'English') {
@@ -190,7 +194,7 @@ const getDatabaseTranslation = async(req) => {
     const translations = await DialectWord.find(searchFilter)
       .sort({createdAt: -1})
       .lean();
-    
+    console.log(translations);
     if(translations[0]){
       return translations[0].word;
     }
