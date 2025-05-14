@@ -37,6 +37,7 @@ export const add_translation = async (req, res) => {
       translation,
       similarWords,
       versions: [],
+      addedToModel: false
     });
 
     await newWord.save();
