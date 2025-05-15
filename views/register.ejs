@@ -1,0 +1,22 @@
+<%- include('./layout/header') %>
+
+  <link href="/css/login.css" rel="stylesheet" />
+
+  <h1 class="title headerFont semi-bold">Register as New User</h1>
+
+  <div class="feedbackWrap">
+    <% if (error) { %>
+      <div class="alert alert-danger <%= error ? 'displayAlert' : '' %>">
+        <%= error %>
+      </div>
+    <% } %>
+  </div>
+
+  <form action="/admin/register" method="POST" class="formWrap">
+    <input type="email" required id="exampleInputEmail1" name="email" placeholder="Enter email" />
+    <input type="text" required name="username" id="username" placeholder="Enter username" />
+    <input type="password" name="password" required id="exampleInputPassword1" placeholder="Password" />
+    <button type="submit" class="btn submitBtn semi-bold hoverable hoverableBtn">Submit</button>
+  </form>
+
+<%- include('./layout/footer') %>

@@ -1,0 +1,323 @@
+.wrap {
+  max-height: 100svh;
+  /* height: 100svh; */
+  /* height: calc(100svh - 150px); */
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sideNavContents_wrap {
+  width: 100%;
+  padding: 0 50px 30px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 60px;
+  text-align: center;
+  padding: 20px 0 0 0;
+}
+
+@media screen and (max-width: 500px) {
+  .title {
+    font-size: 50px;
+  }
+}
+
+.feedbackWrap {
+  margin-top: 20px;
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.description {
+  margin: 20px 0;
+  font-size: 20px;
+}
+
+.formWrap {
+  max-width: 500px;
+  width: 100%;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.formWrap input {
+  all: unset;
+  width: 100%;
+  background-color: #76a8ff6a;
+  padding: 20px 30px;
+  border-radius: 7px;
+  font-size: 20px;
+}
+
+.forgotPw {
+  font-size: 25px;
+}
+
+.btn {
+  all: unset;
+  width: 100%;
+  background-color: #780123;
+  padding: 20px 30px;
+  border-radius: 7px;
+  color: #e9f1ff;
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+
+.btn p,
+.btn path {
+  color: #e9f1ff;
+}
+
+@media screen and (max-width: 500px) {
+  .sideNavContents_wrap {
+    padding: 0 30px 30px 30px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .forgotPw {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .wrap {
+    padding: 20px 30px;
+  }
+
+  .title {
+    font-size: 40px;
+  }
+
+  .formWrap input {
+    font-size: 18px;
+  }
+}
+
+/* feedback popup for password reset */
+.pwResetSuccess {
+  max-width: 500px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pwResetSuccessTitle {
+  font-size: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pwResetIcon {
+  font-size: 80px;
+  color: #155724;
+}
+
+.pwResetDesc {
+  margin-bottom: 30px;
+}
+
+/* edit user */
+.editUserWrap {
+  max-width: 600px;
+  padding: 0;
+}
+
+.editUserWrap>div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editUserWrap label {
+  font-size: 22px;
+}
+
+.editUserWrap select {
+  all: unset;
+  width: 100%;
+  background-color: #76a8ff6a;
+  padding: 20px 30px;
+  border-radius: 7px;
+  font-size: 20px;
+}
+
+.editUserWrap input, 
+.editUserWrap button,
+.editUserWrap a,
+.editUserWrap select {
+  box-sizing: border-box;
+}
+
+/* Add translation */
+.linked-words-input,
+.linked-words-list {
+  width: 100%;
+  background-color: #76a8ff6a;
+  border-radius: 7px;
+}
+
+.linked-words-list {
+  overflow: hidden;
+}
+
+.linked-words-input input {
+  background-color: unset;
+}
+
+.list-group-item {
+  background-color: #76a8ff6a;
+}
+
+.linked-words-list p {
+  width: 100%;
+  padding: 20px 30px;
+  border-radius: 7px;
+  font-size: 20px;
+}
+
+.linked-words-list li,
+.linked-words-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.linked-words-list li:first-child {
+  border-top: none !important; /* Remove top border from first row in tbody */
+}
+
+.linked-words-list li {
+  border-top: 1px solid black;
+}
+
+.linkedBtn {
+  width: 35px;
+  height: 35px;
+  margin-right: 20px;
+  border: 0;
+  background-color: unset;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.audioUpload input {
+  all: unset;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 80px 30px 20px 30px;
+  border-radius: 7px;
+  background-color: #76a8ff6a;
+  font-size: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.audioUpload input::file-selector-button,
+.audioUpload input::-webkit-file-upload-button {
+  width: 100%;
+  border: 0;
+  background-color: #76a8ff6a;
+  padding: 20px 30px;
+  border-radius: 7px 7px 0 0;
+  font-size: 20px;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  outline: 0;
+  transition-duration: 0.3s;
+}
+
+.audioUpload input::file-selector-button:hover,
+.audioUpload input::-webkit-file-upload-button:hover {
+  /* box-shadow: inset 0 0 10px black; */
+  box-shadow: 0 0 10px #17063b49;
+}
+
+.audioRecordInput,
+.editWordAudioRecordInput {
+  display: flex;
+  flex-direction: row !important;
+  gap: 20px !important;
+  align-items: center;
+}
+
+.audioRecordInput button {
+  /* width: auto; */
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.audioPlayerWrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+audio {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+/* audio::-webkit-media-controls-play-button, */
+audio::-webkit-media-controls-panel {
+  background-color: #76a8ff6a;
+  color: #20063B;
+}
+
+@media screen and (max-width: 415px) {
+  .audioRecordInput {
+    flex-direction: column !important;
+  }
+}
+
+.darkBlueBtn {
+  background-color: #20063B;
+}
+
+button:disabled {
+  background-color: #5c80bc;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  box-shadow: none;
+  text-shadow: none;
+  filter: drop-shadow(none);
+}

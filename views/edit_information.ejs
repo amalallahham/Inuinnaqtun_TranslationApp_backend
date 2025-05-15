@@ -1,0 +1,141 @@
+<%- include('./layout/header_auth') %>
+<link href="/css/login.css" rel="stylesheet" />
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+
+<button class="goBackBtn headerFont semi-bold hoverable hoverableBtn">
+  <a href="/admin/information">
+    <i class="fa-solid fa-arrow-left"></i> Go Back
+  </a>
+</button>
+
+<h1 class="title headerFont semi-bold">Update Information</h1>
+
+<form 
+  action="/admin/information/edit/<%= info._id %>" 
+  class="formWrap editUserWrap" 
+  method="POST" 
+  onsubmit="return submitForm()" 
+  style="margin-top: 20px;"
+>
+  <div>
+    <label for="title" class="form-label">Title</label>
+    <input 
+      type="text" 
+      class="form-control" 
+      id="title" 
+      name="title" 
+      value="<%= info.title %>" 
+      required 
+    />
+  </div>
+
+  <div>
+    <label for="status" class="form-label">Status</label>
+    <select class="form-select" id="status" name="status" required>
+      <option value="" disabled>Select a status</option>
+      <option value="draft" <%= info.status === 'draft' ? 'selected' : '' %>>Draft</option>
+      <option value="published" <%= info.status === 'published' ? 'selected' : '' %>>Published</option>
+      <option value="archived" <%= info.status === 'archived' ? 'selected' : '' %>>Archived</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="form-label">Content</label>
+    <div id="editor" style="height: 500px;"></div>
+    <input type="hidden" name="content" id="content" />
+  </div>
+
+  <div class="audioRecordInput">
+    <button type="submit" class="btn darkBlueBtn hoverable hoverableBtn">Update</button>
+    <!-- <a href="/admin/information" class="btn-secondary btn  hoverable hoverableBtn">Cancel</a> -->
+    <button 
+      type="button" 
+      class="btn btn-danger delete-info-btn hoverable hoverableBtn" 
+      data-id="<%= info._id %>"
+    >
+      Delete
+    </button>
+  </div>
+</form>
+
+<!-- Quill.js + SweetAlert2 Scripts -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+  .ql-editor {
+    background-color: white !important;
+    color: black !important;
+    border-radius: 5px;
+    padding: 10px;
+  }
+</style>
+
+<script>
+  // Initialize Quill
+  const quill = new Quill("#editor", {
+    theme: "snow",
+    placeholder: "Write the content here...",
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, false] }],
+        ['bold', 'italic', 'underline'],
+        ['image', 'video'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link'],
+        ['clean']
+      ]
+    }
+  });
+
+  // Set existing content
+  const contentFromServer = `<%- JSON.stringify(info.content) %>`;
+  quill.root.innerHTML = contentFromServer;
+
+  // Copy Quill content on submit
+  function submitForm() {
+    document.getElementById("content").value = quill.root.innerHTML;
+    return true;
+  }
+
+  // Delete handler with SweetAlert2
+  document.querySelectorAll(".delete-info-btn").forEach((button) => {
+    button.addEventListener("click", async (e) => {
+      const infoId = e.currentTarget.dataset.id;
+
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "This action cannot be undone!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!"
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(`/admin/information/delete/${infoId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json"
+            }
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            await Swal.fire("Deleted!", data.message, "success");
+            window.location.href = "/admin/information";
+          } else {
+            Swal.fire("Error", data.message || "Failed to delete entry.", "error");
+          }
+        } catch (err) {
+          Swal.fire("Error", "Something went wrong.", "error");
+        }
+      }
+    });
+  });
+</script>
+
+<%- include('./layout/footer_auth') %>

@@ -1,0 +1,145 @@
+<%- include('./layout/header_auth') %>
+<link href="/css/userList.css" rel="stylesheet" />
+
+  <div class="userListWrap">
+    <div class="listTitle headerFont translationsTitle">
+      <h2 class="semi-bold">Logs</h2>
+    </div>
+
+    <!-- Filter -->
+    <div class="filterBy hoverable hoverableShadow" id="filterByBtn"><i class="fa-solid fa-filter"></i> Filter by</div>
+
+    <div class="userTableWrap">
+      <table class="userTable table table-hover m-0">
+        <thead class="table-light">
+          <tr class="entryTitle">
+            <th>Action</th>
+            <!-- <th>Description</th> -->
+            <th>Type</th>
+            <!-- <th>Date</th> -->
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (logs.length === 0) { %>
+            <tr>
+              <td colspan="4" class="text-center text-muted py-3">
+                No logs found.
+              </td>
+            </tr>
+          <% } else { %> 
+            <% logs.forEach(log => { %>
+              <tr class="entry log-row" data-log-id="<%= log._id %>" >           
+                <td><%= log.action %></td>
+                <!-- <td><%= log.description %></td> -->
+                <td><%= log.type %></td>
+                
+                <!-- <td><%= new Date(log.createdAt).toLocaleString() %></td> -->
+                <td class="btnWrap">
+                  <a href="/admin/logs/<%= log._id %>" class="btn hoverable hoverableBtn">
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </a>
+                </td>
+              </tr>
+            <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <nav class="paginationWrap">
+        <ul class="pagination">
+          <% if (currentPage > 1) { %>
+            <li class="hoverable hoverableText">
+              <a href="?page=<%= currentPage - 1 %>&action=<%= actionFilter %>&order=<%= order %>"
+                class="">Previous</a>
+            </li>
+          <% } %> 
+
+          <li class="mb-0">Page <%= currentPage %> of <%= totalPages %></li>
+          
+          <% if (currentPage < totalPages) { %>
+            <li class="hoverable hoverableText">
+              <a href="?page=<%= currentPage + 1 %>&action=<%= actionFilter %>&order=<%= order %>"
+                class="">Next</a>
+            </li>
+          <% } %>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Filter Modal -->
+  <div class="modalWrap logModalWrap" id="filterModal">
+    <div class="modal logModal">
+      <div class="headerFont semi-bold modalTitle" id="inviteUserModalLabel">Filter</div>
+      <form action="/admin/logs" method="GET" class="modalForm shadow-sm p-3 mb-4">
+        <div class="inputWrap">
+          <label class="form-label fw-semibold">Category</label>
+          <div class="logCategories" role="group" aria-label="Category filter" >
+            <% const categories = ['All', 'Edit', 'Flag', 'Delete', 'Upload', 'Translation', 'Audio']; %> 
+            <% categories.forEach(cat => { 
+              const isType = ['Translation', 'Audio'].includes(cat); 
+              const inputName = isType ? 'type' : 'action'; 
+              const inputValue = cat === 'All' ? '' : cat.toLowerCase(); 
+              const checked = (inputName === 'action' &&
+                ((!actionFilter && cat === 'All') || actionFilter === inputValue)) ||
+                (inputName === 'type' && typeFilter === inputValue); %> 
+
+              <label class="logRadioBtn hoverable hoverableBtn" > <!-- for="filter-<%=cat%>"-->
+                <%= cat %>
+                <input type="radio" class="" name="<%= inputName %>"
+                  id="filter-<%=cat%>" autocomplete="off" value="<%= inputValue %>" 
+                  <%= checked ? 'checked' : '' %> >
+              </label>
+              <!-- btn btn-outline-primary rounded-pill m-1 -->
+            <% }) %>
+          </div>
+          <!-- Order By -->
+          <label class="form-label fw-semibold">Order By</label>
+          <div class="logOrderby btn-group flex-wrap" role="group" aria-label="Order filter">
+            <label class="logRadioBtn hoverable hoverableBtn" for="newest" >
+              Newest to Oldest
+              <input type="radio" class="btn-check" name="order" id="newest"
+                autocomplete="off" value="desc" <%= order === 'desc' ? 'checked' : '' %>>
+            </label>
+            <label class="logRadioBtn hoverable hoverableBtn" for="oldest">
+              Oldest to Newest
+              <input type="radio" class="btn-check" name="order" id="oldest" autocomplete="off" value="asc" <%= order === 'asc' ? 'checked' : '' %>>
+            </label>
+          </div>
+        </div>
+        <button class="submitFilterBtn textBtn hoverable hoverableBtn" type="submit">Apply</button>
+      </form>
+      <button type="button" class="btn closeModalBtn btn-danger hoverable hoverableBtn" data-bs-dismiss="modal" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+
+  <%- include('./layout/footer_auth') %>
+
+  <script>
+    // Closing modals
+    document.querySelectorAll(".closeModalBtn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.getElementById(btn.parentElement.parentElement.id).classList.toggle("modalToggled");
+      });
+    });
+
+    // Display filter modal
+    document.getElementById("filterByBtn").addEventListener("click", () => {
+      document.getElementById("filterModal").classList.toggle("modalToggled");
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".log-row").forEach(row => {
+        row.addEventListener("click", () => {
+          const logId = row.getAttribute("data-log-id");
+          window.location.href = `/admin/logs/${logId}`;
+        });
+      });
+    });
+  </script>
+  
+  <%- include('./layout/footer_auth') %>

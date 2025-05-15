@@ -1,0 +1,78 @@
+<%- include('./layout/header_auth') %>
+<link href="/css/login.css" rel="stylesheet" />
+
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
+    <a href="/admin/information">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </a>
+  </button>
+
+  <h1 class="title headerFont semi-bold">Add New Information</h1>
+
+  <form action="/admin/information/add_info" class="formWrap editUserWrap" method="POST" onsubmit="return submitForm()" style="margin-top: 20px;">
+    <div>
+      <label for="title" class="form-label">Title</label>
+      <input type="text" class="form-control" id="title" name="title" required />
+    </div>
+
+    <div>
+      <label for="status" class="form-label">Status</label>
+      <select class="form-select" id="status" name="status" required>
+        <option value="" disabled selected></option>
+        <option value="draft">Draft</option>
+        <option value="published">Published</option>
+        <option value="archived">Archived</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="form-label">Content</label>
+      <div id="editor" style="height: 200px"></div>
+      <input type="hidden" name="content" id="content" />
+    </div>
+
+    <div class="audioRecordInput">
+      <button type="submit" class="btn darkBlueBtn hoverable hoverableBtn">Create</button>
+      <a href="/admin/information" class="btn btn-secondary hoverable hoverableBtn">Cancel</a>
+    </div>
+  </form>
+
+<!-- Quill.js CDN -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<style>
+  .ql-editor {
+    background-color: white !important;
+    color: black !important;
+    border-radius: 5px;
+    padding: 10px;
+  }
+</style>
+
+<script>
+  // Initialize Quill editor
+  const quill = new Quill("#editor", {
+    theme: "snow",
+    placeholder: "Write the content here...",
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, false] }],
+        ['bold', 'italic', 'underline'],
+        ['image', 'video'], 
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link'],
+        ['clean']
+      ]
+    }
+  });
+
+  // On form submit, copy editor content to hidden input
+  function submitForm() {
+    const contentInput = document.getElementById("content");
+    contentInput.value = quill.root.innerHTML;
+    return true;
+  }
+</script>
+
+<%- include('./layout/footer_auth') %>

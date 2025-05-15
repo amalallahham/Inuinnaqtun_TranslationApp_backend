@@ -1,0 +1,13 @@
+<%- include('./layout/header') %>
+<link href="/css/information.css" rel="stylesheet" />
+
+  <h1 class="title titleFont"><%= info.title %></h1>
+
+  <div class="infoDesc">
+    <div class="quill-content">
+      <%- info.content %> 
+      <small class="publishDate">Published on: <%= new Date(info.createdAt).toLocaleString() %></small>
+    </div>
+  </div>
+
+<%- include('./layout/footer') %>

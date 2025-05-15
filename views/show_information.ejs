@@ -1,0 +1,18 @@
+<%- include('./layout/header_auth') %>
+<link href="/css/information.css" rel="stylesheet" />
+
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
+    <a href="/admin/information">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </a>
+  </button>
+
+  <h1 class="title titleFont"><%= info.title %></h1>
+
+  <div class="infoDesc">
+    <div class="quill-content">
+      <%- info.content %> 
+    </div>
+  </div>
+
+<%- include('./layout/footer_auth') %>

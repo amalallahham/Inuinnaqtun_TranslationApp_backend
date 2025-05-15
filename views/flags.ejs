@@ -1,0 +1,97 @@
+<% if (isAdmin) { %>
+  <%- include('./layout/header_auth') %>
+<% } else { %>
+  <%- include('./layout/header') %>
+<% } %>
+
+<link rel="stylesheet" href="/css/flagReport.css">
+<link href="/css/login.css" rel="stylesheet" />
+
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
+    <a href="javascript:history.back()">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </a>
+  </button>
+
+  <h1 class="title headerFont semi-bold">Flag Report</h1>
+
+  <div class="formWrap editUserWrap">
+    <div class="wordWrap">
+      <h5 class="card-title wordDetail"><%= word.word %></h5>
+      <p class="card-text">"<%= word.translation %>"</p>
+      <% if (word.similarWords.length > 0) { %>
+        <ul class="list-group list-group-flush">
+          <% word.similarWords.forEach(similar => { %>
+            <li class="list-group-item">
+              <em><%= similar.type %></em> "<%= similar.prefix %>" →
+            </li>
+          <% }); %>
+        </ul>
+      <% } %>
+    </div>
+
+    <form id="flagForm"  class="formWrap editUserWrap">
+      <div class="mb-3">
+        <label for="flagReason" class="form-label">Flag Category</label>
+        <select name="flagReason" id="flagReason" class="form-select" required>
+          <option value="Translation">Translation</option>
+          <option value="Audio">Audio</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description" id="description" class="form-control textArea" placeholder="Describe what this flag is about" required></textarea>
+      </div>
+
+      <button type="submit" class="btn submitBtn hoverable hoverableBtn">Submit</button>
+    </form>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  document.getElementById('flagForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const flagReason = document.getElementById('flagReason').value;
+    const description = document.getElementById('description').value;
+    const wordId = "<%= word._id %>";
+    const isAdmin = `<%= isAdmin %>`;
+    const url = isAdmin ? `/admin/flag/${wordId}` : `/flag/${wordId}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ flagReason, description })
+      });
+
+      if (!response.ok) throw new Error('Something went wrong.');
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Thank you!',
+        text: 'Your feedback is taken under consideration.',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        window.location.href = '/';
+      });
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops!',
+        text: 'There was an error submitting your feedback. Please try again later.'
+      });
+    }
+  });
+</script>
+
+
+<% if (isAdmin) { %>
+  <%- include('./layout/footer_auth') %>
+<% } else { %>
+  <%- include('./layout/footer') %>
+<% } %>

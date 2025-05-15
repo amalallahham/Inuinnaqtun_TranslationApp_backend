@@ -1,0 +1,27 @@
+<%- include('./layout/header') %>
+<link href="/css/login.css" rel="stylesheet" />
+
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn" onclick="window.history.back()"><i class="fa-solid fa-arrow-left"></i> Go Back</button>
+
+  <h1 class="headerFont title semi-bold">Admin Login</h1>
+
+  <div class="feedbackWrap">
+    <% if (error) { %>
+      <div class="alert alert-danger <%= error ? 'displayAlert' : '' %>" role="alert">
+        <%= error %>
+      </div>
+    <% } %>  
+  </div>
+
+  <form action="/admin/login" method="POST" class="formWrap loginForm">
+    <input required type="email" class="form-control" name="email" id="exampleInputEmail1" placeholder="Enter email"/>
+    <input required type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password" />
+    <button type="submit" class="btn submitBtn semi-bold hoverable hoverableBtn">LOG IN</button>
+    <div class="forgotPw">
+      <a href="/admin/forgot-password" class="semi-bold forgotPw hoverable hoverableText">Forgot Password?</a>
+    </div>
+  </form>
+
+</div>
+
+<%- include('./layout/footer') %>

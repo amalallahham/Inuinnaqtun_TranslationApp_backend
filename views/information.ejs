@@ -1,0 +1,118 @@
+<%- include('./layout/header_auth') %>
+<link href="/css/userList.css" rel="stylesheet" />
+
+<div class="userListWrap">
+  <div class="listTitle headerFont textWrap">
+    <h2 class="semi-bold">Informations</h2>
+
+    <!-- Add User Button (Opens Modal) -->
+    <a
+      href="/admin/information/add_info"
+      class="addUserBtn textBtn hoverable hoverableBtn"
+      >Add Information</a
+    >
+  </div>
+
+  <div class="userTableWrap">
+    <% if (typeof error !== "undefined" && error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
+    <table class="userTable">
+      <thead>
+        <tr class="entryTitle">
+          <th>#</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Created By</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (data.length === 0) { %>
+        <tr>
+          <td colspan="6" class="text-center">No information entries found</td>
+        </tr>
+        <% } else { %> <% data.forEach((info, index) => { %>
+        <tr class="entry">
+          <td class="px-4"><%= index + 1 %></td>
+          <td><%= info.title %></td>
+          <td><%= info.status %></td>
+          <td><%= info.createdBy?.username || 'N/A' %></td>
+          <td><%= info.createdAt.toLocaleDateString() %></td>
+          <td class="btnWrap">
+            <a
+              href="/admin/information/<%= info._id %>"
+              class="btn btn-info hoverable hoverableBtn"
+            >
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a
+              href="/admin/information/edit/<%= info._id %>"
+              class="btn btn-warning hoverable hoverableBtn"
+            >
+              <i class="fa-solid fa-pen"></i>
+            </a>
+            <button
+              class="btn btn-danger hoverable hoverableBtn delete-info-btn"
+              data-id="<%= info._id %>"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        <% }) %> <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  document.querySelectorAll(".delete-info-btn").forEach((button) => {
+    button.addEventListener("click", async (e) => {
+      const infoId = e.currentTarget.dataset.id;
+
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "This action cannot be undone!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(`/admin/information/delete/${infoId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            window.location.reload();
+            Swal.fire("Deleted!", data.message, "success").then(() => {
+                window.location.reload();
+            });
+          } else {
+            Swal.fire(
+              "Error",
+              data.message || "Failed to delete entry.",
+              "error"
+            );
+          }
+        } catch (err) {
+          Swal.fire("Error", "Something went wrong.", "error");
+        }
+      }
+    });
+  });
+</script>
+
+<%- include('./layout/footer_auth') %>

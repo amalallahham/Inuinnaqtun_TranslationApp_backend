@@ -1,0 +1,85 @@
+.sideNavContents_wrap {
+    width: 100%;
+    padding: 0 50px 30px 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media screen and (max-width: 500px) {
+    .sideNavContents_wrap {
+      padding: 0 30px 30px 30px;
+    }
+}
+
+.title {
+    font-size: 60px;
+    text-align: center;
+    padding: 20px 0 0 0;
+}
+
+.logWrap {
+    max-width: 600px;
+    width: 100%;
+    margin-top: 20px;
+    /* padding: 30px; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.logDateWrap {
+    text-wrap: pretty;
+    padding: 10px 30px;
+    background-color: #5C80BC;
+    border-radius: 10px 10px 0 0;
+}
+
+.logDate {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+@media screen and (max-width: 400px) { 
+    .logDate {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+.logContentsWrap {
+    width: 100%;
+    border-radius: 10px 0 10px 10px;
+    background-color: #5C80BC;
+}
+
+.logContents {
+    width: 100%;
+    padding: 30px 20px;
+    background-color: #BDD3FF;
+    border-radius: 10px;
+}
+
+.logItemsWrap {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.logItemsWrap li:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.logItemsWrap li:last-child {
+    padding-bottom: 0;
+}
+
+.logItemsWrap li {
+    padding: 20px 10px;
+    font-size: 20px;
+    border-top: 1px solid #20063b4f;
+    display: flex;
+    gap: 10px;
+}

@@ -1,0 +1,50 @@
+<%- include('./layout/header_auth') %>
+<link href="/css/flagReport.css" rel="stylesheet" />
+
+  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
+    <a href="/admin/flags">
+      <i class="fa-solid fa-arrow-left"></i> Go Back
+    </a>
+  </button>
+
+  <h1 class="title headerFont semi-bold"><%= title %></h1>
+  
+  <div class="flagWrap">
+    <div class="flagContents card-body p-1">
+      <p><strong>Word:</strong> <%= flag.wordId.word %></p>
+      <p><strong>Translation:</strong> "<%= flag.wordId.translation %>"</p>
+      <p><strong>Reason:</strong> <%= flag.flagReason %></p>
+      <p>
+        <strong>Status:</strong> 
+        <span class="badge 
+          <%= flag.status === 'pending' ? 'bg-warning text-dark' : 
+                flag.status === 'resolved' ? 'bg-success' : 
+                'bg-secondary' %>">
+          <%= flag.status %>
+        </span>
+      </p>
+      <p><strong>Date:</strong> <%= new Date(flag.createdAt).toLocaleString() %></p>
+    </div>
+  </div>
+
+  <% if(flag.status !== 'resolved') { %>
+  <div class="btnWrap">
+    <a href="/admin/translations/<%= flag.wordId._id %>" class="btn submitBtn hoverable hoverableBtn">
+      <i class="fa-solid fa-pen-to-square"></i> Edit Translation
+    </a>
+    <form action="/admin/flag/<%= flag._id %>/resolve" method="POST" class="btn resolveBtn hoverable hoverableBtn">
+      <button type="submit" style="all: unset;">
+        <i class="fa-solid fa-check"></i> Resolve
+      </button>
+    </form>
+  </div>
+  <% } else { %>
+    <div class="resolvedBtnWrap">
+      <a href="/admin/translations/<%= flag.wordId._id %>" class="btn submitBtn hoverable hoverableBtn">
+        <i class="fa-solid fa-pen-to-square"></i> Edit Translation
+      </a>
+      <span class="resolveMsg">This flag was resolved by an admin.</span>
+    </div>
+  <% } %>
+
+<%- include('./layout/footer_auth') %>
