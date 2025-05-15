@@ -1,4 +1,7 @@
 import User from "../../models/users.js";
+import bcrypt from "bcrypt";
+import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
 
 export const get_users = async (req, res) => {
   try {
@@ -162,5 +165,17 @@ export const edit_user = async (req, res) => {
       message: "Error updating user.",
       error: error.message,
     });
+  }
+};
+
+export const get_user = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
   }
 };
