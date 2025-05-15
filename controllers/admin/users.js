@@ -172,7 +172,6 @@ export const edit_user = async (req, res) => {
   }
 };
 
-
 export const getUserByEmail = async (email) => {
   try {
     const user = await User.findOne({ email }); 
@@ -183,7 +182,6 @@ export const getUserByEmail = async (email) => {
     return null;
   }
 };
-
 
 export const delete_user = async (req, res) => {
   try {

@@ -92,8 +92,6 @@ export const invite_user = async (req, res) => {
       success: true,
       message: "Invitation sent successfully.",
     });
-
-
   } catch (error) {
     console.error("Invite API error:", error);
     return res.status(500).json({
@@ -122,12 +120,46 @@ export const delete_user = async (req, res) => {
       success: true,
       message: "User deleted successfully.",
     });
-
   } catch (error) {
     console.error("Delete user error:", error);
     return res.status(500).json({
       success: false,
       message: "Server error. Unable to delete user.",
+      error: error.message,
+    });
+  }
+};
+
+export const edit_user = async (req, res) => {
+  try {
+    const { username, email, role, password } = req.body;
+    let updatedUser = { username, email, role };
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updatedUser.password = hashedPassword;
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.id, updatedUser, {
+      new: true,
+    });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully!",
+      user,
+    });
+  } catch (error) {
+    console.error("Error updating user:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Error updating user.",
       error: error.message,
     });
   }

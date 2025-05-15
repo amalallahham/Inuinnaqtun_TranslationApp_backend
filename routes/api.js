@@ -16,6 +16,8 @@ import { get_information } from "../controllers/api/information.js";
 import { delete_user, get_users, invite_user } from "../controllers/api/users.js";
 import { verifyTokenMiddleware } from "../middlewares/verifyToken.js";
 import { verifyAdminTokenMiddleware } from "../middlewares/verifyAdminToken.js";
+import { add_translation, delete_word, get_translations, get_word_details, updateWord } from "../controllers/api/database.js";
+import upload from "../middlewares/uploadMiddleware.js";
 
 const router = express.Router();
 
@@ -35,6 +37,13 @@ router.get("/information", get_information);
 router.get("/users", verifyAdminTokenMiddleware, get_users);
 router.post("/users/invite", verifyAdminTokenMiddleware, invite_user);
 router.delete("/users/delete/:id", verifyAdminTokenMiddleware, delete_user);
+
+router.get("/database", verifyAdminTokenMiddleware, get_translations);
+router.post("/database/add_word", verifyAdminTokenMiddleware, upload.single("audio"), add_translation);
+router.post("/database/:id", verifyAdminTokenMiddleware, get_word_details);
+router.delete("/database/:id", verifyAdminTokenMiddleware, delete_word);
+router.post("/database/update-word/:wordId", verifyAdminTokenMiddleware,upload.single("audio"), updateWord);
+
 
 
 
