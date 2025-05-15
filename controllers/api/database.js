@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import AudioFile from "../../models/audioFile.js";
 import DialectWord from "../../models/dialectWords.js";
 import fs from "fs";

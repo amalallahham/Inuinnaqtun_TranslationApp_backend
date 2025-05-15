@@ -1,8 +1,8 @@
 import DialectWord from "../../models/dialectWords.js";
 import AudioFile from "../../models/audioFile.js";
 
-import ort from 'onnxruntime-node';
-import { AutoTokenizer } from '@xenova/transformers';
+// import ort from 'onnxruntime-node';
+// import { AutoTokenizer } from '@xenova/transformers';
 
 
 //Get method for /translate
@@ -98,61 +98,61 @@ const generateTranslation = async(text) => {
   const padToken = 0;
   const endOfSequence = 1;
 
-  //Load model and tokenizer
-  const [session, tokenizer] = await Promise.all([
-    ort.InferenceSession.create('LLM/EchoOfTheNorth_model.onnx'),
-    AutoTokenizer.from_pretrained('tokenizer', {
-      local_files_only: true,
-      cache_dir: 'LLM/',
-    })
-  ]);
+  // //Load model and tokenizer
+  // const [session, tokenizer] = await Promise.all([
+  //   ort.InferenceSession.create('LLM/EchoOfTheNorth_model.onnx'),
+  //   AutoTokenizer.from_pretrained('tokenizer', {
+  //     local_files_only: true,
+  //     cache_dir: 'LLM/',
+  //   })
+  // ]);
   
 
-  //Tokenize and pad/truncate input
-  const tokens = await tokenize(text, tokenizer);
-  let inputIds = createInputArray(tokens, maxLength, padToken);
-  let inputMask = createInputMask(inputIds, padToken);
+  // //Tokenize and pad/truncate input
+  // const tokens = await tokenize(text, tokenizer);
+  // let inputIds = createInputArray(tokens, maxLength, padToken);
+  // let inputMask = createInputMask(inputIds, padToken);
 
-  //Create feeds for the model
-  let input_ids = new ort.Tensor("int32", new Int32Array(inputIds), [1, inputIds.length]);
-  let attention_mask = new ort.Tensor("int32", new Int32Array(inputMask), [1, inputIds.length]);
+  // //Create feeds for the model
+  // let input_ids = new ort.Tensor("int32", new Int32Array(inputIds), [1, inputIds.length]);
+  // let attention_mask = new ort.Tensor("int32", new Int32Array(inputMask), [1, inputIds.length]);
 
-  //Base arrays for decoder inputs
-  let decoderInputIdsArray = [padToken];
-  let decoderAttentionMaskArray = [1];
-  let generatedTokens = [];
+  // //Base arrays for decoder inputs
+  // let decoderInputIdsArray = [padToken];
+  // let decoderAttentionMaskArray = [1];
+  // let generatedTokens = [];
 
-  for (let step = 0; step < maxLength; step++) {
-    //Create decoder input and mask
-    let decoder_input_ids = new ort.Tensor('int32', new Int32Array(decoderInputIdsArray), [1, decoderInputIdsArray.length]);
-    let decoder_attention_mask = new ort.Tensor('int32', new Int32Array(decoderAttentionMaskArray), [1, decoderAttentionMaskArray.length]);
+  // for (let step = 0; step < maxLength; step++) {
+  //   //Create decoder input and mask
+  //   let decoder_input_ids = new ort.Tensor('int32', new Int32Array(decoderInputIdsArray), [1, decoderInputIdsArray.length]);
+  //   let decoder_attention_mask = new ort.Tensor('int32', new Int32Array(decoderAttentionMaskArray), [1, decoderAttentionMaskArray.length]);
 
-    //Organize feeds
-    const feeds = {
-      "input_ids": input_ids,
-      "attention_mask": attention_mask,
-      "decoder_input_ids": decoder_input_ids,
-      "decoder_attention_mask": decoder_attention_mask
-    };
+  //   //Organize feeds
+  //   const feeds = {
+  //     "input_ids": input_ids,
+  //     "attention_mask": attention_mask,
+  //     "decoder_input_ids": decoder_input_ids,
+  //     "decoder_attention_mask": decoder_attention_mask
+  //   };
 
-    //Generate output logit and find predicted toke
-    const results = await session.run(feeds);
-    const predictedToken = extractPredictedToken(results.logits.data, vocabSize, decoderInputIdsArray.length);
+  //   //Generate output logit and find predicted toke
+  //   const results = await session.run(feeds);
+  //   const predictedToken = extractPredictedToken(results.logits.data, vocabSize, decoderInputIdsArray.length);
 
-    // Add predicted token to total sequence and edit decoder feeds
-    generatedTokens.push(predictedToken);
-    decoderInputIdsArray.push(predictedToken);
-    decoderAttentionMaskArray.push(1);
+  //   // Add predicted token to total sequence and edit decoder feeds
+  //   generatedTokens.push(predictedToken);
+  //   decoderInputIdsArray.push(predictedToken);
+  //   decoderAttentionMaskArray.push(1);
 
-    // Stop generation once the end sequence token is reached
-    if (predictedToken === endOfSequence) {
-      break;
-    }
-  }
+  //   // Stop generation once the end sequence token is reached
+  //   if (predictedToken === endOfSequence) {
+  //     break;
+  //   }
+  // }
 
-  const generatedText = await detokenize(generatedTokens, tokenizer);
+  // const generatedText = await detokenize(generatedTokens, tokenizer);
 
-  return generatedText;
+  return 'generatedText';
 }
 
 const selectRecordedWords = async (translation) => {

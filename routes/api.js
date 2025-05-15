@@ -44,7 +44,7 @@ router.post("/users/edit/:id", verifyAdminTokenMiddleware, edit_user);
 
 router.get("/database", verifyAdminTokenMiddleware, get_translations);
 router.post("/database/add_word", verifyAdminTokenMiddleware, upload.single("audio"), add_translation);
-router.post("/database/:id", verifyAdminTokenMiddleware, get_word_details);
+router.get("/database/:id", verifyAdminTokenMiddleware, get_word_details);
 router.delete("/database/:id", verifyAdminTokenMiddleware, delete_word);
 router.post("/database/update-word/:wordId", verifyAdminTokenMiddleware,upload.single("audio"), updateWord);
 
