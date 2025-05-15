@@ -185,7 +185,6 @@ export const getUserByEmail = async (email) => {
 };
 
 
-
 export const delete_user = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);

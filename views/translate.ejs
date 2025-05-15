@@ -147,8 +147,6 @@ include('./layout/header') %> <% } %>
             let translation = data.translation;  
             cleanTranslationElement.value= translation;          
 
-            console.log(details);
-            console.log(translation);
             const allRecordPhrases = Object.keys(details);
             allRecordPhrases.sort((a, b) => {
                 const wordCountA = a.trim().split(/\s+/).length;
@@ -157,7 +155,6 @@ include('./layout/header') %> <% } %>
                 return wordCountB - wordCountA;
             });
 
-            console.log("Recorded Phrases: " + allRecordPhrases);
             for(let i = 0; i < allRecordPhrases.length - 1; i++){
               for(let j = i + 1; j < allRecordPhrases.length; j++){
                 if(allRecordPhrases[i].includes(allRecordPhrases[j])){
@@ -180,7 +177,6 @@ include('./layout/header') %> <% } %>
               }
             }
 
-            console.log(translation);
 
             for(let i = 0; i < allRecordPhrases.length; i++){
               const phrase = allRecordPhrases[i];
@@ -254,7 +250,6 @@ include('./layout/header') %> <% } %>
 
     const wordTitle = document.createElement("h4");
     wordTitle.innerText = info.word;
-
     const translation = document.createElement("p");
     translation.innerText = `"${(info.translation.join("/"))}"`;
 
