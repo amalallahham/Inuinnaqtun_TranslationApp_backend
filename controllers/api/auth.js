@@ -1,7 +1,7 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import User from '../../models/users.js'; 
-import nodemailer from 'nodemailer';
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import User from "../../models/users.js";
+import nodemailer from "nodemailer";
 const CLIENT_URL = process.env.URL;
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -11,12 +11,12 @@ export const apiRegister = async (req, res) => {
     const { email, password, username } = req.body;
 
     if (!email || !password || !username) {
-      return res.status(400).json({ error: 'All fields are required.' });
+      return res.status(400).json({ error: "All fields are required." });
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(409).json({ error: 'User already exists.' });
+      return res.status(409).json({ error: "User already exists." });
     }
 
     const saltRounds = 10;
@@ -26,7 +26,7 @@ export const apiRegister = async (req, res) => {
       email,
       password: hashedPassword,
       username,
-      role: 'DataEntry',
+      role: "DataEntry",
     });
 
     await newUser.save();
@@ -39,11 +39,11 @@ export const apiRegister = async (req, res) => {
         role: newUser.role,
       },
       JWT_SECRET,
-      { expiresIn: '7d' } 
+      { expiresIn: "7d" }
     );
 
     return res.status(201).json({
-      message: 'User registered successfully.',
+      message: "User registered successfully.",
       token,
       user: {
         id: newUser._id,
@@ -54,30 +54,34 @@ export const apiRegister = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Server error. Please try again later.' });
+    return res
+      .status(500)
+      .json({ error: "Server error. Please try again later." });
   }
 };
-
 
 export const apiLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password)
 
     if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required.' });
+      return res
+        .status(400)
+        .json({ error: "Email and password are required." });
     }
 
     const user = await User.findOne({ email });
 
-    if (!user || (user.role !== 'Admin' && user.role !== 'DataEntry')) {
-      return res.status(401).json({ error: 'Invalid credentials or unauthorized role.' });
+    if (!user || (user.role !== "Admin" && user.role !== "DataEntry")) {
+      return res
+        .status(401)
+        .json({ error: "Invalid credentials or unauthorized role." });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ error: 'Incorrect password.' });
+      return res.status(401).json({ error: "Incorrect password." });
     }
 
     const token = jwt.sign(
@@ -88,11 +92,11 @@ export const apiLogin = async (req, res) => {
         role: user.role,
       },
       JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: "7d" }
     );
 
     return res.status(200).json({
-      message: 'Login successful.',
+      message: "Login successful.",
       token,
       user: {
         id: user._id,
@@ -103,30 +107,32 @@ export const apiLogin = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Server error. Please try again later.' });
+    return res
+      .status(500)
+      .json({ error: "Server error. Please try again later." });
   }
 };
-
 
 // Forgot Password - Send Reset Link
 export const apiForgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log(email)
     if (!email?.email) {
       return res.status(400).json({ error: "Email is required." });
     }
 
-    const user = await User.findOne({ email : email?.email });
+    const user = await User.findOne({ email: email?.email });
     if (!user) {
       return res.status(404).json({ error: "User not found." });
     }
 
     // Generate a token that expires in 24 hours
-    const token = jwt.sign({ email, type: "reset" }, JWT_SECRET, { expiresIn: "24h" });
+    const token = jwt.sign({ email, type: "reset" }, JWT_SECRET, {
+      expiresIn: "24h",
+    });
 
     // Create reset password link (deep link format)
-    const resetLink = `https://echoofthenorth.com/reset-password?token=${token}`;
+    const resetLink = `${process.env.REDIRECT_URL}?action=reset&token=${token}`;
 
     // Setup nodemailer transporter
     const transporter = nodemailer.createTransport({
@@ -152,10 +158,17 @@ export const apiForgotPassword = async (req, res) => {
 
     await transporter.sendMail(mailOptions);
 
-    return res.status(200).json({ message: "Password reset link sent. Check your email.", emailToken: token });
+    return res
+      .status(200)
+      .json({
+        message: "Password reset link sent. Check your email.",
+        emailToken: token,
+      });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error sending reset link. Please try again." });
+    return res
+      .status(500)
+      .json({ error: "Error sending reset link. Please try again." });
   }
 };
 
@@ -165,7 +178,9 @@ export const apiResetPassword = async (req, res) => {
     const { token, newPassword } = req.body;
 
     if (!token || !newPassword) {
-      return res.status(400).json({ error: "Token and new password are required." });
+      return res
+        .status(400)
+        .json({ error: "Token and new password are required." });
     }
 
     // Verify the JWT token
@@ -186,9 +201,31 @@ export const apiResetPassword = async (req, res) => {
     user.password = hashedPassword;
     await user.save();
 
-    return res.status(200).json({ message: "Password has been reset successfully." });
+    const new_token = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+      },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    return res.status(200).json({
+      message: "Password has been reset successfully.",
+      new_token,
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error resetting password. Please try again." });
+    return res
+      .status(500)
+      .json({ error: "Error resetting password. Please try again." });
   }
 };

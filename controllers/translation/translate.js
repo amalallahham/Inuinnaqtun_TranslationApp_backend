@@ -9,10 +9,11 @@ import { AutoTokenizer } from '@xenova/transformers';
 export const get_translate = async (req, res) => {
   // Checking if user is admin for different nav bar
   if (!req.session || !req.session.adminId) {
-    res.render("translate", { error: "", title: "Translate", isAdmin: false });
+    return res.render("translate", { error: "", title: "Translate", isAdmin: false });
   }
-  res.render("translate", { error: "", title: "Translate", isAdmin: true });
+  return res.render("translate", { error: "", title: "Translate", isAdmin: true });
 };
+
 
 //Post method for /translate
 export const translate_text = async (req, res) => {
@@ -45,7 +46,6 @@ export const translate_text = async (req, res) => {
 
   const recordedWords = await selectRecordedWords(generatedText);
 
-  
   res.json({ translation: generatedText, recordedWords: recordedWords });
 }
 
@@ -157,6 +157,7 @@ const selectRecordedWords = async (translation) => {
   const words = await DialectWord.find(searchFilter)
     .sort({createdAt: -1})
     .lean();
+
   const wordMap = words.map((word)=> ({
     _id: word._id,
     word: word.word
