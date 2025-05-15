@@ -24,11 +24,11 @@ import { getAllFlags, getFlagDetail, getWordForFlag, resolveFlag } from "../cont
 
 const router = express.Router();
 
-router.get("/word-details/:id", getWordDetails);
+// router.get("/word-details/:id", getWordDetails);
 
-router.get("/recorded-words/:text", getRecordedWords);
+// router.get("/recorded-words/:text", getRecordedWords);
 
-router.post("/translate", translate_text);
+// router.post("/translate", translate_text);
 
 router.post("/register", apiRegister);
 router.post("/login", apiLogin);

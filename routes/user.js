@@ -9,13 +9,13 @@ router.get("/", get_translate);
 
 router.get('/information', get_information)
 
-router.get("/translate", get_translate);
+// router.get("/translate", get_translate);
 
-router.get("/word-details/:word", getWordDetails);
+// router.get("/word-details/:word", getWordDetails);
 
-router.get("/recorded-words/:text", getRecordedWords);
+// router.get("/recorded-words/:text", getRecordedWords);
 
-router.post("/translate", translate_text);
+// router.post("/translate", translate_text);
 
 router.post('/flag/:id', submitFlag);
 
