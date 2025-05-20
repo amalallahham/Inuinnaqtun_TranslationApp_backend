@@ -1,10 +1,5 @@
 import express from "express";
-import {
-  get_translate,
-  translate_text,
-  getWordDetails,
-  getRecordedWords,
-} from "../controllers/translation/translate.js";
+
 import { submitFlag } from "../controllers/flag/flag.js";
 import {
   apiForgotPassword,
@@ -24,11 +19,7 @@ import { getAllFlags, getFlagDetail, getWordForFlag, resolveFlag } from "../cont
 
 const router = express.Router();
 
-router.get("/word-details/:id", getWordDetails);
 
-router.get("/recorded-words/:text", getRecordedWords);
-
-router.post("/translate", translate_text);
 
 router.post("/register", apiRegister);
 router.post("/login", apiLogin);
