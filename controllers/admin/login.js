@@ -46,6 +46,7 @@ export const login = async (req, res) => {
 
     return res.redirect("/admin/");
   } catch (error) {
+    console.log(error)
     res.render("login", { error: "Server error, please try again later.", title: 'Login' });
   }
 };
