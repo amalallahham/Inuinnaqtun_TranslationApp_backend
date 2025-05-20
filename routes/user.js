@@ -1,6 +1,6 @@
 import express from "express";
 import { get_information } from "../controllers/general_user/general_user.js"
-import { get_translate} from "../controllers/translation/translate.js";
+import { get_translate } from "../controllers/translation/translate.js";
 import { submitFlag } from "../controllers/flag/flag.js";
 
 const router = express.Router();

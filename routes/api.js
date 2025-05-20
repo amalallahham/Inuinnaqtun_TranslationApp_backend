@@ -20,7 +20,6 @@ import { getAllFlags, getFlagDetail, getWordForFlag, resolveFlag } from "../cont
 const router = express.Router();
 
 
-
 router.post("/register", apiRegister);
 router.post("/login", apiLogin);
 router.post("/forgot-password", apiForgotPassword);
