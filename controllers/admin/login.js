@@ -9,6 +9,7 @@ export const get_login = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
+    console.log(email, password)
     const { email, password } = req.body;
 
     if (!email || !password) {
