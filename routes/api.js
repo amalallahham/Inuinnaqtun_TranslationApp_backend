@@ -41,7 +41,7 @@ router.post("/database/update-word/:id", verifyAdminTokenMiddleware,upload.singl
 router.get("/logs", verifyAdminTokenMiddleware, get_logs);
 router.get("/logs/:id", verifyAdminTokenMiddleware, get_log_details);
 
-router.get("/information_list", verifyAdminTokenMiddleware, get_information);
+router.get("/information_list", verifyAdminTokenMiddleware, get_latest_information);
 router.get("/information/:id", verifyAdminTokenMiddleware, get_information_by_id);
 router.post("/information/edit/:id", verifyAdminTokenMiddleware, updateInformation);
 router.post("/information/add_info", verifyAdminTokenMiddleware, add_information);
