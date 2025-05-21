@@ -1,6 +1,6 @@
 import Information from "../../models/information.js";
 
-export const get_latest_information = async (req, res) => {
+export const get_list_information = async (req, res) => {
    try {
     const allInfo = await Information.find()
       .sort({ createdAt: -1 })
@@ -18,6 +18,28 @@ export const get_latest_information = async (req, res) => {
     });
   }
 };
+
+export const get_latest_information = async (req, res) => {
+  try {
+    const lastPublished = await Information.findOne({ status: "published" })
+      .sort({ createdAt: -1 })
+      .exec();
+
+    return res.status(200).json({
+      success: true,
+      data: lastPublished || {}, // If null, return empty object
+    });
+  } catch (error) {
+    console.error("Error fetching latest information:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while fetching latest information.",
+    });
+  }
+};
+
+
+
 
 
 
