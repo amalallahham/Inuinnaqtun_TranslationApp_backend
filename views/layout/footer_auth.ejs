@@ -3,6 +3,22 @@
 <footer class="footer" id="footer">
     <div class="footerMenu">
         <% if (user?.role==='Admin' ) { %>
+            <a class="footerItem hoverable hoverableShadow" href="/admin/flags">
+                <div class="footerIcon">
+                    <i class="fa-solid fa-flag"></i>
+                </div>
+                <div class="footerDesc">
+                    Flags
+                </div>
+            </a>
+            <a class="footerItem hoverable hoverableShadow" href="/translate">
+                <div class="footerIcon">
+                    <i class="fa-solid fa-home"></i>
+                </div>
+                <div class="footerDesc">
+                    Home
+                </div>
+            </a>
             <a class="footerItem hoverable hoverableShadow" href="/admin/users">
                 <div class="footerIcon">
                     <i class="fa-solid fa-users-gear"></i>
@@ -11,58 +27,25 @@
                     Users
                 </div>
             </a>
-            <a class="footerItem hoverable hoverableShadow" href="/admin/translations">
-                <div class="footerIcon">
-                    <i class="fa-solid fa-language"></i>
-                </div>
-                <div class="footerDesc">
-                    Translations
-                </div>
-            </a>
-            <a class="footerItem hoverable hoverableShadow" href="/admin/logs">
-                <div class="footerIcon">
-                    <i class="fa-solid fa-list-ul"></i>
-                </div>
-                <div class="footerDesc">
-                    Logs
-                </div>
-            </a>
         <% } else { %>
             <!-- Data Input users nav items -->
+            <a class="footerItem hoverable hoverableShadow" href="/translate">
+                <div class="footerIcon">
+                    <i class="fa-solid fa-home"></i>
+                </div>
+                <div class="footerDesc">
+                    Home
+                </div>
+            </a>
+            <a class="footerItem hoverable hoverableShadow" href="/admin/add_translations">
+                <div class="footerIcon">
+                    <i class="fa-solid fa-users-gear"></i>
+                </div>
+                <div class="footerDesc">
+                    Add
+                </div>
+            </a>
         <% } %>
-
-        <!-- <a class="footerItem hoverable hoverableShadow" href="#!">
-            <div class="footerIcon">
-                <i class="fa-solid fa-gear"></i>
-            </div>
-            <div class="footerDesc">
-                Settings
-            </div>
-        </a> -->
-        <a class="footerItem hoverable hoverableShadow" href="/admin/information">
-            <div class="footerIcon">
-                <i class="fa-solid fa-earth-americas"></i>
-            </div>
-            <div class="footerDesc">
-                Info
-            </div>
-        </a>
-        <a class="footerItem hoverable hoverableShadow" href="/admin/flags">
-            <div class="footerIcon">
-                <i class="fa-solid fa-flag"></i>
-            </div>
-            <div class="footerDesc">
-                Flags
-            </div>
-        </a>
-        <a class="footerItem hoverable hoverableShadow" href="/admin/logout">
-            <div class="footerIcon">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            </div>
-            <div class="footerDesc">
-                Logout
-            </div>
-        </a>
     </div>
 </footer>
 

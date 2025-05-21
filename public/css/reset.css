@@ -24,7 +24,7 @@ body { background-color: rgb(240, 241, 255); }
 }
 
 .sideNavToggled {
-    width: 225px;
+    width: 350px;
     padding-right: 20px;
     overflow: visible;
 }
@@ -45,6 +45,31 @@ body { background-color: rgb(240, 241, 255); }
 .sideBarItem {
     font-size: 20px;
     text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.sideBarCategory {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sideBarCategoryTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(32, 6, 59, 0.5);
+}
+
+.categoryDivide {
+    border-top: 1px solid rgba(32, 6, 59, 0.5);
+    padding-top: 10px;
+}
+
+.sideBarCategoryItem {
+    padding-left: 20px;
 }
 
 .sideBarIcon {
@@ -52,11 +77,13 @@ body { background-color: rgb(240, 241, 255); }
 }
 
 .sideNavFooter {
-    width: 100%;
+    margin-top: 15px;
+    color: rgba(32, 6, 59, 0.5);
+    /* width: 100%;
     border-top: 1px solid #20063B;
     margin-top: 50px;
     padding-top: 15px;
-    text-wrap: nowrap;
+    text-wrap: nowrap; */
 }
 
 @media screen and (max-width: 815px) {
