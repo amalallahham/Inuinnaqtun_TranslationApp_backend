@@ -7,7 +7,7 @@ import {
   apiRegister,
   apiResetPassword,
 } from "../controllers/api/auth.js";
-import { add_information, deleteInformation, get_information, get_information_by_id, updateInformation } from "../controllers/api/information.js";
+import { add_information, deleteInformation, get_information, get_information_by_id, get_latest_information, updateInformation } from "../controllers/api/information.js";
 import { delete_user, edit_user, get_user, get_users, invite_user } from "../controllers/api/users.js";
 import { verifyTokenMiddleware } from "../middlewares/verifyToken.js";
 import { verifyAdminTokenMiddleware } from "../middlewares/verifyAdminToken.js";
@@ -24,7 +24,7 @@ router.post("/register", apiRegister);
 router.post("/login", apiLogin);
 router.post("/forgot-password", apiForgotPassword);
 router.post("/reset-password", apiResetPassword);
-router.get("/information", get_information);
+router.get("/information", get_latest_information);
 
 router.get("/users", verifyAdminTokenMiddleware, get_users);
 router.post("/users/invite", verifyAdminTokenMiddleware, invite_user);
@@ -36,11 +36,12 @@ router.get("/database", verifyAdminTokenMiddleware, get_translations);
 router.post("/database/add_word", verifyAdminTokenMiddleware, upload.single("audio"), add_translation);
 router.get("/database/:id", verifyAdminTokenMiddleware, get_word_details);
 router.delete("/database/:id", verifyAdminTokenMiddleware, delete_word);
-router.post("/database/update-word/:wordId", verifyAdminTokenMiddleware,upload.single("audio"), updateWord);
+router.post("/database/update-word/:id", verifyAdminTokenMiddleware,upload.single("audio"), updateWord);
 
 router.get("/logs", verifyAdminTokenMiddleware, get_logs);
 router.get("/logs/:id", verifyAdminTokenMiddleware, get_log_details);
 
+router.get("/information_list", verifyAdminTokenMiddleware, get_information);
 router.get("/information/:id", verifyAdminTokenMiddleware, get_information_by_id);
 router.post("/information/edit/:id", verifyAdminTokenMiddleware, updateInformation);
 router.post("/information/add_info", verifyAdminTokenMiddleware, add_information);

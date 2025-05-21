@@ -37,7 +37,7 @@ export const add_translation = async (req, res) => {
       translation,
       similarWords,
       versions: [],
-      addedToModel: false
+      addedToModel: false,
     });
 
     await newWord.save();
@@ -46,7 +46,7 @@ export const add_translation = async (req, res) => {
       action: "upload",
       performedBy: req.session?.user?._id,
       wordId: newWord._id,
-      type: "translation"
+      type: "translation",
     });
 
     let audioFileRecord = null;
@@ -65,7 +65,7 @@ export const add_translation = async (req, res) => {
         performedBy: req.session?.user?._id,
         wordId: newWord._id,
         audioFileId: audioFileRecord?._id,
-        type: "audio"
+        type: "audio",
       });
     }
 
@@ -91,8 +91,16 @@ export const get_translations = async (req, res) => {
     const filter = req.query.filter || "all";
     const sortOrder = req.query.order === "desc" ? -1 : 1;
 
-    let searchFilter = query ? { word: { $regex: query, $options: "i" } } : {};
+    let searchFilter = {};
 
+    if (query) {
+      searchFilter = {
+        $or: [
+          { word: { $regex: query, $options: "i" } },
+          { translation: { $elemMatch: { $regex: query, $options: "i" } } },
+        ],
+      };
+    }
     if (filter === "with_audio") {
       searchFilter["_id"] = { $in: await AudioFile.distinct("wordId") };
     } else if (filter === "without_audio") {
@@ -220,13 +228,13 @@ export const delete_word = async (req, res) => {
       }
 
       await AudioFile.findByIdAndDelete(audio._id);
-      
+
       await createLog({
         action: "delete",
         performedBy: req.session?.user?._id,
         wordId,
         audioFileId: audio._id,
-        type: "audio"
+        type: "audio",
       });
     }
 
@@ -234,16 +242,18 @@ export const delete_word = async (req, res) => {
       action: "delete",
       performedBy: req.session?.user?._id,
       wordId,
-      type: "translation"
+      type: "translation",
     });
 
-    res.json({ success: true, message: "Word and associated audio files deleted." });
+    res.json({
+      success: true,
+      message: "Word and associated audio files deleted.",
+    });
   } catch (error) {
     console.error("Delete word error:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
-
 
 export const updateWord = async (req, res) => {
   try {
@@ -295,7 +305,7 @@ export const updateWord = async (req, res) => {
       action: "edit",
       performedBy: req.session?.user?._id,
       wordId: wordId,
-      type: "translation"
+      type: "translation",
     });
 
     res.status(200).json({
