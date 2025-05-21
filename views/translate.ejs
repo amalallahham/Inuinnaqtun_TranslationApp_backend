@@ -1,8 +1,5 @@
-<% if (isAdmin) { %> 
-  <%- include('./layout/header_auth') %> 
-<% } else { %> 
-  <%- include('./layout/header') %> 
-<% } %>
+<% if (isAdmin) { %> <%- include('./layout/header_auth') %> <% } else { %> <%-
+include('./layout/header') %> <% } %>
 
 <link href="/css/translate.css" rel="stylesheet" />
 
@@ -12,6 +9,7 @@
       id="input-text"
       class="textArea"
       rows="4"
+      <%= !llmEnabled ? "disabled" : "" %>
       placeholder="Enter or paste text here"
     ></textarea>
     <div class="changeLanguageArea">
@@ -20,19 +18,30 @@
       <div
         id="changeLanguageBtn"
         class="changeLanguageBtn hoverable hoverableShadow"
-        onclick="reverseLanguages()"
+         <%= !llmEnabled ? "style='pointer-events: none; opacity: 0.5;'" : "onclick='reverseLanguages()'" %>
       >
         <img src="/icons/swap.png" />
       </div>
       <div id="output-lang" class="languageOption"></div>
     </div>
     <div id="output-text" class="textArea outputText">Translation</div>
-    <input id="clean-translation" value="" type="hidden">
+    <input id="clean-translation" value="" type="hidden" />
     <div id="word-details"></div>
+
+    <!-- Box to indicate if llm is down -->
+    <!-- Get rid of display:block, only apply it when the llm is down -->
+    <% if (!llmEnabled) { %>
+
+    <div class="alert alert-danger" style="display: block">
+      Sorry! AI translation isn't available at the moment
+    </div>
+
+    <% } %>
   </div>
 </div>
 
 <script>
+
   const en = "English";
   const inu = "Inuinnaqtun";
   let inputLanguage = en;
@@ -56,6 +65,7 @@
     "Translating...",
   ];
 
+  
   setDescriptors();
 
   inputElement.addEventListener("input", () => {
@@ -80,20 +90,22 @@
   }
 
   function reverseLanguages() {
-    document.getElementById("changeLanguageBtn").classList.toggle("rotateEvent");
+    document
+      .getElementById("changeLanguageBtn")
+      .classList.toggle("rotateEvent");
     wordDetails.style.display = "none";
     [inputLanguage, outputLanguage] = [outputLanguage, inputLanguage];
-    
+
     const oldInputText = inputElement.value;
     const oldOutputText = cleanTranslationElement.value;
 
     inputElement.value = oldOutputText;
     cleanTranslationElement.value = oldInputText;
-    if(oldInputText === ""){
+    if (oldInputText === "") {
       inputElement.value = "";
       outputElement.innerHTML = "Translation";
     } else {
-      if(outputLanguage === en){
+      if (outputLanguage === en) {
         outputElement.innerHTML = oldInputText;
       } else {
         showRecordedPhrasesOnReverse(oldInputText);
@@ -103,20 +115,20 @@
     setDescriptors();
   }
 
-  function showRecordedPhrasesOnReverse(text){
+  function showRecordedPhrasesOnReverse(text) {
     startLoadingEvent();
     fetch(`/recorded-words/${text}`, {
-      method: "GET"
+      method: "GET",
     })
       .then((res) => res.json())
       .then((data) => {
         stopLoadingEvent();
-        displayTranslation({translation: text, recordedWords: data.recordedWords})
+        displayTranslation({
+          translation: text,
+          recordedWords: data.recordedWords,
+        });
       })
       .catch((err) => console.error("Error:", err));
-    
-      
-      
   }
 
   function translate(input) {
@@ -141,88 +153,91 @@
   }
 
   function displayTranslation(data) {
-    outputElement.innerHTML = '';
-            const details = data.recordedWords;
+    outputElement.innerHTML = "";
+    const details = data.recordedWords;
 
-            const space = document.createTextNode(" ");
+    const space = document.createTextNode(" ");
 
-            let translationWordList = data.translation.split(' ');
-            let translation = data.translation;  
-            cleanTranslationElement.value= translation;          
+    let translationWordList = data.translation.split(" ");
+    let translation = data.translation;
+    cleanTranslationElement.value = translation;
 
-            const allRecordPhrases = Object.keys(details);
-            allRecordPhrases.sort((a, b) => {
-                const wordCountA = a.trim().split(/\s+/).length;
-                const wordCountB = b.trim().split(/\s+/).length;                   
-                 
-                return wordCountB - wordCountA;
-            });
+    const allRecordPhrases = Object.keys(details);
+    allRecordPhrases.sort((a, b) => {
+      const wordCountA = a.trim().split(/\s+/).length;
+      const wordCountB = b.trim().split(/\s+/).length;
 
-            for(let i = 0; i < allRecordPhrases.length - 1; i++){
-              for(let j = i + 1; j < allRecordPhrases.length; j++){
-                if(allRecordPhrases[i].includes(allRecordPhrases[j])){
-                  if(details[allRecordPhrases[i]][0].containedPhrases){
-                    details[allRecordPhrases[i]][0].containedPhrases.append(details[allRecordPhrases[j]][0]);
-                  } else {
-                    details[allRecordPhrases[i]][0].containedPhrases = [details[allRecordPhrases[j]][0]];
-                  }
-                }
-              }
-            }
-            
-            for(let i = 0; i < allRecordPhrases.length; i++){
-              const phrase = allRecordPhrases[i];
-              const id = details[phrase][0]._id;
+      return wordCountB - wordCountA;
+    });
 
-              const wordSpan = document.createElement('span');
-              if(translation.includes(phrase)){
-                translation = translation.replaceAll(phrase, `${i}=${id}`);
-              }
-            }
+    for (let i = 0; i < allRecordPhrases.length - 1; i++) {
+      for (let j = i + 1; j < allRecordPhrases.length; j++) {
+        if (allRecordPhrases[i].includes(allRecordPhrases[j])) {
+          if (details[allRecordPhrases[i]][0].containedPhrases) {
+            details[allRecordPhrases[i]][0].containedPhrases.append(
+              details[allRecordPhrases[j]][0]
+            );
+          } else {
+            details[allRecordPhrases[i]][0].containedPhrases = [
+              details[allRecordPhrases[j]][0],
+            ];
+          }
+        }
+      }
+    }
 
+    for (let i = 0; i < allRecordPhrases.length; i++) {
+      const phrase = allRecordPhrases[i];
+      const id = details[phrase][0]._id;
 
-            for(let i = 0; i < allRecordPhrases.length; i++){
-              const phrase = allRecordPhrases[i];
-              const info = details[phrase][0];
-              const identifier = `${i}=${info._id}`;
+      const wordSpan = document.createElement("span");
+      if (translation.includes(phrase)) {
+        translation = translation.replaceAll(phrase, `${i}=${id}`);
+      }
+    }
 
-              if(translation.includes(identifier)){
-                let wordSpan = "";
-                if(i === 0){
-                  wordSpan = `<span class="selectable selected">${phrase}</span>`;
-                  getWordDetails(info);
-                } else {
-                  wordSpan = `<span class="selectable notSelected">${phrase}</span>`;
-                }
-                translation = translation.replaceAll(identifier, wordSpan);
-              }
-            }
+    for (let i = 0; i < allRecordPhrases.length; i++) {
+      const phrase = allRecordPhrases[i];
+      const info = details[phrase][0];
+      const identifier = `${i}=${info._id}`;
 
-            outputElement.innerHTML = translation;
+      if (translation.includes(identifier)) {
+        let wordSpan = "";
+        if (i === 0) {
+          wordSpan = `<span class="selectable selected">${phrase}</span>`;
+          getWordDetails(info);
+        } else {
+          wordSpan = `<span class="selectable notSelected">${phrase}</span>`;
+        }
+        translation = translation.replaceAll(identifier, wordSpan);
+      }
+    }
 
-            const selectablePhrases = document.getElementsByClassName('selectable');
-            for(let i = 0; i < selectablePhrases.length; i++){
-              const span = selectablePhrases[i];
-              const info = details[span.textContent][0];
-              span.addEventListener('click', ()=> {
-                getWordDetails(info);
-                const selectedElements = document.getElementsByClassName('selected');
-                for(const element of selectedElements){
-                  element.classList.replace('selected', 'notSelected');
-                }
+    outputElement.innerHTML = translation;
 
-                span.classList.replace('notSelected', 'selected');
-              });
-            }
+    const selectablePhrases = document.getElementsByClassName("selectable");
+    for (let i = 0; i < selectablePhrases.length; i++) {
+      const span = selectablePhrases[i];
+      const info = details[span.textContent][0];
+      span.addEventListener("click", () => {
+        getWordDetails(info);
+        const selectedElements = document.getElementsByClassName("selected");
+        for (const element of selectedElements) {
+          element.classList.replace("selected", "notSelected");
+        }
+
+        span.classList.replace("notSelected", "selected");
+      });
+    }
   }
 
   function extractAllPhrases(translation) {
-    const words = translation.split(' ');
+    const words = translation.split(" ");
     const phrases = [];
 
     for (let start = 0; start < words.length; start++) {
       for (let end = start + 1; end <= words.length; end++) {
-        const phrase = words.slice(start, end).join(' ');
+        const phrase = words.slice(start, end).join(" ");
         phrases.push(phrase);
       }
     }
@@ -235,7 +250,7 @@
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          console.log("Word details: ",data.details);
+          console.log("Word details: ", data.details);
           displayWordDetails(data.details, info.containedPhrases);
         } else {
           wordDetails.innerText = data.error;
@@ -254,7 +269,7 @@
     const wordTitle = document.createElement("h4");
     wordTitle.innerText = info.word;
     const translation = document.createElement("p");
-    translation.innerText = `"${(info.translation.join("/"))}"`;
+    translation.innerText = `"${info.translation.join("/")}"`;
 
     container.appendChild(wordTitle);
     container.appendChild(translation);
@@ -295,10 +310,10 @@
     wordDetails.appendChild(container);
 
     // Add similar words
-    if(containedPhrases !== undefined){
+    if (containedPhrases !== undefined) {
       info.similarWords = info.similarWords.concat(containedPhrases);
     }
-   
+
     if (info.similarWords.length > 0) {
       for (const alt of info.similarWords) {
         const altPara = document.createElement("p");
@@ -332,10 +347,27 @@
     outputElement.innerHTML = "Translation";
     wordDetails.style.display = "none";
   }
+
+
+  if (llmEnabled) {
+  inputElement.addEventListener("input", () => {
+    const input = inputElement.value.trim();
+
+    if (inputTimeout) clearTimeout(inputTimeout);
+    if (controller) controller.abort();
+
+    if (input === "") {
+      stopLoadingEvent();
+    } else {
+      controller = new AbortController();
+      inputTimeout = setTimeout(() => {
+        translate(input);
+      }, 700);
+    }
+  });
+}
+
 </script>
 
-<% if (isAdmin) { %> 
-  <%- include('./layout/footer_auth') %> 
-<% } else { %> 
-  <%- include('./layout/footer') %> 
-<% } %>
+<% if (isAdmin) { %> <%- include('./layout/footer_auth') %> <% } else { %> <%-
+include('./layout/footer') %> <% } %>
