@@ -1,5 +1,23 @@
 import Information from "../../models/information.js";
 
+export const get_latest_information = async (req, res) => {
+  const lastPublished = await Information.findOne({ status: "published" })
+    .sort({ createdAt: -1 })
+    .exec();
+
+  if (!lastPublished) {
+    res.status(200).json({
+      success: true,
+      data: {},
+    });
+  } 
+
+  res.status(200).json({
+      success: true,
+      data: lastPublished,
+    });
+};
+
 export const get_information = async (req, res) => {
   try {
     const infoList = await Information.find()
@@ -62,10 +80,11 @@ export const add_information = async (req, res) => {
   }
 };
 
-
 export const get_information_by_id = async (req, res) => {
   try {
-    const info = await Information.findById(req.params.id).populate("createdBy", "username").lean();
+    const info = await Information.findById(req.params.id)
+      .populate("createdBy", "username")
+      .lean();
 
     if (!info) {
       return res.status(404).json({
@@ -87,14 +106,15 @@ export const get_information_by_id = async (req, res) => {
   }
 };
 
-
 export const updateInformation = async (req, res) => {
   try {
     const { title, content, status } = req.body;
 
     const info = await Information.findById(req.params.id);
     if (!info) {
-      return res.status(404).json({ success: false, message: "Information not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Information not found" });
     }
 
     info.title = title || info.title;
@@ -118,7 +138,9 @@ export const deleteInformation = async (req, res) => {
   try {
     const info = await Information.findById(req.params.id);
     if (!info) {
-      return res.status(404).json({ success: false, message: "Information not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Information not found" });
     }
 
     await Information.findByIdAndDelete(req.params.id);
