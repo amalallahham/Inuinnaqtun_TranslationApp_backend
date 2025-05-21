@@ -21,6 +21,7 @@ import upload from "../middlewares/uploadMiddleware.js";
 import { get_log_details, get_logs } from "../controllers/api/logs.js";
 import { get_add_information } from "../controllers/admin/information.js";
 import { getAllFlags, getFlagDetail, getWordForFlag, resolveFlag } from "../controllers/api/flag.js";
+import { submitUserRequest } from "../controllers/api/userRequest.js";
 
 const router = express.Router();
 
@@ -63,5 +64,7 @@ router.post("/flag/:id", submitFlag);
 router.get("/flags", verifyAdminTokenMiddleware, getAllFlags);              
 router.get("/flags/:id", verifyAdminTokenMiddleware, getFlagDetail);        
 router.patch("/flags/:id/resolve", verifyAdminTokenMiddleware, resolveFlag); 
+
+router.post('/request-access', submitUserRequest)
 
 export default router;

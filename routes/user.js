@@ -1,5 +1,5 @@
 import express from "express";
-import { get_information } from "../controllers/general_user/general_user.js"
+import { get_information, get_requestAccess, submitUserRequest } from "../controllers/general_user/general_user.js"
 import { get_translate, translate_text, getWordDetails, getRecordedWords } from "../controllers/translation/translate.js";
 import { submitFlag } from "../controllers/flag/flag.js";
 
@@ -18,6 +18,10 @@ router.get("/recorded-words/:text", getRecordedWords);
 router.post("/translate", translate_text);
 
 router.post('/flag/:id', submitFlag);
+
+router.get('/requestAccess', get_requestAccess)
+
+router.post('/requestAccess', submitUserRequest)
 
 
 export default router;

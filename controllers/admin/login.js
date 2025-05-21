@@ -53,10 +53,9 @@ export const logout = async (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.error("Error destroying session:", err);
-      return res.redirect("/admin/");
+    
     }
-    res.clearCookie("connect.sid");
-    res.redirect("/admin/login");
+    return res.redirect("/");
   });
 };
 
