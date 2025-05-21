@@ -1,7 +1,9 @@
+import mongoose from "mongoose";
 import AudioFile from "../../models/audioFile.js";
 import DialectWord from "../../models/dialectWords.js";
 import fs from "fs";
 import path from "path";
+import { createLog } from "./logs.js";
 
 export const get_translations = async (req, res) => {
   try {
@@ -11,7 +13,16 @@ export const get_translations = async (req, res) => {
     const filter = req.query.filter || "all";
     const sortOrder = req.query.order === "desc" ? -1 : 1;
 
-    let searchFilter = query ? { word: { $regex: query, $options: "i" } } : {};
+    let searchFilter = {};
+
+    if (query) {
+      searchFilter = {
+        $or: [
+          { word: { $regex: query, $options: "i" } },
+          { translation: { $elemMatch: { $regex: query, $options: "i" } } },
+        ],
+      };
+    }
 
     if (filter === "with_audio") {
       searchFilter["_id"] = { $in: await AudioFile.distinct("wordId") };
@@ -69,6 +80,7 @@ export const get_translations = async (req, res) => {
   }
 };
 
+
 export const add_translation = async (req, res) => {
   try {
     const { word, translation, linkedWords } = req.body;
@@ -96,7 +108,7 @@ export const add_translation = async (req, res) => {
 
     await createLog({
       action: "upload",
-      performedBy: req.session?.user?._id,
+      performedBy: req.user?._id,
       wordId: newWord._id,
       type: "translation",
     });
@@ -115,7 +127,7 @@ export const add_translation = async (req, res) => {
 
       await createLog({
         action: "upload",
-        performedBy: req.session?.user?._id,
+        performedBy: req.user?._id,
         wordId: newWord._id,
         audioFileId: audioFileRecord._id,
         type: "audio",
@@ -140,6 +152,7 @@ export const add_translation = async (req, res) => {
 
 export const get_word_details = async (req, res) => {
   try {
+
     const wordId = req.params.id;
 
     if (!wordId || !mongoose.Types.ObjectId.isValid(wordId)) {
@@ -205,7 +218,7 @@ export const delete_word = async (req, res) => {
 
       await createLog({
         action: "delete",
-        performedBy: req.session?.user?._id,
+        performedBy: req.user?._id,
         wordId,
         audioFileId: audio._id,
         type: "audio",
@@ -214,7 +227,7 @@ export const delete_word = async (req, res) => {
 
     await createLog({
       action: "delete",
-      performedBy: req.session?.user?._id,
+      performedBy: req.user?._id,
       wordId,
       type: "translation",
     });
@@ -235,7 +248,7 @@ export const delete_word = async (req, res) => {
 
 export const updateWord = async (req, res) => {
   try {
-    const { wordId } = req.params;
+    const { id } = req.params;
     const { word, translation, linkedWords } = req.body;
 
     if (!wordId || !word || !translation) {
@@ -283,7 +296,7 @@ export const updateWord = async (req, res) => {
 
     await createLog({
       action: "edit",
-      performedBy: req.session?.user?._id,
+      performedBy: req.user?._id,
       wordId,
       type: "translation",
     });

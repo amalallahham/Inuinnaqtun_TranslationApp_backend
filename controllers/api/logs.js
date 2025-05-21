@@ -28,7 +28,7 @@ export const createLog = async ({
 export const get_logs = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = 10;
+    const limit = 5;
     const actionFilter = req.query.action || "";
     const typeFilter = req.query.type || "";
     const sortOrder = req.query.order === "asc" ? 1 : -1;
@@ -61,6 +61,7 @@ export const get_log_details = async (req, res) => {
       .populate("performedBy", "username")
       .lean();
 
+      console.log(log)
     if (!log) {
       return res.status(404).json({ error: "Log entry not found." });
     }
@@ -71,3 +72,4 @@ export const get_log_details = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
