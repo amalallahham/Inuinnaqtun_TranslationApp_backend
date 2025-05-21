@@ -5,6 +5,17 @@ img { width: 100%; height: 100%; }
 body { background-color: rgb(240, 241, 255); }
 
 /* Settings for navbar toggle */
+.hide {
+    opacity: 0;
+    transition-duration: 0.3s;
+}
+
+#layoutSidenav {
+    max-width: 100svw;
+    overflow-x: hidden !important;
+    height: max-content;
+}
+
 .sideNavContents {
     display: flex;
     flex-direction: row-reverse;
@@ -12,10 +23,17 @@ body { background-color: rgb(240, 241, 255); }
 
 .sideNav {
     width: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition-duration: 0.3s;
+    height: calc(100vh - 150px);
+    min-height: max-content;
+    background-color: rgb(240, 241, 255);
+    box-shadow: -5px 10px 15px rgba(32, 6, 59, 0.2);
+    position: absolute;
+    top: 150px;
+    right: 0;
+    z-index: -99;
+    transform: translateX(150%);
+    transition: transform 0.3s;
+    overflow-x: hidden;
 }
 
 .noborder {
@@ -24,9 +42,10 @@ body { background-color: rgb(240, 241, 255); }
 }
 
 .sideNavToggled {
-    width: 225px;
-    padding-right: 20px;
-    overflow: visible;
+    width: 350px;
+    padding: 0 20px 20px 20px;
+    transform: translateX(0);
+    z-index: 999;
 }
 
 .sideNavMenu {
@@ -34,6 +53,7 @@ body { background-color: rgb(240, 241, 255); }
     padding-top: 20px;
     flex-direction: column;
     gap: 15px;
+    overflow-x: hidden;
 }
 
 .sideNavMenu>a {
@@ -45,6 +65,31 @@ body { background-color: rgb(240, 241, 255); }
 .sideBarItem {
     font-size: 20px;
     text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.sideBarCategory {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sideBarCategoryTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(32, 6, 59, 0.5);
+}
+
+.categoryDivide {
+    border-top: 1px solid rgba(32, 6, 59, 0.5);
+    padding-top: 10px;
+}
+
+.sideBarCategoryItem {
+    padding-left: 20px;
 }
 
 .sideBarIcon {
@@ -52,11 +97,8 @@ body { background-color: rgb(240, 241, 255); }
 }
 
 .sideNavFooter {
-    width: 100%;
-    border-top: 1px solid #20063B;
-    margin-top: 50px;
-    padding-top: 15px;
-    text-wrap: nowrap;
+    margin-top: 15px;
+    color: rgba(32, 6, 59, 0.5);
 }
 
 @media screen and (max-width: 815px) {
@@ -74,7 +116,6 @@ body { background-color: rgb(240, 241, 255); }
     width: 100%;
     height: 150px;
     padding: 0 50px;
-    /* background-image: linear-gradient(grey, rgba(0, 0, 0, 0));; */
     background-image: linear-gradient(#5C80BC, #5c7fbc00);;
     display: flex;
     justify-content: space-between;
@@ -90,7 +131,7 @@ body { background-color: rgb(240, 241, 255); }
     display: flex;
     align-items: center;
     line-height: 1.3;
-    gap: 30px;
+    gap: 20px;
 }
 
 .logoText {
@@ -130,6 +171,7 @@ body { background-color: rgb(240, 241, 255); }
     bottom: 2.5vw;
     left: 50%;
     transform: translateX(-50%);
+    transition-duration: 0.3s;
 }
 
 .footerMenu {
@@ -149,6 +191,10 @@ body { background-color: rgb(240, 241, 255); }
 
 /* Media queries for logo */
 @media screen and (max-width: 675px) {
+    .footer {
+        display: flex;
+    }
+
     .logo {
         font-size: 40px;
     }
@@ -220,6 +266,12 @@ body { background-color: rgb(240, 241, 255); }
 
     .footerDesc {
         display: none;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .sideNavMobile {
+        width: 100%;
     }
 }
 

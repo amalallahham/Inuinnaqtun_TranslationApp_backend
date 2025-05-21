@@ -1,0 +1,35 @@
+<%- include('./layout/header') %>
+
+<link href="/css/login.css" rel="stylesheet" />
+
+<h1 class="reqTitle title headerFont semi-bold" style="margin-bottom: 20px; max-width: 600px;">Data Input User Request Form</h1>
+
+<div class="feedbackWrap">
+  <% if (error) { %>
+    <div class="alert alert-danger displayAlert my-3">
+      <%= error %>
+    </div>
+  <% } %>
+
+  <% if (message) { %>
+    <div class="alert alert-success displayAlert my-3">
+      <%= message %>
+    </div>
+  <% } %>
+</div>
+
+<form action="/requestAccess" method="POST" class="requestAccessWrap">
+  <input type="email" required id="exampleInputEmail1" name="email" placeholder="Enter email" value="<%= formData?.email || '' %>" />
+  <input type="text" required name="username" id="username" placeholder="Enter username" value="<%= formData?.username || '' %>" />
+  <input type="password" name="password" required id="exampleInputPassword1" placeholder="Password" />
+  <textarea
+    id="input-text"
+    class="textArea"
+    name="reason"
+    rows="4"
+    placeholder="Tell us why you'd like to help"
+  ><%= formData?.reason || '' %></textarea>
+  <button type="submit" class="btn submitBtn semi-bold hoverable hoverableBtn" style="box-sizing: border-box;">Submit</button>
+</form>
+
+<%- include('./layout/footer') %>

@@ -24,13 +24,34 @@
       <!-- Word Input -->
       <div>
         <label class="form-label">Word</label>
-        <input type="text" class="form-control word-input" value="<%= data.word %>" data-id="<%= data._id %>" />
+        <input type="text" class="form-control word-input" value="<%= data.word %>" data-id="<%= data._id %>" placeholder="Enter new word (in Inuinnaqtun)" />
       </div>
 
       <!-- Definition Input -->
-      <div>
-        <label class="form-label">Definition</label>
-        <input type="text" class="form-control definition-input" value="<%= data.translation || '' %>" data-id="<%= data._id %>" />
+      <div class="mb-3">
+        <label class="form-label">Definitions</label>
+        <ul class="list-group definitions-list" data-id="<%= data._id %>">
+          <% if (data.translation && data.translation.length > 0) { %> 
+            <% data.translation.forEach((definition) => { %>
+              <li class="list-group-item">
+                <p><%= definition.definiton %></p>
+                <button class="linkedBtn btn-danger remove-definition hoverable hoverableShadow" data-id="<%= data._id %>" data-word="<%= definition %>">
+                  <i class="fa-solid fa-link-slash remove-definition" data-id="<%= data._id %>" data-word="<%= definition %>"></i>
+                </button>
+              </li>
+            <% }) %>
+          <% } else { %>
+            <li class="list-group-item text-muted"><p>Enter a definition (in English)</p></li>
+          <% } %>
+        </ul>               
+
+        <!-- Input to Add New Linked Word -->
+        <div class="definitions-input">
+          <input type="text" class="form-control new-definition-input" placeholder="Add definition" />
+          <button class="linkedBtn hoverable hoverableShadow add-definition" data-id="<%= data._id %>">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Linked Words -->
@@ -187,6 +208,46 @@
 
             if (mediaRecorder) {
               mediaRecorder.stop(); // Stop recording (will trigger onstop)
+            }
+          }
+
+          // Add Linked Word Event (Client-side Only)
+          if (target.closest(".add-definition")) {
+            let button = target.closest(".add-definition"); // Get the button element
+            let input = button.previousElementSibling;
+            let newWord = input.value.trim();
+
+            if (!newWord) return;
+
+            let list = button.closest(".mb-3").querySelector(".definitions-list");
+
+            // Check if "No linked words" exists and remove it
+            if (list.querySelector(".text-muted")) {
+              list.innerHTML = "";
+            }
+
+            let newItem = document.createElement("li");
+            newItem.classList.add("list-group-item");
+            newItem.innerHTML = `
+              <p>${newWord}</p>
+              <button class=" linkedBtn btn-sm btn-secondary remove-definition hoverable hoverableShadow">
+                <i class="fa-solid fa-link-slash"></i>
+              </button>
+            `;
+
+            list.appendChild(newItem);
+            input.value = "";
+          }
+
+          // Remove Linked Word Event (Client-side Only)
+          if (target.closest(".remove-definition")) {
+            let listItem = target.closest("li");
+            // Check if the list is empty, add "No linked words" message
+            let list = listItem.closest(".definitions-list");
+            listItem.remove();
+            if (!list.querySelector("li")) {
+              list.innerHTML =
+              '<li class="list-group-item text-muted"><p>Enter a definition (in English)</p></li>';
             }
           }
 

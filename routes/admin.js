@@ -17,6 +17,9 @@ const router = express.Router();
 router.get("/login", redirectIfAuthenticated, get_login);
 router.post("/login", redirectIfAuthenticated, login);
 
+router.post("/logout", logout);
+
+
 router.get("/register", verifyTokenMiddleware, redirectIfAuthenticated, get_register);
 router.post("/register",redirectIfAuthenticated, register);
 

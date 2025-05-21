@@ -17,6 +17,7 @@ import { get_log_details, get_logs } from "../controllers/api/logs.js";
 import { get_add_information } from "../controllers/admin/information.js";
 import { getAllFlags, getFlagDetail, getWordForFlag, resolveFlag } from "../controllers/api/flag.js";
 import { get_translate } from "../controllers/translation/translate.js";
+import { submitUserRequest } from "../controllers/api/userRequest.js";
 
 const router = express.Router();
 
@@ -56,5 +57,6 @@ router.get("/flags/:id", verifyAdminTokenMiddleware, getFlagDetail);
 router.patch("/flags/:id/resolve", verifyAdminTokenMiddleware, resolveFlag); 
 
 router.get("/translate", get_translate);
+router.post('/request-access', submitUserRequest)
 
 export default router;

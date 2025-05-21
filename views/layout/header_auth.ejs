@@ -1,156 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title><%= title %></title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
-      rel="stylesheet"
-    />
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous"> -->
-    <!-- <link href="/css/styles.css" rel="stylesheet" /> -->
-    <!-- <link href="/css/common.css" rel="stylesheet" /> -->
-    <!-- Put this in your <head> section -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=La+Belle+Aurore&family=Montserrat+Alternates:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous"> -->
+  <!-- <link href="/css/styles.css" rel="stylesheet" /> -->
+  <!-- <link href="/css/common.css" rel="stylesheet" /> -->
+  <link href="/css/fonts.css" rel="stylesheet" />
+  <link href="/css/reset.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+  <nav class="navBar">
+    <div class="logo titleFont hoverable bold">
+      <a href="/translate">
+        <div class="headerLogo">
+          <img src="/image/tempLogo.png" alt="Logo">
+        </div>
+        <div class="logoText hoverable hoverableText">
+          <p>Echo</p><p>of the North</p>
+        </div>
+      </a>
+    </div>
+    <div class="navMenu hoverable hoverableShadow" id="sidebarToggle">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+  <script>
+    let mobileView = false;
 
-    <link href="/css/fonts.css" rel="stylesheet" />
-    <link href="/css/reset.css" rel="stylesheet" />
-    <script
-      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body class="sb-nav-fixed">
-    <nav class="navBar">
-      <div class="logo titleFont hoverable bold">
-        <a href="/admin/">
-          <div class="headerLogo">
-            <img src="/image/tempLogo.png" alt="Logo" />
-          </div>
-          <div class="logoText hoverable hoverableText">
-            <p>Echo</p>
-            <p>of the North</p>
-          </div>
-        </a>
-      </div>
-      <div class="navMenu hoverable hoverableShadow" id="sidebarToggle">
-        <i class="fas fa-bars"></i>
-      </div>
-    </nav>
-    <script>
-      function toggleSideNav() {
-        document.body.classList.toggle("bodyToggled");
-        localStorage.setItem(
-          "sb|sidebar-toggle",
-          document.body.classList.contains("bodyToggled")
-        );
-        document.getElementById("sideNav").classList.toggle("sideNavToggled");
+    function toggleSideNav() {
+      document.body.classList.toggle("bodyToggled");
+      localStorage.setItem(
+        "sb|sidebar-toggle",
+        document.body.classList.contains("bodyToggled")
+      );
+      document.getElementById("sideNav").classList.toggle("sideNavToggled");
+      if (mobileView) {
+        // document.getElementById("sideNav").classList.toggle("sideNavMobileToggled");
+        document.getElementById("footer").classList.toggle("hide");
+      } 
+    }
+    
+    window.addEventListener("DOMContentLoaded", (event) => {
+      const sidebarToggle = document.body.querySelector("#sidebarToggle");
+      // Getting rid of sidebar and activating footer for mobile view
+      if (window.innerWidth <= 765) {
+        mobileView = true;
+        document.getElementById("layoutSidenav").style.paddingBottom = `${40 + document.getElementById("footer").offsetHeight}px`;
       }
-      window.addEventListener("DOMContentLoaded", (event) => {
-        const sidebarToggle = document.body.querySelector("#sidebarToggle");
-        // Getting rid of sidebar and activating footer for mobile view
-        if (window.innerWidth <= 765) {
-          sidebarToggle.style.display = "none";
-          document.getElementById("footer").style.display = "flex";
-          document.getElementById("layoutSidenav").style.paddingBottom = `${
-            40 + document.getElementById("footer").offsetHeight
-          }px`;
+      // Toggle the side navigation
+      if (sidebarToggle) {
+        // Uncomment Below to persist sidebar toggle between refreshes
+        if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+          document.body.classList.toggle('bodyToggled');
         }
-        // Toggle the side navigation
-        if (sidebarToggle) {
-          // Uncomment Below to persist sidebar toggle between refreshes
-          if (localStorage.getItem("sb|sidebar-toggle") === "true") {
-            document.body.classList.toggle("bodyToggled");
-          }
-          sidebarToggle.addEventListener("click", () => {
-            toggleSideNav();
-          });
-        }
-      });
-    </script>
-    <div id="layoutSidenav" class="sideNavContents">
-      <nav class="sideNav" id="sideNav">
-        <div class="sideNavMenu">
-          <% if (user?.role==='Admin' ) { %>
-          <a class="sideBarItem hoverable hoverableShadow" href="/admin/users">
+        sidebarToggle.addEventListener("click", () => {
+          toggleSideNav();
+        });
+      }
+    });
+  </script>
+  <div id="layoutSidenav" class="sideNavContents">
+    <nav class="sideNav" id="sideNav">
+      <div class="sideNavMenu">
+        <a class="sideBarItem hoverable hoverableShadow" href="/translate">
+          <div class="sideBarIcon">
+            <i class="fa-solid fa-home"></i>
+          </div>
+          Homes
+        </a>
+        <% if (user?.role === 'Admin') { %>
+          <ul class="sideBarCategory categoryDivide">
+            <li class="sideBarCategoryTitle">User Management</li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/users">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-users-gear"></i>
+                </div>
+                User List
+              </a>
+            </li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/userRequests">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-list-ul"></i>
+                </div>
+                User Requests
+              </a>
+            </li>
+          </ul>
+          <ul class="sideBarCategory categoryDivide">
+            <li class="sideBarCategoryTitle">Database Management</li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/translations">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-database"></i>
+                </div>
+                Database
+              </a>
+            </li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/add-word">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-circle-plus"></i>
+                </div>
+                New Translation
+              </a>
+            </li>
+          </ul>
+          <a class="sideBarItem hoverable hoverableShadow categoryDivide" href="/admin/logs">
             <div class="sideBarIcon">
-              <i class="fa-solid fa-users-gear"></i>
-            </div>
-            Users
-          </a>
-          <a
-            class="sideBarItem hoverable hoverableShadow"
-            href="/admin/translations"
-          >
-            <div class="sideBarIcon">
-              <i class="fa-solid fa-language"></i>
-            </div>
-            Translations
-          </a>
-          <a class="sideBarItem hoverable hoverableShadow" href="/admin/logs">
-            <div class="sideBarIcon">
-              <i class="fa-solid fa-list-ul"></i>
+              <i class="fa-solid fa-file-lines"></i>
             </div>
             Logs
           </a>
-          <a
-            class="sideBarItem hoverable hoverableShadow"
-            href="/admin/information"
-          >
+          <a class="sideBarItem hoverable hoverableShadow categoryDivide" href="/admin/information">
             <div class="sideBarIcon">
               <i class="fa-solid fa-earth-americas"></i>
             </div>
-            Info
+            Information
           </a>
-
-          <a class="sideBarItem hoverable hoverableShadow" href="/admin/flags">
+        <% } else { %>
+          <ul class="sideBarCategory categoryDivide">
+            <li class="sideBarCategoryTitle">Database Management</li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/translations">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-database"></i>
+                </div>
+                Database
+              </a>
+            </li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/add-word">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-circle-plus"></i>
+                </div>
+                New Translation
+              </a>
+            </li>
+          </ul>
+          <a class="sideBarItem hoverable hoverableShadow categoryDivide" href="/information">
             <div class="sideBarIcon">
-              <i class="fa-solid fa-flag"></i>
+              <i class="fa-solid fa-earth-americas"></i>
             </div>
-            Flags
+            Information
           </a>
-          <% } else { %>
-          <!-- Data Input users nav items -->
-          <a
-            class="sideBarItem hoverable hoverableShadow"
-            href="/admin/translations"
-          >
-            <div class="sideBarIcon">
-              <i class="fa-solid fa-language"></i>
-            </div>
-            Translations
-          </a>
-          <% } %>
+        <% } %>
 
-          <!-- <a class="sideBarItem hoverable hoverableShadow" href="#!">
+        <a class="sideBarItem hoverable hoverableShadow categoryDivide" href="/admin/logout">
           <div class="sideBarIcon">
-            <i class="fa-solid fa-gear"></i>
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
           </div>
-          Settings
-        </a>   -->
-
-          <a class="sideBarItem hoverable hoverableShadow" href="/admin/logout">
-            <div class="sideBarIcon">
-              <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            </div>
-            Logout
-          </a>
-        </div>
-        <% if (user) { %>
-        <div class="sideNavFooter">
-          <div class="small">Logged in as:</div>
+          Logout
+        </a>
+      </div>
+      <% if (user) { %>
+        <div class="categoryDivide sideNavFooter">
+          Logged in as:
           <%= user.username %>
         </div>
-        <% } %>
-      </nav>
-      <div class="sideNavContents_wrap">
+      <% } %>
+    </nav>
+    <div class="sideNavContents_wrap">
