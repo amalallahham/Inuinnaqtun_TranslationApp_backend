@@ -64,56 +64,92 @@
   <div id="layoutSidenav" class="sideNavContents">
     <nav class="sideNav" id="sideNav">
       <div class="sideNavMenu">
+        <a class="sideBarItem hoverable hoverableShadow" href="/translate">
+          <div class="sideBarIcon">
+            <i class="fa-solid fa-home"></i>
+          </div>
+          Home
+        </a>
         <% if (user?.role==='Admin' ) { %>
-          <a class="sideBarItem hoverable hoverableShadow" href="/admin/users">
+          <ul class="sideBarCategory categoryDivide">
+            <li class="sideBarCategoryTitle">User Management</li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/users">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-users-gear"></i>
+                </div>
+                User List
+              </a>
+            </li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/userRequests">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-list-ul"></i>
+                </div>
+                User Requests
+              </a>
+            </li>
+          </ul>
+          <ul class="sideBarCategory categoryDivide">
+            <li class="sideBarCategoryTitle">Database Management</li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/translations">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-database"></i>
+                </div>
+                Database
+              </a>
+            </li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/userRequests">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-circle-plus"></i>
+                </div>
+                New Translation
+              </a>
+            </li>
+          </ul>
+          <a class="sideBarItem hoverable hoverableShadow categoryDivide" href="/admin/logs">
             <div class="sideBarIcon">
-              <i class="fa-solid fa-users-gear"></i>
-            </div>
-            Users
-          </a>
-          <a class="sideBarItem hoverable hoverableShadow" href="/admin/translations">
-            <div class="sideBarIcon">
-              <i class="fa-solid fa-language"></i>
-            </div>
-            Translations
-          </a>
-          <a class="sideBarItem hoverable hoverableShadow" href="/admin/logs">
-            <div class="sideBarIcon">
-              <i class="fa-solid fa-list-ul"></i>
+              <i class="fa-solid fa-file-lines"></i>
             </div>
             Logs
           </a>
-          <a class="sideBarItem hoverable hoverableShadow" href="/admin/information">
+          <a class="sideBarItem hoverable hoverableShadow categoryDivide" href="/admin/information">
             <div class="sideBarIcon">
               <i class="fa-solid fa-earth-americas"></i>
             </div>
-            Info
-          </a>
-  
-          <a class="sideBarItem hoverable hoverableShadow" href="/admin/flags">
-            <div class="sideBarIcon">
-              <i class="fa-solid fa-flag"></i>
-            </div>
-            Flags
+            Information
           </a>
         <% } else { %>
-          <!-- Data Input users nav items -->
-          <a class="sideBarItem hoverable hoverableShadow" href="/admin/translations">
+          <ul class="sideBarCategory categoryDivide">
+            <li class="sideBarCategoryTitle">Database Management</li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/translations">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-database"></i>
+                </div>
+                Database
+              </a>
+            </li>
+            <li class="sideBarCategoryItem">
+              <a class="sideBarItem hoverable hoverableShadow" href="/admin/userRequests">
+                <div class="sideBarIcon">
+                  <i class="fa-solid fa-circle-plus"></i>
+                </div>
+                New Translation
+              </a>
+            </li>
+          </ul>
+          <a class="sideBarItem hoverable hoverableShadow categoryDivide" href="/information">
             <div class="sideBarIcon">
-              <i class="fa-solid fa-language"></i>
+              <i class="fa-solid fa-earth-americas"></i>
             </div>
-            Translations
+            Information
           </a>
         <% } %>
 
-        <!-- <a class="sideBarItem hoverable hoverableShadow" href="#!">
-          <div class="sideBarIcon">
-            <i class="fa-solid fa-gear"></i>
-          </div>
-          Settings
-        </a>   -->
-
-        <a class="sideBarItem hoverable hoverableShadow" href="/admin/logout">
+        <a class="sideBarItem hoverable hoverableShadow categoryDivide" href="/admin/logout">
           <div class="sideBarIcon">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
           </div>
@@ -121,8 +157,8 @@
         </a>
       </div>
       <% if (user) { %>
-        <div class="sideNavFooter">
-          <div class="small">Logged in as:</div>
+        <div class="categoryDivide sideNavFooter">
+          Logged in as:
           <%= user.username %>
         </div>
       <% } %>
