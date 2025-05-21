@@ -1,5 +1,6 @@
 import userRequests from "../../models/userRequests.js";
 import nodemailer from "nodemailer";
+import User from "../../models/users.js";
 
 export const get_user_request = async (req, res) => {
   try {
