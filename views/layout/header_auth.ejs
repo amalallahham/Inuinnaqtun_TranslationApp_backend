@@ -33,21 +33,31 @@
     </div>
   </nav>
   <script>
+    let mobileView = false;
+
     function toggleSideNav() {
       document.body.classList.toggle("bodyToggled");
       localStorage.setItem(
         "sb|sidebar-toggle",
         document.body.classList.contains("bodyToggled")
       );
-      document.getElementById("sideNav").classList.toggle("sideNavToggled");
+      if (mobileView) {
+        document.getElementById("sideNav").classList.toggle("sideNavMobileToggled");
+        document.getElementById("footer").classList.toggle("hide");
+      } else {
+        document.getElementById("sideNav").classList.toggle("sideNavToggled");
+      }
     }
+    
     window.addEventListener("DOMContentLoaded", (event) => {
       const sidebarToggle = document.body.querySelector("#sidebarToggle");
       // Getting rid of sidebar and activating footer for mobile view
       if (window.innerWidth <= 765) {
-        sidebarToggle.style.display = "none";
-        document.getElementById("footer").style.display = "flex";
+        mobileView = true;
+        document.getElementById("sideNav").classList.add('sideNavMobile');
         document.getElementById("layoutSidenav").style.paddingBottom = `${40 + document.getElementById("footer").offsetHeight}px`;
+        document.getElementById("layoutSidenav").style.overflowX = 'hidden';
+        document.getElementById("layoutSidenav").style.position = 'relative';
       }
       // Toggle the side navigation
       if (sidebarToggle) {

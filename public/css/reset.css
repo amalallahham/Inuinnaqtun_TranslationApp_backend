@@ -5,6 +5,10 @@ img { width: 100%; height: 100%; }
 body { background-color: rgb(240, 241, 255); }
 
 /* Settings for navbar toggle */
+.hide {
+    opacity: 0;
+}
+
 .sideNavContents {
     display: flex;
     flex-direction: row-reverse;
@@ -27,6 +31,25 @@ body { background-color: rgb(240, 241, 255); }
     width: 350px;
     padding-right: 20px;
     overflow: visible;
+}
+
+.sideNavMobile {
+    width: 350px;
+    height: calc(100vh - 150px);
+    min-height: max-content;
+    padding: 0 20px 20px 20px;
+    background-color: rgb(240, 241, 255);
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 99;
+    box-shadow: -5px 10px 15px rgba(32, 6, 59, 0.2);
+}
+
+.sideNavMobileToggled {
+    transform: translateX(0);
 }
 
 .sideNavMenu {
@@ -117,7 +140,7 @@ body { background-color: rgb(240, 241, 255); }
     display: flex;
     align-items: center;
     line-height: 1.3;
-    gap: 30px;
+    gap: 20px;
 }
 
 .logoText {
@@ -157,6 +180,7 @@ body { background-color: rgb(240, 241, 255); }
     bottom: 2.5vw;
     left: 50%;
     transform: translateX(-50%);
+    transition-duration: 0.3s;
 }
 
 .footerMenu {
@@ -176,6 +200,10 @@ body { background-color: rgb(240, 241, 255); }
 
 /* Media queries for logo */
 @media screen and (max-width: 675px) {
+    .footer {
+        display: flex;
+    }
+
     .logo {
         font-size: 40px;
     }
@@ -251,6 +279,10 @@ body { background-color: rgb(240, 241, 255); }
 }
 
 @media screen and (max-width: 415px) {
+    .sideNavMobile {
+        width: 100%;
+    }
+
     .logo {
         font-size: 33px;
     }
