@@ -21,13 +21,23 @@
     <!-- Word Input -->
     <div>
       <label class="form-label">Word</label>
-      <input type="text" class="form-control word-input" placeholder="Enter new word" />
+      <input type="text" class="form-control word-input" placeholder="Enter new word (in Inuinnaqtun)" />
     </div>
 
     <!-- Definition Input -->
     <div>
-      <label class="form-label">Definition</label>
-      <input type="text" class="form-control definition-input" placeholder="Enter definition" />
+      <label class="form-label">Definitions</label>
+      <ul class="list-group linked-words-list">
+        <li class="list-group-item text-muted"><p>Enter a definition (in English)</p></li>
+      </ul>
+
+      <!-- Add Linked Word -->
+      <div class="linked-words-input">
+        <input type="text" class="form-control new-linked-word-input" placeholder="Enter a definition" />
+        <button class="linkedBtn hoverable hoverableShadow add-linked-word">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
     </div>
 
     <!-- Linked Words -->
