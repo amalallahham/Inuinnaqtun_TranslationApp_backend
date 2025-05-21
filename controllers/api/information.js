@@ -24,7 +24,7 @@ export const get_latest_information = async (req, res) => {
 export const add_information = async (req, res) => {
   try {
     const { title, content, status } = req.body;
-    const createdBy = req.session?.user?._id;
+    const createdBy = req?.user?._id;
 
     if (!title || !content || !status || !createdBy) {
       return res.status(400).json({
