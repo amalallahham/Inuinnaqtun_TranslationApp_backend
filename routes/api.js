@@ -7,7 +7,7 @@ import {
   apiRegister,
   apiResetPassword,
 } from "../controllers/api/auth.js";
-import { add_information, deleteInformation, get_information, get_information_by_id, get_latest_information, updateInformation } from "../controllers/api/information.js";
+import { add_information, deleteInformation, get_information_by_id, get_latest_information, updateInformation } from "../controllers/api/information.js";
 import { delete_user, edit_user, get_user, get_users, invite_user } from "../controllers/api/users.js";
 import { verifyTokenMiddleware } from "../middlewares/verifyToken.js";
 import { verifyAdminTokenMiddleware } from "../middlewares/verifyAdminToken.js";
