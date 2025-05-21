@@ -182,7 +182,7 @@ const getDatabaseTranslation = async(req) => {
   const inputLanguage = req.body.sourceLang;
   const text = req.body.text.toLowerCase();
   if(inputLanguage === 'Inuinnaqtun'){
-    let searchFilter = { word: text };
+    let searchFilter = { word: {$regex: `^${text}$`, $options: 'i'}};
     const translations = await DialectWord.find(searchFilter)
       .sort({createdAt: -1})
       .lean();
@@ -191,7 +191,7 @@ const getDatabaseTranslation = async(req) => {
     }
 
   } else if(inputLanguage === 'English') {
-    let searchFilter = { translation: text };
+    let searchFilter = { translation: {$regex: `^${text}$`, $options: 'i'} };
     const translations = await DialectWord.find(searchFilter)
       .sort({createdAt: -1})
       .lean();
@@ -210,8 +210,9 @@ const extractAllPhrases = (translation) => {
 
   for (let start = 0; start < words.length; start++) {
     for (let end = start + 1; end <= words.length; end++) {
-      const phrase = words.slice(start, end).join(' ');
-      phrases.push(phrase);
+      let phrase = words.slice(start, end).join(' ');
+      const regex = new RegExp(`^${phrase.toLowerCase()}$`, "i")
+      phrases.push(regex);
     }
   }
 
