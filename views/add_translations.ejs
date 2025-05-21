@@ -27,14 +27,14 @@
     <!-- Definition Input -->
     <div>
       <label class="form-label">Definitions</label>
-      <ul class="list-group linked-words-list">
+      <ul class="list-group definitions-list">
         <li class="list-group-item text-muted"><p>Enter a definition (in English)</p></li>
       </ul>
 
-      <!-- Add Linked Word -->
-      <div class="linked-words-input">
-        <input type="text" class="form-control new-linked-word-input" placeholder="Enter a definition" />
-        <button class="linkedBtn hoverable hoverableShadow add-linked-word">
+      <!-- Add Definition -->
+      <div class="definitions-input">
+        <input type="text" class="form-control new-definition-input" placeholder="Enter a definition" />
+        <button class="linkedBtn hoverable hoverableShadow add-definition">
           <i class="fa-solid fa-plus"></i>
         </button>
       </div>
@@ -125,6 +125,40 @@
       mediaRecorder.stop();
     });
 
+    // Handle Adding Definitions
+    document.querySelector(".add-definition").addEventListener("click", () => {
+      const definitionsList = document.querySelector(".definitions-list");
+      const newDefinitionInput = document.querySelector(".new-definition-input");
+      const newDefinition = newDefinitionInput.value.trim();
+
+      if (newDefinition) {
+        if (
+          definitionsList.children[0] &&
+          definitionsList.children[0].classList.contains("text-muted")
+        ) {
+          definitionsList.innerHTML = ""; // Remove default message
+        }
+
+        const listItem = document.createElement("li");
+        listItem.className =
+          "list-group-item";
+        listItem.innerHTML = `<p>${newDefinition}</p> <button class="linkedBtn btn-danger remove-definition hoverable hoverableShadow"><i class="fa-solid fa-xmark"></i></button>`;
+
+        // Append to the list
+        definitionsList.appendChild(listItem);
+        newDefinitionInput.value = ""; // Clear input
+
+        // Handle Removing Words
+        listItem.querySelector(".remove-definition").addEventListener("click", () => {
+          listItem.remove();
+          if (definitionsList.children.length === 0) {
+            definitionsList.innerHTML =
+            '<li class="list-group-item text-muted"><p>Ender a definition (in English)</p></li>';
+          }
+        });
+      }
+    });
+
     // Handle Adding Linked Words
     document.querySelector(".add-linked-word").addEventListener("click", () => {
       const linkedWordsList = document.querySelector(".linked-words-list");
@@ -162,9 +196,14 @@
     // Handle Save Button Click
     document.querySelector(".save-button").addEventListener("click", async () => {
       const word = document.querySelector(".word-input").value.trim();
-      const translation = document
-        .querySelector(".definition-input")
-        .value.trim();
+
+      const definitionsElements = document.querySelectorAll(
+        ".definitions-list li:not(.text-muted)"
+      );
+      const definitions = Array.from(definitionsElements).map((el) =>
+        el.textContent.replace(`<i class="fa-solid fa-xmark"></i>`, "").trim()
+      );
+
       const linkedWordsElements = document.querySelectorAll(
         ".linked-words-list li:not(.text-muted)"
       );
@@ -184,7 +223,7 @@
 
       const formData = new FormData();
       formData.append("word", word);
-      formData.append("translation", translation);
+      formData.append("translation", JSON.stringify(definitions));
       formData.append("linkedWords", JSON.stringify(linkedWords));
 
       // Check if an audio file is uploaded

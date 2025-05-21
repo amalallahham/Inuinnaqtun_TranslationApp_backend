@@ -169,6 +169,48 @@
   box-sizing: border-box;
 }
 
+/* Add definition */
+.definitions-input,
+.definitions-list {
+  width: 100%;
+  background-color: #76a8ff6a;
+  border-radius: 7px;
+}
+
+.definitions-list {
+  overflow: hidden;
+}
+
+.definitions-input input {
+  background-color: unset;
+}
+
+.list-group-item {
+  background-color: #76a8ff6a;
+}
+
+.definitions-list p {
+  width: 100%;
+  padding: 20px 30px;
+  border-radius: 7px;
+  font-size: 20px;
+}
+
+.definitions-list li,
+.definitions-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.definitions-list li:first-child {
+  border-top: none !important; /* Remove top border from first row in tbody */
+}
+
+.definitions-list li {
+  border-top: 1px solid black;
+}
+
 /* Add translation */
 .linked-words-input,
 .linked-words-list {
