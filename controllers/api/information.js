@@ -1,21 +1,22 @@
 import Information from "../../models/information.js";
 
 export const get_latest_information = async (req, res) => {
-  const lastPublished = await Information.findOne({ status: "published" })
-    .sort({ createdAt: -1 })
-    .exec();
+   try {
+    const allInfo = await Information.find()
+      .sort({ createdAt: -1 }) // newest first
+      .exec();
 
-  if (!lastPublished) {
     res.status(200).json({
       success: true,
-      data: {},
+      data: allInfo,
     });
-  } 
-
-  res.status(200).json({
-      success: true,
-      data: lastPublished,
+  } catch (err) {
+    console.error("Error fetching all information:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
     });
+  }
 };
 
 export const get_information = async (req, res) => {
