@@ -1,10 +1,5 @@
 import express from "express";
-import {
-  get_translate,
-  translate_text,
-  getWordDetails,
-  getRecordedWords,
-} from "../controllers/translation/translate.js";
+
 import { submitFlag } from "../controllers/flag/flag.js";
 import {
   apiForgotPassword,
@@ -12,7 +7,7 @@ import {
   apiRegister,
   apiResetPassword,
 } from "../controllers/api/auth.js";
-import { add_information, deleteInformation, get_information, get_information_by_id, get_latest_information, updateInformation } from "../controllers/api/information.js";
+import { add_information, deleteInformation, get_information_by_id, get_latest_information, get_list_information, updateInformation } from "../controllers/api/information.js";
 import { delete_user, edit_user, get_user, get_users, invite_user } from "../controllers/api/users.js";
 import { verifyTokenMiddleware } from "../middlewares/verifyToken.js";
 import { verifyAdminTokenMiddleware } from "../middlewares/verifyAdminToken.js";
@@ -21,21 +16,17 @@ import upload from "../middlewares/uploadMiddleware.js";
 import { get_log_details, get_logs } from "../controllers/api/logs.js";
 import { get_add_information } from "../controllers/admin/information.js";
 import { getAllFlags, getFlagDetail, getWordForFlag, resolveFlag } from "../controllers/api/flag.js";
+import { get_translate } from "../controllers/translation/translate.js";
 import { submitUserRequest } from "../controllers/api/userRequest.js";
 
 const router = express.Router();
 
-router.get("/word-details/:id", getWordDetails);
-
-router.get("/recorded-words/:text", getRecordedWords);
-
-router.post("/translate", translate_text);
 
 router.post("/register", apiRegister);
 router.post("/login", apiLogin);
 router.post("/forgot-password", apiForgotPassword);
 router.post("/reset-password", apiResetPassword);
-router.get("/information", get_information_by_id);
+router.get("/information", get_latest_information);
 
 router.get("/users", verifyAdminTokenMiddleware, get_users);
 router.post("/users/invite", verifyAdminTokenMiddleware, invite_user);
@@ -52,7 +43,7 @@ router.post("/database/update-word/:id", verifyAdminTokenMiddleware,upload.singl
 router.get("/logs", verifyAdminTokenMiddleware, get_logs);
 router.get("/logs/:id", verifyAdminTokenMiddleware, get_log_details);
 
-router.get("/information_list", verifyAdminTokenMiddleware, get_information);
+router.get("/information_list", verifyAdminTokenMiddleware, get_list_information);
 router.get("/information/:id", verifyAdminTokenMiddleware, get_information_by_id);
 router.post("/information/edit/:id", verifyAdminTokenMiddleware, updateInformation);
 router.post("/information/add_info", verifyAdminTokenMiddleware, add_information);
@@ -65,6 +56,7 @@ router.get("/flags", verifyAdminTokenMiddleware, getAllFlags);
 router.get("/flags/:id", verifyAdminTokenMiddleware, getFlagDetail);        
 router.patch("/flags/:id/resolve", verifyAdminTokenMiddleware, resolveFlag); 
 
+router.get("/translate", get_translate);
 router.post('/request-access', submitUserRequest)
 
 export default router;

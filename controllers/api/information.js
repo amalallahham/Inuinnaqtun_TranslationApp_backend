@@ -1,48 +1,52 @@
 import Information from "../../models/information.js";
 
-export const get_latest_information = async (req, res) => {
-  const lastPublished = await Information.findOne({ status: "published" })
-    .sort({ createdAt: -1 })
-    .exec();
-
-  if (!lastPublished) {
-    res.status(200).json({
-      success: true,
-      data: {},
-    });
-  } 
-
-  res.status(200).json({
-      success: true,
-      data: lastPublished,
-    });
-};
-
-export const get_information = async (req, res) => {
-  try {
-    const infoList = await Information.find()
+export const get_list_information = async (req, res) => {
+   try {
+    const allInfo = await Information.find()
       .sort({ createdAt: -1 })
-      .populate("createdBy", "username")
-      .limit(1)
-      .lean();
+      .exec();
 
     res.status(200).json({
       success: true,
-      data: infoList[0],
+      data: allInfo,
     });
   } catch (err) {
-    console.error(err);
+    console.error("Error fetching all information:", err);
     res.status(500).json({
       success: false,
-      message: "Failed to fetch information.",
+      message: "Server error",
     });
   }
 };
 
+export const get_latest_information = async (req, res) => {
+  try {
+    const lastPublished = await Information.findOne({ status: "published" })
+      .sort({ createdAt: -1 })
+      .exec();
+
+    return res.status(200).json({
+      success: true,
+      data: lastPublished || {}, // If null, return empty object
+    });
+  } catch (error) {
+    console.error("Error fetching latest information:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while fetching latest information.",
+    });
+  }
+};
+
+
+
+
+
+
 export const add_information = async (req, res) => {
   try {
     const { title, content, status } = req.body;
-    const createdBy = req.session?.user?._id;
+    const createdBy = req?.user?._id;
 
     if (!title || !content || !status || !createdBy) {
       return res.status(400).json({
