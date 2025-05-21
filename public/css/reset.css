@@ -278,11 +278,13 @@ body { background-color: rgb(240, 241, 255); }
     }
 }
 
-@media screen and (max-width: 415px) {
+@media screen and (max-width: 450px) {
     .sideNavMobile {
         width: 100%;
     }
+}
 
+@media screen and (max-width: 415px) {
     .logo {
         font-size: 33px;
     }

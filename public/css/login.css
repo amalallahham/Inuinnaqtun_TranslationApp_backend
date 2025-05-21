@@ -363,3 +363,39 @@ button:disabled:hover {
   text-shadow: none;
   filter: drop-shadow(none);
 }
+
+/* Request Access page */
+.requestAccessWrap {
+  max-width: 500px;
+  width: 100%;
+  /* padding: 30px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.requestAccessWrap input {
+  border: 0;
+  width: 100%;
+  background-color: #76a8ff6a;
+  padding: 20px 30px;
+  border-radius: 7px;
+  font-size: 20px;
+}
+
+.textArea {
+  width: 100%;
+  max-height: 200px;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  background-color: #76a8ff6a;
+  border: 0;
+  outline: 0;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  resize: none;
+}
