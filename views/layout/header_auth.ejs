@@ -16,7 +16,6 @@
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
-
   <nav class="navBar">
     <div class="logo titleFont hoverable bold">
       <a href="/translate">
@@ -41,12 +40,11 @@
         "sb|sidebar-toggle",
         document.body.classList.contains("bodyToggled")
       );
+      document.getElementById("sideNav").classList.toggle("sideNavToggled");
       if (mobileView) {
-        document.getElementById("sideNav").classList.toggle("sideNavMobileToggled");
+        // document.getElementById("sideNav").classList.toggle("sideNavMobileToggled");
         document.getElementById("footer").classList.toggle("hide");
-      } else {
-        document.getElementById("sideNav").classList.toggle("sideNavToggled");
-      }
+      } 
     }
     
     window.addEventListener("DOMContentLoaded", (event) => {
@@ -54,10 +52,7 @@
       // Getting rid of sidebar and activating footer for mobile view
       if (window.innerWidth <= 765) {
         mobileView = true;
-        document.getElementById("sideNav").classList.add('sideNavMobile');
         document.getElementById("layoutSidenav").style.paddingBottom = `${40 + document.getElementById("footer").offsetHeight}px`;
-        document.getElementById("layoutSidenav").style.overflowX = 'hidden';
-        document.getElementById("layoutSidenav").style.position = 'relative';
       }
       // Toggle the side navigation
       if (sidebarToggle) {
@@ -80,7 +75,7 @@
           </div>
           Homes
         </a>
-        <% if (user?.role==='Admin' ) { %>
+        <% if (user?.role === 'Admin') { %>
           <ul class="sideBarCategory categoryDivide">
             <li class="sideBarCategoryTitle">User Management</li>
             <li class="sideBarCategoryItem">

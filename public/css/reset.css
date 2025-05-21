@@ -7,6 +7,13 @@ body { background-color: rgb(240, 241, 255); }
 /* Settings for navbar toggle */
 .hide {
     opacity: 0;
+    transition-duration: 0.3s;
+}
+
+#layoutSidenav {
+    max-width: 100svw;
+    overflow-x: hidden !important;
+    height: max-content;
 }
 
 .sideNavContents {
@@ -16,10 +23,17 @@ body { background-color: rgb(240, 241, 255); }
 
 .sideNav {
     width: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition-duration: 0.3s;
+    height: calc(100vh - 150px);
+    min-height: max-content;
+    background-color: rgb(240, 241, 255);
+    box-shadow: -5px 10px 15px rgba(32, 6, 59, 0.2);
+    position: absolute;
+    top: 150px;
+    right: 0;
+    z-index: -99;
+    transform: translateX(150%);
+    transition: transform 0.3s;
+    overflow-x: hidden;
 }
 
 .noborder {
@@ -29,27 +43,9 @@ body { background-color: rgb(240, 241, 255); }
 
 .sideNavToggled {
     width: 350px;
-    padding-right: 20px;
-    overflow: visible;
-}
-
-.sideNavMobile {
-    width: 350px;
-    height: calc(100vh - 150px);
-    min-height: max-content;
     padding: 0 20px 20px 20px;
-    background-color: rgb(240, 241, 255);
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 99;
-    box-shadow: -5px 10px 15px rgba(32, 6, 59, 0.2);
-}
-
-.sideNavMobileToggled {
     transform: translateX(0);
+    z-index: 999;
 }
 
 .sideNavMenu {
@@ -57,6 +53,7 @@ body { background-color: rgb(240, 241, 255); }
     padding-top: 20px;
     flex-direction: column;
     gap: 15px;
+    overflow-x: hidden;
 }
 
 .sideNavMenu>a {
@@ -102,11 +99,6 @@ body { background-color: rgb(240, 241, 255); }
 .sideNavFooter {
     margin-top: 15px;
     color: rgba(32, 6, 59, 0.5);
-    /* width: 100%;
-    border-top: 1px solid #20063B;
-    margin-top: 50px;
-    padding-top: 15px;
-    text-wrap: nowrap; */
 }
 
 @media screen and (max-width: 815px) {
@@ -124,7 +116,6 @@ body { background-color: rgb(240, 241, 255); }
     width: 100%;
     height: 150px;
     padding: 0 50px;
-    /* background-image: linear-gradient(grey, rgba(0, 0, 0, 0));; */
     background-image: linear-gradient(#5C80BC, #5c7fbc00);;
     display: flex;
     justify-content: space-between;
