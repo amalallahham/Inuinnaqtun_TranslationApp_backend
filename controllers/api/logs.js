@@ -61,7 +61,6 @@ export const get_log_details = async (req, res) => {
       .populate("performedBy", "username")
       .lean();
 
-      console.log(log)
     if (!log) {
       return res.status(404).json({ error: "Log entry not found." });
     }

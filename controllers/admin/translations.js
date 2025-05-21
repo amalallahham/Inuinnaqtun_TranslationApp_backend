@@ -32,9 +32,11 @@ export const add_translation = async (req, res) => {
       ? JSON.parse(linkedWords).map((w) => ({ prefix: w }))
       : [];
 
+    const definitions = translation?.length > 0 ? translation.split(",") : [];
+
     const newWord = new DialectWord({
       word,
-      translation,
+      translation: definitions,
       similarWords,
       versions: [],
       addedToModel: false,
@@ -212,7 +214,6 @@ export const delete_word = async (req, res) => {
 
   try {
     const deletedWord = await DialectWord.findByIdAndDelete(wordId);
-
     if (!deletedWord) {
       return res
         .status(404)
@@ -267,6 +268,7 @@ export const updateWord = async (req, res) => {
     }
 
     const linkedWordsArray = linkedWords ? JSON.parse(linkedWords) : [];
+    const definitions = translation?.length > 0 ? translation.split(",") : [];
 
     const existingWord = await DialectWord.findById(wordId);
     if (!existingWord) {
@@ -295,7 +297,7 @@ export const updateWord = async (req, res) => {
       wordId,
       {
         word,
-        translation,
+        translation: definitions,
         similarWords: linkedWordsArray.map((prefix) => ({ prefix })),
       },
       { new: true, runValidators: true }
