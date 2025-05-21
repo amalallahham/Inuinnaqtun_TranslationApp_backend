@@ -210,9 +210,10 @@
       const linkedWords = Array.from(linkedWordsElements).map((el) =>
         el.textContent.replace(`<i class="fa-solid fa-xmark"></i>`, "").trim()
       );
+      
       const audioFile = document.querySelector(".audio-upload").files[0];
 
-      if (!word || !translation) {
+      if (!word || definitions.length <= 0) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
