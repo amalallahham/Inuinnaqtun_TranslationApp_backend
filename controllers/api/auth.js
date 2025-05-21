@@ -62,7 +62,8 @@ export const apiRegister = async (req, res) => {
 
 export const apiLogin = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const email = req.body?.email;
+    const password = req.body?.password;
 
     if (!email || !password) {
       return res
@@ -158,12 +159,10 @@ export const apiForgotPassword = async (req, res) => {
 
     await transporter.sendMail(mailOptions);
 
-    return res
-      .status(200)
-      .json({
-        message: "Password reset link sent. Check your email.",
-        emailToken: token,
-      });
+    return res.status(200).json({
+      message: "Password reset link sent. Check your email.",
+      emailToken: token,
+    });
   } catch (error) {
     console.error(error);
     return res

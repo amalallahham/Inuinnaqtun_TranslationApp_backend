@@ -53,12 +53,20 @@ export const submitFlag = async (req, res) => {
   }
 };
 
-
 export const getAllFlags = async (req, res) => {
   try {
-    const flags = await Flag.find()
+    const { status, order = "desc" } = req.query;
+
+    const filter = {};
+    if (status) {
+      filter.status = status;
+    }
+
+    const sortOrder = order === "asc" ? 1 : -1;
+
+    const flags = await Flag.find(filter)
       .populate("wordId")
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: sortOrder }) // only allow sorting by createdAt
       .lean();
 
     res.json({ success: true, data: flags });
