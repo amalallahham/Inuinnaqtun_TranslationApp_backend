@@ -35,7 +35,7 @@ router.post("/register", apiRegister);
 router.post("/login", apiLogin);
 router.post("/forgot-password", apiForgotPassword);
 router.post("/reset-password", apiResetPassword);
-router.get("/information", get_latest_information);
+router.get("/information", get_information_by_id);
 
 router.get("/users", verifyAdminTokenMiddleware, get_users);
 router.post("/users/invite", verifyAdminTokenMiddleware, invite_user);

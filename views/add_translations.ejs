@@ -221,10 +221,10 @@
         });
         return;
       }
-
+   
       const formData = new FormData();
       formData.append("word", word);
-      formData.append("translation", JSON.stringify(definitions));
+      formData.append("translation", definitions);
       formData.append("linkedWords", JSON.stringify(linkedWords));
 
       // Check if an audio file is uploaded
