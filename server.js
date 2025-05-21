@@ -11,7 +11,7 @@ import adminRoutes from "./routes/admin.js";
 import userRoutes from "./routes/user.js";
 import apiRoutes from "./routes/api.js";
 
-import bodyParser from 'body-parser';
+import bodyParser from "body-parser";
 
 dotenv.config();
 
@@ -30,15 +30,14 @@ app.use(
 );
 
 app.use(cors());
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use((req, res, next) => {
   const excludeRoutes = ["/login", "/register", "/404"];
   res.locals.user = excludeRoutes.includes(req.path)
     ? null
-    : req?.session?.user ;
+    : req?.session?.user;
   next();
 });
 

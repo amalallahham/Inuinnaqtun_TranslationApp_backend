@@ -1,13 +1,21 @@
-<%- include('./layout/header') %>
-<link href="/css/information.css" rel="stylesheet" />
+<% if (user) { %> <%- include('./layout/header_auth') %> <% } else { %> <%-
+include('./layout/header') %> <% } %>
+<link
+  href="/css/information.css"
+  rel="stylesheet"
+/>
 
-  <h1 class="title titleFont"><%= info.title %></h1>
+<h1 class="title titleFont"><%= info.title %></h1>
 
-  <div class="infoDesc">
-    <div class="quill-content">
-      <%- info.content %> 
-      <small class="publishDate">Published on: <%= new Date(info.createdAt).toLocaleString() %></small>
-    </div>
+<div class="infoDesc">
+  <div class="quill-content">
+    <%- info.content %>
+    <small class="publishDate"
+      >Published on: <%= new Date(info.createdAt).toLocaleString() %></small
+    >
   </div>
+</div>
 
-<%- include('./layout/footer') %>
+<% if (user) { %> <%- include('./layout/footer_auth') %> <% } else { %> <%-
+include('./layout/footer') %> <% } %>
+

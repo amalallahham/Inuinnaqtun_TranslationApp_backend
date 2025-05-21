@@ -1,217 +1,264 @@
 <%- include('./layout/header_auth') %>
 <link href="/css/userList.css" rel="stylesheet" />
 
-  <button class="goBackBtn headerFont semi-bold  hoverable hoverableBtn">
-    <a href="/admin/translations">
-      <i class="fa-solid fa-arrow-left"></i> Go Back
-    </a>
-  </button>
+<style>
+  .spinner {
+    display: none;
+    width: 14px;
+    height: 14px;
+    border: 2px solid white;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>
 
-  <div class="userListWrap">
-    <div class="listTitle headerFont">
-      <h2 class="semi-bold">User Requests</h2>
-    </div>
+<button class="goBackBtn headerFont semi-bold hoverable hoverableBtn">
+  <a href="/admin/translations"
+    ><i class="fa-solid fa-arrow-left"></i> Go Back</a
+  >
+</button>
 
-    <div class="userTableWrap">
-      <% if (typeof error !=="undefined" && error) { %>
-        <div class="alert alert-danger">
-          <%= error %>
-        </div>
-      <% } %>
-
-      <table class="userTable">
-        <thead>
-          <tr class="entryTitle">
-            <!-- <th>ID</th> -->
-            <th>Email</th>
-            <th>Username</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="userTableBody">
-          <% if (dataEntryUsers.length === 0) { %>
-            <tr>
-              <td colspan="5" class="text-center">No Data Input Users found</td>
-            </tr>
-          <% } else { %>
-            <% dataEntryUsers.forEach((ele) => { %>
-              <tr class="entry">
-                <td><%= ele.email %></td>
-                <td><%= ele.username %></td>
-                <td class="btnWrap">
-                  <!-- <a href="/admin/users/edit/<%= ele._id %>" class="btn btn-warning hoverable hoverableBtn">
-                    <i class="fa-solid fa-arrow-right"></i>
-                  </a> -->
-                  <button class="btn btn-warning hoverable hoverableBtn seeUserDetail"
-                    onclick="showDetailModal('<%= ele._id %>', '<%= ele.email %>', '<%= ele.username %>', '<%= ele.message %>')">
-                    <i class="fa-solid fa-arrow-right"></i>
-                  </button>
-                  <button class="btn btn-danger hoverable hoverableBtn"
-                    onclick="showDeleteModal('<%= ele._id %>', '<%= ele.email %>')">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
-            <% }); %>
-          <% } %>          
-        </tbody>
-      </table>
-
-      <!-- Pagination -->
-      
-    </div>
+<div class="userListWrap">
+  <div class="listTitle headerFont">
+    <h2 class="semi-bold">User Requests</h2>
   </div>
 
-  <!-- User Detail Modal -->
-  <div class="modalWrap" id="userDetailModal">
-    <div class="modal">
-      <div class="headerFont semi-bold modalTitle" id="userDetailModalLabel">User Details</div>
-      <form id="inviteUserForm" class="modalForm">
-        <div class="inputWrap">
-          <label for="userEmail" class="form-label">Email</label>
-          <input type="email" disabled class="form-control" id="userEmail" value="User Email">
-        </div>
-        <div class="inputWrap">
-          <label for="userName" class="form-label">Username</label>
-          <input type="text" disabled class="form-control" id="userName" required>
-        </div>
-        <div class="inputWrap">
-          <label for="userMessage" class="form-label">Message</label>
-          <textarea
-            id="userMessage"
-            class="textArea"
-            rows="4"
-            disabled
-          ></textarea>
-        </div>
-        <div class="alert alert-danger d-none" id="approvalError"></div>
-        <div class="alert alert-success d-none" id="approvalSuccess"></div>
-      </form>
-      <div class="modalBtnWrap">
-        <button type="button" class="textBtn hoverable hoverableBtn" data-bs-dismiss="modal"
-          id="cancelApproval">Cancel</button>
-        <button type="button" class="textBtn btn-danger hoverable hoverableBtn" id="confirmApproval">Approve User</button>
-      </div>
-    </div>
-  </div>
+  <div class="userTableWrap">
+    <% if (typeof error !== "undefined" && error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+    <% } %>
 
-  <!-- Delete User Modal -->
-  <div class="modalWrap" id="deleteUserModal">
-    <div class="modal">
-      <div class="headerFont semi-bold modalTitle" id="inviteUserModalLabel">Decline User?</div>
-      <div class="modalForm">
-        <p>Are you sure you want to decline <strong id="deleteUserEmail"></strong>?</p>
-        <div class="alert alert-danger d-none" id="deleteError"></div>
-        <div class="alert alert-success d-none" id="deleteSuccess"></div>
+    <table class="userTable">
+      <thead>
+        <tr class="entryTitle">
+          <th>Email</th>
+          <th>Username</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody">
+        <% if (dataEntryUsers.length === 0) { %>
+        <tr>
+          <td colspan="3" class="text-center">No Data Input Users found</td>
+        </tr>
+        <% } else { %> <% dataEntryUsers.forEach((ele) => { %>
+        <tr class="entry">
+          <td><%= ele.email %></td>
+          <td><%= ele.username %></td>
+          <td class="btnWrap">
+            <button
+              class="btn btn-warning hoverable hoverableBtn seeUserDetail"
+              onclick="showDetailModal('<%= ele._id %>', '<%= ele.email %>', '<%= ele.username %>', '<%= ele.reason %>')"
+            >
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button
+              class="btn btn-danger hoverable hoverableBtn"
+              onclick="showDeleteModal('<%= ele._id %>', '<%= ele.email %>')"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        <% }); %> <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- User Detail Modal -->
+<div class="modalWrap" id="userDetailModal">
+  <div class="modal">
+    <div class="headerFont semi-bold modalTitle">User Details</div>
+    <form class="modalForm">
+      <div class="inputWrap">
+        <label>Email</label>
+        <input type="email" disabled class="form-control" id="userEmail" />
       </div>
-      <div class="modalBtnWrap">
-        <button type="button" class="textBtn hoverable hoverableBtn" data-bs-dismiss="modal"
-          id="cancelDeleteButton">Cancel</button>
-        <button type="button" class="textBtn btn-danger hoverable hoverableBtn" id="confirmDeleteButton">Delete</button>
+      <div class="inputWrap">
+        <label>Username</label>
+        <input type="text" disabled class="form-control" id="userName" />
       </div>
-      <button type="button" class="btn closeModalBtn btn-danger hoverable hoverableBtn" data-bs-dismiss="modal" aria-label="Close">
-        <i class="fa-solid fa-xmark"></i>
+      <div class="inputWrap">
+        <label>Message</label>
+        <textarea
+          id="userMessage"
+          class="textArea"
+          rows="4"
+          disabled
+        ></textarea>
+      </div>
+      <div class="alert alert-danger d-none" id="approvalError"></div>
+      <div class="alert alert-success d-none" id="approvalSuccess"></div>
+    </form>
+    <div class="modalBtnWrap">
+      <button
+        type="button"
+        class="textBtn hoverable hoverableBtn"
+        id="cancelApproval"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="textBtn btn-danger hoverable hoverableBtn"
+        id="confirmApproval"
+      >
+        <span class="btn-label" style="color: aliceblue">Approve User</span>
+        <span class="spinner d-none" id="approvalSpinner"></span>
       </button>
     </div>
   </div>
+</div>
 
-  <%- include('./layout/footer_auth') %>
+<!-- Delete Modal -->
+<div class="modalWrap" id="deleteUserModal">
+  <div class="modal">
+    <div class="headerFont semi-bold modalTitle">Decline User?</div>
+    <div class="modalForm">
+      <p>
+        Are you sure you want to decline <strong id="deleteUserEmail"></strong>?
+      </p>
+      <div class="alert alert-danger d-none" id="deleteError"></div>
+      <div class="alert alert-success d-none" id="deleteSuccess"></div>
+    </div>
+    <div class="modalBtnWrap">
+      <button
+        type="button"
+        class="textBtn hoverable hoverableBtn"
+        id="cancelDeleteButton"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="textBtn btn-danger hoverable hoverableBtn"
+        id="confirmDeleteButton"
+      >
+        <span class="btn-label">Delete</span>
+        <span class="spinner" id="deleteSpinner"></span>
+      </button>
+    </div>
+  </div>
+</div>
 
-  <script>
+<%- include('./layout/footer_auth') %>
 
-    let deleteUserId = null;
+<script>
+  let deleteUserId = null;
 
-    // Closing modals
-    document.getElementById("cancelDeleteButton").addEventListener("click", () => {
-      document.getElementById(document.getElementById("cancelDeleteButton").parentElement.parentElement.parentElement.id).classList.remove("modalToggled");
-    });
-
-    document.getElementById("cancelApproval").addEventListener("click", () => {
-      document.getElementById(document.getElementById("cancelApproval").parentElement.parentElement.parentElement.id).classList.remove("modalToggled");
-    })
-
-    // Function to show the delete modal
-    function showDeleteModal(userId, email) {
-      deleteUserId = userId;
-      document.getElementById("deleteUserEmail").textContent = email;
-      document.getElementById("deleteUserModal").classList.add("modalToggled")
-    }
-
-    // Function to show the user detail modal
-    function showDetailModal(userId, email, username, message) {
-      deleteUserId = userId;
-      document.getElementById("userEmail").value = email;
-      document.getElementById("userName").value = username;
-      document.getElementById("userMessage").value = message;
-      document.getElementById("userDetailModal").classList.add("modalToggled")
-    }
-
-    // Function to handle user deletion
-    document.getElementById("confirmDeleteButton").addEventListener("click", async function () {
+  document
+    .getElementById("confirmDeleteButton")
+    .addEventListener("click", async function () {
       if (!deleteUserId) return;
 
+      const errorEl = document.getElementById("deleteError");
+      const successEl = document.getElementById("deleteSuccess");
+      const spinner = document.getElementById("deleteSpinner");
+      const btnText = document.querySelector("#confirmDeleteButton .btn-label");
+
+      errorEl.classList.add("d-none");
+      successEl.classList.add("d-none");
+
+      // Show spinner & change button label
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Deleting...";
+
       try {
-        const response = await fetch(`/admin/userRequests/delete/${deleteUserId}`, {
+        const res = await fetch(`/admin/userRequests/decline/${deleteUserId}`, {
           method: "DELETE",
-          headers: { "Content-Type": "application/json" }
+          headers: { "Content-Type": "application/json" },
         });
 
-        const data = await response.json();
-        const deleteError = document.getElementById("deleteError");
-        const deleteSuccess = document.getElementById("deleteSuccess");
+        const data = await res.json();
 
-        deleteError.classList.remove("displayAlert");
-        deleteSuccess.classList.remove("displayAlert");
+        // Reset spinner & text
+        spinner.style.display = "none";
+        btnText.textContent = "Delete";
 
-        if (!response.ok) {
-          deleteError.textContent = data.message || "An error occurred.";
-          deleteError.classList.add("displayAlert");
-        } else {
-          deleteSuccess.textContent = "delete sent successfully!";
-          deleteSuccess.classList.add("displayAlert");
-          setTimeout(() => {
-            location.reload();
-          }, 20);
-        }
-      } catch (error) {
-        deleteError.textContent = "Server error. Please try again.";
-        deleteError.classList.add("displayAlert");
+        console.log(data)
+        successEl.textContent = "User declined and removed.";
+        successEl.classList.remove("d-none");
+
+        document
+          .getElementById("deleteUserModal")
+          .classList.remove("modalToggled");
+
+        setTimeout(() => location.reload(), 100);
+      } catch (e) {
+        spinner.style.display = "none";
+        btnText.textContent = "Delete";
+        errorEl.textContent = "Server error. Try again.";
+        errorEl.classList.remove("d-none");
       }
     });
 
-    document.getElementById("userDetailModal").addEventListener("submit", async function (event) {
-      event.preventDefault();
+  document.getElementById("cancelApproval").addEventListener("click", () => {
+    document.getElementById("userDetailModal").classList.remove("modalToggled");
+  });
 
+  function showDeleteModal(userId, email) {
+    deleteUserId = userId;
+    document.getElementById("deleteUserEmail").textContent = email;
+    document.getElementById("deleteUserModal").classList.add("modalToggled");
+  }
+
+  function showDetailModal(userId, email, username, message) {
+    deleteUserId = userId;
+    document.getElementById("userEmail").value = email;
+    document.getElementById("userName").value = username;
+    document.getElementById("userMessage").value = message;
+    document.getElementById("userDetailModal").classList.add("modalToggled");
+  }
+
+  document
+    .getElementById("confirmApproval")
+    .addEventListener("click", async function () {
       const email = document.getElementById("userEmail").value;
-      const approvalError = document.getElementById("approvalError");
-      const approvalSuccess = document.getElementById("approvalSuccess");
-      const approvalButton = document.getElementById("confirmApproval");
+      const errorEl = document.getElementById("approvalError");
+      const successEl = document.getElementById("approvalSuccess");
+      const spinner = document.getElementById("approvalSpinner");
+      const btnText = document.querySelector("#confirmApproval .btn-label");
 
-      approvalError.classList.remove("displayAlert");
-      approvalSuccess.classList.remove("displayAlert");
+      errorEl.classList.add("d-none");
+      successEl.classList.add("d-none");
 
-      approvalButton.disabled = true;
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Approving...";
 
       try {
-        const response = await fetch("/admin/users/invite", {
+        const res = await fetch("/admin/userRequests/approve", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email })
+          body: JSON.stringify({ email }),
         });
 
-        const data = await response.json();
-        approvalButton.disabled = false;
+        const data = await res.json();
 
-        if (!response.ok) {
-          approvalError.textContent = data.message || "An error occurred.";
-          approvalError.classList.add("displayAlert");
-        } else {
-          approvalSuccess.textContent = "Invite sent successfully!";
-          approvalSuccess.classList.add("displayAlert");
-        }
-      } catch (error) {
-        approvalError.textContent = "Server error. Please try again.";
-        approvalError.classList.add("displayAlert");
+        spinner.style.display = "none";
+        btnText.textContent = "Approve User";
+
+        successEl.textContent = "User approved and notified!";
+        successEl.classList.remove("d-none");
+        document
+          .getElementById("userDetailModal")
+          .classList.remove("modalToggled");
+
+        // Refresh after short delay
+        setTimeout(() => location.reload(), 100);
+      } catch (e) {
+        spinner.style.display = "none";
+        btnText.textContent = "Approve User";
+        errorEl.textContent = "Server error. Try again.";
+        errorEl.classList.remove("d-none");
       }
     });
-  </script>
+</script>

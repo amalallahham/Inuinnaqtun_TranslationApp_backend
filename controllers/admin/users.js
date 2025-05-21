@@ -1,11 +1,12 @@
 import User from "../../models/users.js";
 import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
+import userRequests from "../../models/userRequests.js";
 
 // export const get_users = async (req, res) => {
 //   try {
 //     const page = parseInt(req.query.page) || 1;
-//     const limit = 5; 
+//     const limit = 5;
 //     const skip = (page - 1) * limit;
 
 //     const users = await User.find({}).skip(skip).limit(limit);
@@ -47,7 +48,9 @@ export const get_users = async (req, res) => {
     const skipAdmin = (pageAdmin - 1) * limit;
 
     // Get total counts
-    const totalDataEntryUsers = await User.countDocuments({ role: "DataEntry" });
+    const totalDataEntryUsers = await User.countDocuments({
+      role: "DataEntry",
+    });
     const totalAdminUsers = await User.countDocuments({ role: "Admin" });
 
     // Calculate total pages
@@ -55,8 +58,12 @@ export const get_users = async (req, res) => {
     const totalPagesAdmin = Math.ceil(totalAdminUsers / limit);
 
     // Fetch users with pagination
-    const dataEntryUsers = await User.find({ role: "DataEntry" }).skip(skipDataEntry).limit(limit);
-    const adminUsers = await User.find({ role: "Admin" }).skip(skipAdmin).limit(limit);
+    const dataEntryUsers = await User.find({ role: "DataEntry" })
+      .skip(skipDataEntry)
+      .limit(limit);
+    const adminUsers = await User.find({ role: "Admin" })
+      .skip(skipAdmin)
+      .limit(limit);
 
     res.render("users", {
       title: "Users Management",
@@ -98,9 +105,13 @@ export const invite_user = async (req, res) => {
       return res.status(400).json({ message: "User already exists." });
     }
 
-    const token = jwt.sign({email: req.session.email }, process.env.JWT_SECRET, {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      { email: req.session.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
 
     let transporter = nodemailer.createTransport({
       service: "gmail",
@@ -138,7 +149,12 @@ export const get_edit_user = async (req, res) => {
     if (!user) {
       return res.status(404).send("User not found");
     }
-    res.render("edit_user", { user, error: null, success: null, title:"Edit User" });
+    res.render("edit_user", {
+      user,
+      error: null,
+      success: null,
+      title: "Edit User",
+    });
   } catch (error) {
     res.status(500).send("Server error");
   }
@@ -160,21 +176,21 @@ export const edit_user = async (req, res) => {
       user: updatedUser,
       success: "User updated successfully!",
       error: null,
-      title: "Edit User"
+      title: "Edit User",
     });
   } catch (error) {
     res.render("edit_user", {
       user: req.body,
       error: "Error updating user.",
       success: null,
-      title: "Edit User"
+      title: "Edit User",
     });
   }
 };
 
 export const getUserByEmail = async (email) => {
   try {
-    const user = await User.findOne({ email }); 
+    const user = await User.findOne({ email });
 
     return user;
   } catch (error) {
@@ -186,14 +202,25 @@ export const getUserByEmail = async (email) => {
 export const delete_user = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    if (!user && user.role !== 'Admin') {
-      return res.status(404).json({ message: "User not found" });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found " });
     }
 
     await User.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "User deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Server error. Unable to delete user." });
-  }
-}
 
+    const existingRequest = await userRequests.findOne({ email: user.email });
+    if (existingRequest) {
+      await userRequests.findByIdAndDelete(existingRequest._id);
+    }
+
+    return res
+      .status(200)
+      .json({ message: "User and related request deleted successfully" });
+  } catch (error) {
+    console.error("Delete User Error:", error);
+    return res
+      .status(500)
+      .json({ message: "Server error. Unable to delete user." });
+  }
+};
