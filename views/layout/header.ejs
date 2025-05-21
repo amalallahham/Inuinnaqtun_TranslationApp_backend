@@ -15,57 +15,78 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
-        <!-- <nav class="sb-topnav navbar navbar-expand  d-flex justify-content-between"> -->
-            <nav class="navBar">
-                <div class="logo titleFont hoverable bold" style="gap: 15px;">
-                    <a href="/translate">
-                        <div class="headerLogo">
-                            <img src="/image/tempLogo.png" alt="Logo">
-                        </div>
-                        <div class="logoText hoverable hoverableText">
-                            <p>Echo</p><p>of the North</p>
-                        </div>
-                    </a>
+        <nav class="navBar">
+            <div class="logo titleFont hoverable bold">
+              <a href="/admin/">
+                <div class="headerLogo">
+                  <img src="/image/tempLogo.png" alt="Logo">
                 </div>
-                <div class="sideNavMenuWrap">
-                    <% if (title.toLowerCase() == "translate") {%>
-                        <div class="navLoginBtn hoverable hoverableShadow hideWhenFooter">
-                            <a href="/information">
-                                <i class="fa-solid fa-earth-americas"></i>
-                            </a>
-                        </div>
-                    <% } else if (title.toLowerCase() == "information") { %>
-                        <div class="navLoginBtn hoverable hoverableShadow hideWhenFooter">
-                            <a href="/translate">
-                                <i class="fa-solid fa-language"></i>
-                            </a>
-                        </div>
-                    <% } %>
-                    <div class="navLoginBtn hoverable hoverableShadow">
-                        <a href="/admin/login">
-                            <i class="fa-solid fa-user"></i>
-                        </a>
+                <div class="logoText hoverable hoverableText">
+                  <p>Echo</p><p>of the North</p>
+                </div>
+              </a>
+            </div>
+            <div class="navMenu hoverable hoverableShadow" id="sidebarToggle">
+              <i class="fas fa-bars"></i>
+            </div>
+          </nav>
+          <script>
+            function toggleSideNav() {
+              document.body.classList.toggle("bodyToggled");
+              localStorage.setItem(
+                "sb|sidebar-toggle",
+                document.body.classList.contains("bodyToggled")
+              );
+              document.getElementById("sideNav").classList.toggle("sideNavToggled");
+            }
+            window.addEventListener("DOMContentLoaded", (event) => {
+              const sidebarToggle = document.body.querySelector("#sidebarToggle");
+              // Getting rid of sidebar and activating footer for mobile view
+              if (window.innerWidth <= 765) {
+                sidebarToggle.style.display = "none";
+                document.getElementById("footer").style.display = "flex";
+                document.getElementById("layoutSidenav").style.paddingBottom = `${40 + document.getElementById("footer").offsetHeight}px`;
+              }
+              // Toggle the side navigation
+              if (sidebarToggle) {
+                // Uncomment Below to persist sidebar toggle between refreshes
+                if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+                  document.body.classList.toggle('bodyToggled');
+                }
+                sidebarToggle.addEventListener("click", () => {
+                  toggleSideNav();
+                });
+              }
+            });
+          </script>
+          <div id="layoutSidenav" class="sideNavContents">
+            <nav class="sideNav" id="sideNav">
+              <div class="sideNavMenu">
+                  <a class="sideBarItem hoverable hoverableShadow" href="/translate">
+                      Home
+                    <div class="sideBarIcon">
+                        <i class="fa-solid fa-home"></i>
                     </div>
+                  </a>
+                  <a class="sideBarItem hoverable hoverableShadow" href="/admin/login">
+                    Log in
+                    <div class="sideBarIcon">
+                      <i class="fa-solid fa-user"></i>
+                    </div>
+                  </a>
+                  <a class="sideBarItem hoverable hoverableShadow" href="/information">
+                    Information
+                    <div class="sideBarIcon">
+                      <i class="fa-solid fa-earth-americas"></i>
+                    </div>
+                  </a>
+                  <a class="sideBarItem hoverable hoverableShadow" href="/requestAccess">
+                    Join Us
+                    <div class="sideBarIcon">
+                      <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                  </a>
                 </div>
-
-            <!-- Navbar Brand-->
-             <!-- <div class="d-flex align-items-center"> -->
-                <!-- <button class="btn btn-link  ps-3 btn-sm order-2 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button> -->
-                <!-- <a class="navbar-brand bold ms-3" href="index.html">Inuinnaqtun Translation</a> -->
-             <!-- </div> -->
-           
-
-            <!-- Navbar-->
-            <!-- <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/admin/login">Login</a></li>
-                        <li><a class="dropdown-item" href="/admin/register">Register</a></li>
-                    </ul>
-                </li>
-            </ul> -->
-        </nav>
-   
-        <!-- <div class="h-100  "> -->
-        <div class="wrap">
+            </nav>
+            <div class="sideNavContents_wrap">
+        
