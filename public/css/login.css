@@ -18,15 +18,9 @@
 }
 
 .title {
-  font-size: 60px;
+  font-size: 45px;
   text-align: center;
   padding: 20px 0 0 0;
-}
-
-@media screen and (max-width: 500px) {
-  .title {
-    font-size: 50px;
-  }
 }
 
 .feedbackWrap {
@@ -89,17 +83,27 @@
   .sideNavContents_wrap {
     padding: 0 30px 30px 30px;
   }
-}
 
-@media screen and (max-width: 400px) {
+  .formWrap {
+    padding-top: 20px;
+  }
+
+  .formWrap input {
+    font-size: 18px;
+  }
+
+  .btn {
+    font-size: 20px;
+  }
+
   .forgotPw {
     font-size: 18px;
   }
 }
 
-@media screen and (max-width: 350px) {
-  .wrap {
-    padding: 20px 30px;
+@media screen and (max-width: 400px) {
+  .forgotPw {
+    font-size: 18px;
   }
 
   .title {
@@ -107,7 +111,25 @@
   }
 
   .formWrap input {
+    font-size: 16px;
+  }
+
+  .btn {
     font-size: 18px;
+  }
+
+  .forgotPw {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .sideNavContents_wrap {
+    padding: 0 20px 30px 20px;
+  }
+
+  .wrap {
+    padding: 20px 30px;
   }
 }
 
@@ -167,6 +189,26 @@
 .editUserWrap a,
 .editUserWrap select {
   box-sizing: border-box;
+}
+
+@media screen and (max-width: 500px) {
+  .editUserWrap label {
+    font-size: 20px;
+  }
+  
+  .editUserWrap select {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .editUserWrap label {
+    font-size: 18px;
+  }
+
+  .editUserWrap select {
+    font-size: 16px;
+  }
 }
 
 /* Add definition */
@@ -265,6 +307,8 @@
   align-items: center;
 }
 
+
+/* Audio upload */
 .audioUpload input {
   all: unset;
   width: 100%;
@@ -343,6 +387,26 @@ audio::-webkit-media-controls-panel {
   color: #20063B;
 }
 
+@media screen and (max-width: 500px) {
+  .definitions-list p,
+  .linked-words-list p,
+  .audioUpload input,
+  .audioUpload input::file-selector-button,
+  .audioUpload input::-webkit-file-upload-button {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .definitions-list p,
+  .linked-words-list p,
+  .audioUpload input,
+  .audioUpload input::file-selector-button,
+  .audioUpload input::-webkit-file-upload-button {
+    font-size: 16px;
+  }
+}
+
 @media screen and (max-width: 415px) {
   .audioRecordInput {
     flex-direction: column !important;
@@ -398,4 +462,18 @@ button:disabled:hover {
   font-weight: 400;
   font-style: normal;
   resize: none;
+}
+
+@media screen and (max-width: 500px) {
+  .requestAccessWrap input,
+  .textArea {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .requestAccessWrap input,
+  .textArea {
+    font-size: 16px;
+  }
 }

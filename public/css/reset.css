@@ -10,6 +10,12 @@ body { background-color: rgb(240, 241, 255); }
     transition-duration: 0.3s;
 }
 
+.hideContents {
+    height: 0;
+    opacity: 0;
+    transition-duration: 0.3s;
+}
+
 #layoutSidenav {
     max-width: 100svw;
     overflow-x: hidden !important;
@@ -237,6 +243,10 @@ body { background-color: rgb(240, 241, 255); }
 }
 
 @media screen and (max-width: 490px) {
+    .sideNavToggled {
+        width: 100%;
+    }
+
     .logo>a {
         gap: 20px;
     }
@@ -269,13 +279,11 @@ body { background-color: rgb(240, 241, 255); }
     }
 }
 
-@media screen and (max-width: 450px) {
-    .sideNavToggled {
-        width: 100%;
-    }
-}
-
 @media screen and (max-width: 415px) {
+    .goBackBtn {
+        font-size: 14px !important;
+    }
+
     .logo {
         font-size: 33px;
     }
@@ -293,10 +301,6 @@ body { background-color: rgb(240, 241, 255); }
     .headerLogo {
         width: 65px;
         height: 65px;
-    }
-    
-    .goBackBtn {
-        font-size: 15px;
     }
 }
 

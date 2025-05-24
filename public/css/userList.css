@@ -6,6 +6,12 @@
     align-items: center;
 }
 
+@media screen and (max-width: 600px) {
+    .sideNavContents_wrap {
+        padding: 0 30px 30px 30px;
+    }
+}
+
 @media screen and (max-width: 500px) {
     .sideNavContents_wrap {
         padding: 0 30px 30px 30px;
@@ -26,7 +32,7 @@
 
 .listTitle {
     width: 100%;
-    font-size: 30px;
+    font-size: 45px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -37,10 +43,35 @@
     gap: 15px;
 }
 
+@media screen and (max-width: 600px) {
+    .userTable {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .listTitle {
+        font-size: 35px !important;
+    }
+}
 
 @media screen and (max-width: 400px) {
     .textWrap {
         font-size: 24px;
+    }
+
+    .userListWrap {
+        margin-top: 30px;
+    }
+
+    .userTable {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .listTitle {
+        font-size: 30px !important;
     }
 }
 
@@ -173,6 +204,14 @@ th, td {
     line-height: 30px;
 }
 
+.pagination .active {
+    background-color: #20063B;
+}
+
+.pagination .active a {
+    color: #e9f1ff;
+}
+
 .disabled {
     cursor: not-allowed;
 }
@@ -180,6 +219,27 @@ th, td {
 .disabled a {
     color: #17063b49;
     pointer-events: none;
+}
+
+@media screen and (max-width: 500px) {
+    .pagination {
+        font-size: 14px;
+        gap: 15px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .pagination {
+        font-size: 12px;
+        gap: 10px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .pagination {
+        font-size: 10px;
+        gap: 5px;
+    }
 }
 
 /* Modal popups styling */
@@ -287,6 +347,30 @@ th, td {
     gap: 10px;
 }
 
+@media screen and (max-width: 500px) {
+    .textBtn {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .modalWrap label,
+    .modalWrap select {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .modalWrap label,
+    .modalWrap select {
+        font-size: 16px;
+    }
+
+    .modalWrap select {
+        padding: 20px 22px;
+    }
+}
+
 /* Filter */
 .searchBar {
     width: 100%;
@@ -307,6 +391,20 @@ th, td {
     border: 0;
     outline: 0;
     font-size: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .inputWrap input,
+    .searchBar input {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .inputWrap input,
+    .searchBar input {
+        font-size: 14px;
+    }
 }
 
 .searchBtn {
@@ -403,6 +501,9 @@ th, td {
     content: "✓";
     color: #e9f1ff;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .logRadioBtn {
@@ -417,8 +518,57 @@ th, td {
 }
 
 @media screen and (max-width: 500px) {
+    .modal,
     .logModal {
         padding: 35px;
+    }
+
+    .modalTitle {
+        font-size: 35px;
+    }
+
+    .modalForm {
+        font-size: 18px;
+    }
+
+    .logRadioBtn {
+        padding: 5px 5px 5px 15px;
+        font-size: 14px !important;
+        gap: 15px;
+    }
+
+    .submitFilterBtn {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .modalForm {
+        font-size: 16px;
+    }
+
+    .modalTitle {
+        font-size: 30px;
+    }    
+}
+
+@media screen and (max-width: 350px) {
+    .modal,
+    .logModal {
+        padding: 25px;
+    }
+
+    .modalForm {
+        font-size: 14px;
+        gap: 25px;
+    }
+
+    .modalTitle {
+        font-size: 25px;
+    }
+
+    .submitFilterBtn {
+        font-size: 16px;
     }
 }
 

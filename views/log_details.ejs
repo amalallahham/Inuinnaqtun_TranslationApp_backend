@@ -7,15 +7,15 @@
     </a>
   </button>
 
-  <h1 class="title headerFont semi-bold"><%= title %></h1>
+  <p class="title headerFont semi-bold"><%= title %></p>
 
   <div class="logWrap">
-    <div class="logDateWrap d-flex align-items-center justify-content-end">
+    <!-- <div class="logDateWrap d-flex align-items-center justify-content-end">
       <div class="logDate">
         <p class="date"><%= new Date(log.createdAt).toLocaleDateString() %></p>
         <p class="time"><%= new Date(log.createdAt).toLocaleTimeString() %></p>
       </div>
-    </div>
+    </div> -->
     <div class="logContentsWrap">
       <div class="logContents card-body p-1">
         <% if (error) { %>
@@ -27,8 +27,8 @@
             <li>
               <strong>Action:</strong> <%= log.action %>
             </li>
-            <li>
-              <strong>Data Entry (Type):</strong> <%= log.type %>
+            <li style="display: inline;">
+              <strong style="margin-right: 10px;">Data Entry (Type):</strong> <%= log.type %>
             </li>
             <li>
               <strong>Performed By:</strong> <%= log.performedBy?.username || 'Anonymous' %>

@@ -13,7 +13,7 @@
 }
 
 .title {
-    font-size: 60px;
+    font-size: 45px;
     text-align: center;
     padding: 20px 0 0 0;
 }
@@ -51,7 +51,7 @@
 .logContentsWrap {
     width: 100%;
     border-radius: 10px 0 10px 10px;
-    background-color: #5C80BC;
+    /* background-color: #5C80BC; */
 }
 
 .logContents {
@@ -82,4 +82,32 @@
     border-top: 1px solid #20063b4f;
     display: flex;
     gap: 10px;
+}
+
+
+@media screen and (max-width: 600px) {
+    
+}
+
+@media screen and (max-width: 500px) {
+    .title {
+        font-size: 35px !important;
+    }
+
+    .logItemsWrap li {
+        font-size: 18px;
+    }
+}
+
+
+@media screen and (max-width: 400px) {
+    .logItemsWrap li {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .title {
+        font-size: 30px !important;
+    }
 }

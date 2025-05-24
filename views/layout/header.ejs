@@ -42,15 +42,20 @@
               document.getElementById("sideNav").classList.toggle("sideNavToggled");
               if (mobileView) {
                 document.getElementById("footer").classList.toggle("hide");
+                document.querySelector(".sideNavContents_wrap").classList.toggle("hideContents");
               }
             }
             
             window.addEventListener("DOMContentLoaded", (event) => {
               const sidebarToggle = document.body.querySelector("#sidebarToggle");
-              // Getting rid of sidebar and activating footer for mobile view
-              if (window.innerWidth <= 765) {
+              // Making sure hamburger menu takes up the whole height
+              if (window.innerWidth <= 490) {
                 mobileView = true;
+              } else if (window.innerWidth <= 765) {
                 document.getElementById("layoutSidenav").style.paddingBottom = `${40 + document.getElementById("footer").offsetHeight}px`;
+                document.getElementById("sideNav").style.height = `${document.body.scrollHeight}px`;
+              } else {
+                document.getElementById("sideNav").style.height = `${document.body.scrollHeight}px`;
               }
               // Toggle the side navigation
               if (sidebarToggle) {

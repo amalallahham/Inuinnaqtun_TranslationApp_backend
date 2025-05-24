@@ -18,7 +18,6 @@ include('./layout/header') %> <% } %>
         id="changeLanguageBtn"
         class="changeLanguageBtn hoverable hoverableShadow"
         onclick='reverseLanguages()'>
-      >
         <img src="/icons/swap.png" />
       </div>
       <div id="output-lang" class="languageOption"></div>
@@ -283,16 +282,16 @@ include('./layout/header') %> <% } %>
       buttonGroup.classList.add("audioBtn");
 
       const playBtn = document.createElement("button");
-      playBtn.classList.add("hoverable", "hoverableShadow", "noborder");
-      playBtn.style.fontSize = "27px";
+      playBtn.classList.add("hoverable", "hoverableShadow", "noborder", "wordInfoBoxIcon");
+      // playBtn.style.fontSize = "27px";
       playBtn.innerHTML = `<i class="fa-solid fa-volume-high"></i>`;
       playBtn.addEventListener("click", () => audio.play());
 
       const flagBtn = document.createElement("button");
-      flagBtn.classList.add("hoverable", "hoverableShadow", "noborder");
+      flagBtn.classList.add("hoverable", "hoverableShadow", "noborder", "wordInfoBoxIcon");
       flagBtn.innerHTML = `<i class="fa-regular fa-flag"></i>`;
       flagBtn.title = "flag a word";
-      flagBtn.style.fontSize = "27px";
+      // flagBtn.style.fontSize = "27px";
 
       flagBtn.addEventListener("click", () => {
         window.location.href = `/admin/flag/${info._id}`;

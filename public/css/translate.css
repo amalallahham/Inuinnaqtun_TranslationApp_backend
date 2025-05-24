@@ -138,6 +138,26 @@
     right: 20px;
 }
 
+.wordInfoBoxIcon {
+    font-size: 27px;
+}
+
+
+@media screen and (max-width: 500px) {
+    .sideNavContents_wrap {
+        padding: 40px 30px;
+    }
+
+    .textArea,
+    #word-details {
+        font-size: 18px;
+    }
+
+    .wordInfoBoxIcon {
+        font-size: 25px;
+    }
+}
+
 @media screen and (max-width: 400px) {
     .wrap {
         height: max-content;
@@ -159,6 +179,10 @@
 
     .changeLanguageBtn {
         height: 46px;
+    }
+
+    .wordInfoBoxIcon {
+        font-size: 20px;
     }
 }
   
