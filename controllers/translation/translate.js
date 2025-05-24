@@ -32,7 +32,6 @@ export const translate_text = async (req, res) => {
     console.log("Phrase not found in database, generating translation");
   }
 
-  console.log(generatedText, 'generatedText')
 
   const recordedWords = await selectRecordedWords(generatedText);
 
@@ -40,13 +39,11 @@ export const translate_text = async (req, res) => {
 };
 
 export const getRecordedWords = async (req, res) => {
-  console.log(req.params.text, 'selectRecordedWords in getRecordedWords')
   const recordedWords = await selectRecordedWords(req.params.text);
   res.json({ recordedWords: recordedWords });
 };
 
 export const getWordDetails = async (req, res) => {
-  console.log("Getting word details");
   const word = req.params.word;
   const wordRecord = await DialectWord.findOne({ word: word })
     .sort({ createdAt: -1 })
@@ -80,7 +77,6 @@ export const getWordDetails = async (req, res) => {
     audioFiles: audioMap[wordRecord._id] || [],
   };
 
-  console.log(wordAndAudio);
 
   res.json({ success: true, details: wordAndAudio });
 };
@@ -106,7 +102,6 @@ const selectRecordedWords = async (translation) => {
       result[word.word] = [word];
     }
   }
-  console.log(result, 'result in selectRecordedWords')
   return result;
 };
 
@@ -135,7 +130,6 @@ const getDatabaseTranslation = async (req) => {
 };
 
 const extractAllPhrases = (translation) => {
-  console.log(translation)
   const words = translation ? translation.split(" ") : [];
   const phrases = [];
 

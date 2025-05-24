@@ -9,7 +9,6 @@ include('./layout/header') %> <% } %>
       id="input-text"
       class="textArea"
       rows="4"
-      
       placeholder="Enter or paste text here"
     ></textarea>
     <div class="changeLanguageArea">
@@ -18,7 +17,7 @@ include('./layout/header') %> <% } %>
       <div
         id="changeLanguageBtn"
         class="changeLanguageBtn hoverable hoverableShadow"
-        onclick='reverseLanguages()'
+        onclick='reverseLanguages()'>
       >
         <img src="/icons/swap.png" />
       </div>
@@ -146,7 +145,6 @@ include('./layout/header') %> <% } %>
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         stopLoadingEvent();
         displayTranslation(data);
       })
@@ -247,7 +245,6 @@ include('./layout/header') %> <% } %>
   }
 
   function getWordDetails(info) {
-    console.log("get wojd")
     fetch(`/word-details/${info.word}`)
       .then((res) => res.json())
       .then((data) => {
